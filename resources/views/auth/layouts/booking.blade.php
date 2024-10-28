@@ -147,8 +147,9 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
                 center: 'title',
                 right: ''
             },
-            aspectRatio: 1.6,
+            aspectRatio: 1.5,
             defaultView: 'resourceTimelineMonth',
+            resourceAreaWidth: '50%',
             resourceGroupField: 'building',
             eventColor: '#ffabab',
             eventTextColor: 'red',
@@ -167,6 +168,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
             ],
             resourceColumns: [
                 {
+                    labelText: 'Категория',
+                    field: 'building'
+                },
+                {
                     labelText: '@lang('admin.room')',
                     field: 'title'
                 },
@@ -177,9 +182,16 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
             ],
             resources: [
                 @foreach($rooms as $room)
-                    { id: '{{$room->id}}', title: '{{$room->title}}', price: '$ '+{{$room->price}} },
+                { id: '{{$room->id}}', building: 'Category', title: '{{$room->title}}', price: '$ ' +
+                        ''+{{$room->price}} },
                 @endforeach
-
+                    @foreach($categories as $room)
+                    @php
+                        $r = \App\Models\Room::where('id', $room->room_id)->first();
+                    @endphp
+                { id: '{{$room->id}}', building: '{{ $r->title }}', title: '{{$room->title}}', price:
+                        '$ ' + {{ $r->price }} },
+                @endforeach
             ],
             dateClick: function(info) {
                 $("#room_id").val(info.resource.id);
@@ -212,7 +224,6 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
             let title = $(".modal").find("#title").val();
             let phone = $(".modal").find("#phone").val();
             let email = $(".modal").find("#email").val();
-
         });
     });
 

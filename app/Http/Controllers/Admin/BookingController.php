@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\Category;
 use App\Models\Hotel;
 use App\Models\Room;
 use Illuminate\Http\Request;
@@ -13,11 +14,11 @@ class BookingController extends Controller
     public function index(Request $request)
     {
         $hotel = $request->session()->get('hotel_id');
+        $categories = Category::all();
+        $books = Book::whereBetween('start_d', ['2024-10-01', '2024-10-31'])->where('hotel_id', $hotel)->get();
         $bookings = Book::where('hotel_id', $hotel)->get();
         $rooms = Room::where('hotel_id', $hotel)->get();
         $events = array();
-
-
         $removed = Book::onlyTrashed()->get();
 
         foreach ($bookings as $booking){
@@ -36,7 +37,7 @@ class BookingController extends Controller
                 'end' => $booking->end_d,
             ];
         }
-        return view('auth.books.index', compact('events', 'bookings', 'removed', 'rooms'));
+        return view('auth.books.index', compact('events', 'bookings', 'removed', 'rooms', 'books', 'categories'));
     }
 
     public function create()

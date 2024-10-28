@@ -38,7 +38,6 @@ Route::middleware('set_locale')->group(function ()
         {
             Route::group(["middleware" => "is_admin"], function ()
             {
-
                 Route::resource("hotels", "App\Http\Controllers\Admin\HotelController");
                 Route::resource("services", "App\Http\Controllers\Admin\ServiceController");
                 Route::resource("payments", "App\Http\Controllers\Admin\PaymentController");

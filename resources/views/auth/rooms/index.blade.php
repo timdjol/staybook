@@ -11,7 +11,10 @@
                     <div class="row align-items-center aic">
                         <div class="col-md-7">
                             <h1>@lang('admin.rooms')</h1>
-                            <a href="{{ route('categories.index') }}">Categories of rooms</a>
+                            <ul>
+                                <li><a href="{{ route('categories.index') }}">Тарифы</a></li>
+                                <li><a href="{{ route('foods.index') }}">Виды питаний</a></li>
+                            </ul>
                         </div>
                         <div class="col-md-5">
                             <div class="btn-wrap">
