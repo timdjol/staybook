@@ -45,6 +45,8 @@ Route::middleware('set_locale')->group(function ()
                 Route::resource("bookings", "App\Http\Controllers\Admin\BookingController");
                 Route::resource("rooms", "App\Http\Controllers\Admin\RoomController");
                 Route::resource("categories", "App\Http\Controllers\Admin\CategoryRoomController");
+                Route::resource("foods", "App\Http\Controllers\Admin\FoodController");
+                Route::resource("rules", "App\Http\Controllers\Admin\RuleController");
                 Route::resource("pages", "App\Http\Controllers\Admin\PageController");
                 Route::resource("bills", "App\Http\Controllers\Admin\BillController");
                 Route::resource("users", "App\Http\Controllers\Admin\UserController");

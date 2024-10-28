@@ -1,6 +1,6 @@
 @extends('auth.layouts.master')
 
-@section('title', __('admin.plans'))
+@section('title', __('admin.rules'))
 
 @section('content')
 
@@ -10,17 +10,17 @@
                 <div class="col-md-12">
                     <div class="row align-items-center aic">
                         <div class="col-md-7">
-                            <h1>@lang('admin.plans')</h1>
+                            <h1>@lang('admin.rules')</h1>
                         </div>
                         <div class="col-md-5">
                             <div class="btn-wrap">
-                                <a class="btn add" href="{{ route('categories.create') }}"><i class="fa-solid
+                                <a class="btn add" href="{{ route('rules.create') }}"><i class="fa-solid
                                 fa-plus"></i> @lang('admin.add')</a>
                             </div>
                         </div>
                     </div>
 
-                    @if($categories->isNotEmpty())
+                    @if($rules->isNotEmpty())
                         <table class="table">
                             <thead>
                             <tr>
@@ -31,15 +31,15 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($categories as $category)
+                            @foreach($rules as $rule)
                                 <tr>
-                                    <td>{{ $category->id }}</td>
-                                    <td>{{ $category->title }}</td>
-                                    <td>{{ $category->room->title }}</td>
+                                    <td>{{ $rule->id }}</td>
+                                    <td>{{ $rule->title }}</td>
+                                    <td>{{ $rule->room->title }}</td>
                                     <td>
-                                        <form action="{{ route('categories.destroy', $category) }}" method="post">
+                                        <form action="{{ route('rules.destroy', $rule) }}" method="post">
                                             <ul>
-                                                <li><a class="btn edit" href="{{ route('categories.edit', $category)
+                                                <li><a class="btn edit" href="{{ route('rules.edit', $rule)
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                                 @csrf
                                                 @method('DELETE')
@@ -51,7 +51,7 @@
                             @endforeach
                             </tbody>
                         </table>
-                        {{ $categories->links('pagination::bootstrap-4') }}
+                        {{ $rules->links('pagination::bootstrap-4') }}
                     @else
                         <h2 style="text-align: center">@lang('admin.rooms_not_found')</h2>
                     @endif

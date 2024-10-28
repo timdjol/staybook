@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Models\Traits\Translatable;
 use Illuminate\Database\Eloquent\Model;
 
-class Food extends Model
+class Rule extends Model
 {
-    protected $table = 'foods';
+    protected $table = 'rules';
 
     use Translatable;
 

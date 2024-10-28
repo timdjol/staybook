@@ -124,4 +124,7 @@ return [
     'add_user' => 'Add user',
     'show_password' => 'Show password',
     'edit_user' => 'Edit user',
+    'plans' => 'Plans',
+    'foods' => 'Foods',
+    'rules' => 'Rules',
 ];

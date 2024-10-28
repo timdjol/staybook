@@ -12,8 +12,9 @@
                         <div class="col-md-7">
                             <h1>@lang('admin.rooms')</h1>
                             <ul>
-                                <li><a href="{{ route('categories.index') }}">Тарифы</a></li>
-                                <li><a href="{{ route('foods.index') }}">Виды питаний</a></li>
+                                <li><a href="{{ route('categories.index') }}">@lang('admin.plans')</a></li>
+                                <li><a href="{{ route('foods.index') }}">@lang('admin.foods')</a></li>
+                                <li><a href="{{ route('rules.index') }}">@lang('admin.rules')</a></li>
                             </ul>
                         </div>
                         <div class="col-md-5">
