@@ -174,3 +174,23 @@ header .status{
 #percent, #fix, #day_block{
     display: none;
 }
+ul.btns{
+    padding-left: 0;
+    padding-top: 10px;
+}
+ul.btns li{
+    display: inline-block;
+    margin-right: 5px;
+}
+ul.btns li.current a{
+    background-color: var(--blue);
+    color: #fff;
+}
+ul.btns li a{
+    padding: 5px 20px;
+    border: 1px solid var(--blue);
+    border-radius: 5px;
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 14px;
+}

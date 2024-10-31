@@ -124,7 +124,13 @@ return [
     'add_user' => 'Add user',
     'show_password' => 'Show password',
     'edit_user' => 'Edit user',
-    'plans' => 'Plans',
+    'plans_and_rules' => 'Tariffs and cancellation policy',
+    'plans' => 'Tariffs',
+    'rules' => 'Сancellation policy',
     'foods' => 'Foods',
-    'rules' => 'Rules',
+    'food' => 'Food',
+    'rule' => 'Сancellation policy',
+    'childs' => 'Living with children',
+    'child_type' => 'Accommodation type',
+    'child_count' => 'Maximum number of children'
 ];

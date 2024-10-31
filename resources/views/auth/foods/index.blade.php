@@ -8,6 +8,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
+                    @include('auth.layouts.subroom')
                     <div class="row align-items-center aic">
                         <div class="col-md-7">
                             <h1>@lang('admin.foods')</h1>
@@ -27,7 +28,6 @@
                                 <th>ID</th>
                                 <th>@lang('admin.title')</th>
                                 <th>EN</th>
-                                <th>@lang('admin.room')</th>
                                 <th>@lang('admin.action')</th>
                             </tr>
                             </thead>
@@ -37,7 +37,6 @@
                                     <td>{{ $food->id }}</td>
                                     <td>{{ $food->title }}</td>
                                     <td>{{ $food->title_en }}</td>
-                                    <td>{{ $food->room->title }}</td>
                                     <td>
                                         <form action="{{ route('foods.destroy', $food) }}" method="post">
                                             <ul>

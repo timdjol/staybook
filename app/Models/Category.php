@@ -11,16 +11,27 @@ class Category extends Model
 
     protected $fillable = [
         'code',
-        'room_id',
-        'hotel_id',
         'title',
         'title_en',
-        'product_id'
+        'hotel_id',
+        'room_id',
+        'food_id',
+        'rule_id',
     ];
 
     public function room()
     {
         return $this->belongsTo(Room::class);
+    }
+
+    public function food()
+    {
+        return $this->belongsTo(Food::class);
+    }
+
+    public function rule()
+    {
+        return $this->belongsTo(Rule::class);
     }
 
 }

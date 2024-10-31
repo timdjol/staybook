@@ -178,19 +178,25 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
                 {
                     labelText: '@lang('admin.price')',
                     field: 'price'
-                }
+                },
+                {
+                    labelText: 'Вид питания',
+                    field: 'food'
+                },
+
             ],
             resources: [
                 @foreach($rooms as $room)
-                { id: '{{$room->id}}', building: 'Category', title: '{{$room->title}}', price: '$ ' +
+                    { id: '{{$room->id}}', building: 'Category', title: '{{$room->title}}', price: '$ ' +
                         ''+{{$room->price}} },
                 @endforeach
                     @foreach($categories as $room)
                     @php
                         $r = \App\Models\Room::where('id', $room->room_id)->first();
+                        $f = \App\Models\Food::where('room_id', $room->room_id)->first();
                     @endphp
                 { id: '{{$room->id}}', building: '{{ $r->title }}', title: '{{$room->title}}', price:
-                        '$ ' + {{ $r->price }} },
+                        '$ ' + {{ $r->price }}, food: '{{ $f->title }}' },
                 @endforeach
             ],
             dateClick: function(info) {

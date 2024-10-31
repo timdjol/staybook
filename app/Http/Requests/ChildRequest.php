@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RuleRequest extends FormRequest
+class ChildRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class RuleRequest extends FormRequest
         $rules = [
             'title' => 'required|min:1|max:255',
             'title_en' => 'required|min:1|max:255',
-            'size' => 'required|min:1|max:255',
+            'type' => 'required|min:1|max:255',
+            'count' => 'required|min:1|max:255',
         ];
         return $rules;
     }

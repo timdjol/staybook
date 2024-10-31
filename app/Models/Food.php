@@ -12,15 +12,13 @@ class Food extends Model
     use Translatable;
 
     protected $fillable = [
-        'room_id',
-        'hotel_id',
         'title',
         'title_en',
     ];
 
-    public function room()
+    public function category()
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(Category::class);
     }
 
 }

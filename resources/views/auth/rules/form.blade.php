@@ -15,6 +15,7 @@
                     @include('auth.layouts.sidebar')
                 </div>
                 <div class="col-md-9">
+                    @include('auth.layouts.subroom')`
                     @isset($rule)
                         <h1>@lang('admin.edit') {{ $rule->title }}</h1>
                     @else
@@ -35,7 +36,7 @@
                             <div class="col-md-6">
                                 @include('auth.layouts.error', ['fieldname' => 'title'])
                                 <div class="form-group">
-                                    <label for="">@lang('admin.title')</label>
+                                    <label for="">Название правила для отеля</label>
                                     <input type="text" name="title" value="{{ old('title', isset($rule) ?
                                     $rule->title :
                              null) }}">
@@ -52,21 +53,28 @@
                             </div>
 
                             <div class="col-md-6">
+                                @include('auth.layouts.error', ['fieldname' => 'size'])
                                 <div class="form-group">
-                                    <label for="">@lang('admin.choose')</label>
-                                    <select name="room_id">
-                                        @isset($category)
-                                            <option @if($category->room_id)
-                                                        selected>
-                                                {{ $category->room_id }}</option>
-                                        @else
-                                            <option>Choose</option>
-                                        @endif
-                                        @endisset
-                                        @foreach($rooms as $room)
-                                            <option value="{{ $room->id }}">{{ $room->title }}</option>
-                                        @endforeach
+                                    <label for="">Указать размер штрафа при аннуляции</label>
+                                    <select name="size" onchange="ageCheck(this);">
+                                        <option value="0">Без штрафа</option>
+                                        <option value="1">Процент от первых суток</option>
+                                        <option value="2">Процент от всей суммы бронирования</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div id="block1">
+                                        <label for="">Процент от первых суток</label>
+                                        <input type="number" name="percent_day" value="{{ old('title', isset($rule) ?
+                                    $rule->percent_day :  null) }}">
+                                    </div>
+                                    <div id="block2">
+                                        <label for="">Процент от всей суммы бронирования</label>
+                                        <input type="number" name="percent_book" value="{{ old('title', isset($rule) ?
+                                    $rule->percent_book :  null) }}">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -79,9 +87,27 @@
         </div>
     </div>
 
+    <script>
+        function ageCheck(that) {
+            if (that.value == 1) {
+                document.getElementById("block1").style.display = "block";
+                document.getElementById("block2").style.display = "none";
+            } else if (that.value == 2) {
+                document.getElementById("block1").style.display = "none";
+                document.getElementById("block2").style.display = "block";
+            } else {
+                document.getElementById("block1").style.display = "none";
+                document.getElementById("block2").style.display = "none";
+            }
+        }
+    </script>
+
     <style>
         .admin label {
             display: inline-block;
+        }
+        #block1, #block2{
+            display: none;
         }
     </style>
 

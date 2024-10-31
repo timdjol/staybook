@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FoodRequest;
 use App\Models\Food;
-use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -14,11 +13,10 @@ class FoodController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $hotel = $request->session()->get('hotel_id');
-        $foods = Food::where('hotel_id', $hotel)->paginate(10);
-        return view('auth.foods.index', compact('hotel', 'foods'));
+        $foods = Food::paginate(10);
+        return view('auth.foods.index', compact('foods'));
     }
 
     /**
@@ -26,9 +24,7 @@ class FoodController extends Controller
      */
     public function create(Request $request)
     {
-        $hotel = $request->session()->get('hotel_id');
-        $rooms = Room::where('hotel_id', $hotel)->get();
-        return view('auth.foods.form', compact('rooms', 'hotel'));
+        return view('auth.foods.form');
     }
 
     /**
@@ -39,7 +35,6 @@ class FoodController extends Controller
         $params = $request->all();
         Food::create($params);
         //Mail::to('info@timmedia.store')->send(new RoomCreateMail($request));
-
         session()->flash('success', 'Food ' . $request->title . ' created');
         return redirect()->route('foods.index');
     }
@@ -49,9 +44,7 @@ class FoodController extends Controller
      */
     public function edit(Request $request, Food $food)
     {
-        $hotel = $request->session()->get('hotel_id');
-        $rooms = Room::where('hotel_id', $hotel)->get();
-        return view('auth.foods.form', compact('food', 'hotel', 'rooms'));
+        return view('auth.foods.form', compact('food'));
     }
 
     /**

@@ -15,6 +15,7 @@
                     @include('auth.layouts.sidebar')
                 </div>
                 <div class="col-md-9">
+                    @include('auth.layouts.subroom')
                     @isset($category)
                         <h1>@lang('admin.edit') {{ $category->title }}</h1>
                     @else
@@ -52,44 +53,65 @@
                             </div>
 
                             <div class="col-md-6">
+                                @include('auth.layouts.error', ['fieldname' => 'room_id'])
                                 <div class="form-group">
-                                    <label for="">@lang('admin.choose')</label>
+                                    <label for="">@lang('admin.room')</label>
                                     <select name="room_id">
                                         @isset($category)
                                             <option @if($category->room_id)
                                                         selected>
-                                                {{ $category->room_id }}</option>
+                                                {{ $category->room->title }}</option>
                                         @else
-                                            <option>Choose</option>
+                                            <option>@lang('admin.choose')</option>
                                         @endif
                                         @endisset
                                         @foreach($rooms as $room)
-                                            <option value="{{ $room->id }}">{{ $room->title }}</option>
+                                            <option value="{{ $room->id }}">{{ $room->__('title') }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
 
-{{--                            <div class="col-md-6">--}}
-{{--                                <div class="form-group">--}}
-{{--                                    @include('auth.layouts.error', ['fieldname' => 'bed'])--}}
-{{--                                    <label for="bed">@lang('admin.bed')</label>--}}
-{{--                                    <select name="bed" id="bed">--}}
-{{--                                        @isset($room)--}}
-{{--                                            <option @if($room->bed)--}}
-{{--                                                        selected>--}}
-{{--                                                {{ $room->bed }}</option>--}}
-{{--                                        @else--}}
-{{--                                            <option>Choose</option>--}}
-{{--                                        @endif--}}
-{{--                                        @endisset--}}
-{{--                                        <option value="Single">Single</option>--}}
-{{--                                        <option value="Double">Double</option>--}}
-{{--                                        <option value="Separate">Separate</option>--}}
-{{--                                        <option value="King Size">King Size</option>--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                            <div class="col-md-6">
+                                @include('auth.layouts.error', ['fieldname' => 'food_id'])
+                                <div class="form-group">
+                                    <label for="">@lang('admin.food')</label>
+                                    <select name="food_id" id="">
+                                        @isset($category)
+                                            <option @if($category->food_id)
+                                                        selected>
+                                                {{ $category->food->title }}</option>
+                                        @else
+                                            <option>@lang('admin.choose')</option>
+                                        @endif
+                                        @endisset
+                                        @foreach($foods as $food)
+                                            <option value="{{ $food->id }}">{{ $food->__('title') }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                @include('auth.layouts.error', ['fieldname' => 'rule_id'])
+                                <div class="form-group">
+                                    <label for="">@lang('admin.rule')</label>
+                                    <select name="rule_id" id="">
+                                        @isset($category)
+                                            <option value="0" @if($category->rule_id)
+                                                        selected>
+                                                {{ $category->rule->title }}</option>
+                                        @else
+                                            <option>@lang('admin.choose')</option>
+                                        @endif
+                                        @endisset
+                                        @foreach($rules as $rule)
+                                            <option value="{{ $rule->id }}">{{ $rule->__('title') }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                            </div>
+
                         </div>
                         @csrf
                         <button class="more">@lang('admin.send')</button>
