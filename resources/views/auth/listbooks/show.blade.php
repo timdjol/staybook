@@ -66,7 +66,7 @@
                         <div class="col-md-4">
                             <div class="dashboard-item">
                                 @php
-                                    $room = \App\Models\Room::where('id', $book->room_id)->firstOrFail();
+                                    $room = \App\Models\Category::where('id', $book->room_id)->firstOrFail();
                                 @endphp
                                 <div class="img"><img src="{{ Storage::url($room->image) }}"
                                                       alt="" width="200px"></div>
@@ -76,7 +76,7 @@
                             <div class="dashboard-item">
                                 <div class="name">@lang('admin.hotel')</div>
                                 <div class="wrap">
-                                    {{ $room->hotel->title }}
+                                    {{ $room->hotel_id }}
                                     <div class="name" style="margin-top: 20px">@lang('admin.room')</div>
                                     {{ $room->title }}
                                 </div>

@@ -14,13 +14,13 @@
             <div class="price">
                 @php
                     //$comission = \Illuminate\Support\Facades\Auth::user()->comission;
-                        $comission  = 10;
+                        $c = \App\Models\Category::where('room_id', $room->id)->first();
                 @endphp
-                @if(isset($comission))
-                    <td>{{ $room->price + ($room->price * $comission / 100) }} $</td>
-                @else
-                    <td>{{ $room->price }} $</td>
-                @endif
+                @isset($c)
+                    <td>
+                        $ {{ $c->price }}
+                    </td>
+                @endisset
             </div>
             @if($room->include != '')
                 <div class="breakfast">{{ $room->include }}</div>
@@ -279,23 +279,6 @@
                             {{--                                                        @endif">--}}
                             <input type="hidden" id="price" class="price" value="{{ $room->price }}">
                             <input type="hidden" id="price2" class="price2" value="{{ $room->price2 }}">
-                            <input type="hidden" id="pricec" class="pricec" value="{{$room->pricec }}">
-                            <input type="hidden" id="pricec2" class="pricec" value="{{$room->pricec2 }}">
-                            <input type="hidden" id="pricec3" class="pricec" value="{{$room->pricec3 }}">
-                            <input type="hidden" id="pricec4" class="pricec" value="{{$room->pricec4 }}">
-                            <input type="hidden" id="pricec5" class="pricec" value="{{$room->pricec5 }}">
-                            <input type="hidden" id="pricec6" class="pricec" value="{{$room->pricec6 }}">
-                            <input type="hidden" id="pricec7" class="pricec" value="{{$room->pricec7 }}">
-                            <input type="hidden" id="pricec8" class="pricec" value="{{$room->pricec8 }}">
-                            <input type="hidden" id="pricec9" class="pricec" value="{{$room->pricec9 }}">
-                            <input type="hidden" id="pricec10" class="pricec" value="{{$room->pricec10 }}">
-                            <input type="hidden" id="pricec11" class="pricec" value="{{$room->pricec11 }}">
-                            <input type="hidden" id="pricec12" class="pricec" value="{{$room->pricec12 }}">
-                            <input type="hidden" id="pricec13" class="pricec" value="{{$room->pricec13 }}">
-                            <input type="hidden" id="pricec14" class="pricec" value="{{$room->pricec14 }}">
-                            <input type="hidden" id="pricec15" class="pricec" value="{{$room->pricec15 }}">
-                            <input type="hidden" id="pricec16" class="pricec" value="{{$room->pricec16 }}">
-                            <input type="hidden" id="pricec17" class="pricec" value="{{$room->pricec17 }}">
                             <input type="hidden" id="count" class="count" value="{{ $count }}">
                             <input type="hidden" id="countc" class="countc" value="{{ $countc }}">
                             <div class="form-group">
@@ -313,15 +296,11 @@
     </div>
     <div class="col-lg-2 d-xl-block d-lg-block d-none" data-aos="fade-left" data-aos-duration="2000">
         <div class="price">
-            @php
-                //$comission = \Illuminate\Support\Facades\Auth::user()->comission;
-            $comission = 10;
-            @endphp
-            @if(isset($comission))
-                <td>{{ $room->price + ($room->price * $comission / 100) }} $</td>
-            @else
-                <td>{{ $room->price }} $</td>
-            @endif
+            @isset($c)
+                <td>
+                    $ {{ $c->price }}
+                </td>
+            @endisset
         </div>
         @if($room->include != null || $room->include != '' )
             <div class="breakfast">{{ $room->include }}</div>

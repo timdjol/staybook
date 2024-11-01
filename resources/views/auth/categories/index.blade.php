@@ -70,7 +70,7 @@
                                     <td>{{ $category->title }}</td>
                                     <td>{{ $category->room->title }}</td>
                                     <td>{{ $category->food->title }}</td>
-                                    <td>{{ $category->rule->title }}</td>
+                                    <td></td>
                                     <td>
                                         <form action="{{ route('categories.destroy', $category) }}" method="post">
                                             <ul>

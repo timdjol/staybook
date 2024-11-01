@@ -8,6 +8,15 @@
 
 @section('content')
 
+    <style>
+        .admin label {
+            display: inline-block;
+        }
+        #block1, #block2{
+            display: none;
+        }
+    </style>
+
     <div class="page admin">
         <div class="container">
             <div class="row">
@@ -15,14 +24,14 @@
                     @include('auth.layouts.sidebar')
                 </div>
                 <div class="col-md-9">
-                    @include('auth.layouts.subroom')`
+                    @include('auth.layouts.subroom')
                     @isset($rule)
                         <h1>@lang('admin.edit') {{ $rule->title }}</h1>
                     @else
                         <h1>@lang('admin.add')</h1>
                     @endisset
                     <form method="post"
-                          @isset($category)
+                          @isset($rule)
                               action="{{ route('rules.update', $rule) }}"
                           @else
                               action="{{ route('rules.store') }}"
@@ -57,6 +66,21 @@
                                 <div class="form-group">
                                     <label for="">Указать размер штрафа при аннуляции</label>
                                     <select name="size" onchange="ageCheck(this);">
+                                        @isset($rule)
+                                            <option value="{{ $rule->size }}" @if($rule->size)
+                                                        selected>
+                                                @if($rule->size == 1)
+                                                    Процент от первых суток
+                                                @elseif($rule->size == 2)
+                                                    Процент от всей суммы бронирования
+                                                @else
+                                                    Без штрафа
+                                                @endif
+                                            </option>
+                                        @else
+                                            <option>@lang('admin.choose')</option>
+                                        @endif
+                                        @endisset
                                         <option value="0">Без штрафа</option>
                                         <option value="1">Процент от первых суток</option>
                                         <option value="2">Процент от всей суммы бронирования</option>
@@ -65,12 +89,14 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <div id="block1">
+                                    <div id="block1" @isset($rule)style="@if($rule->size == 1) display: block
+                                    @endif"@endisset>
                                         <label for="">Процент от первых суток</label>
                                         <input type="number" name="percent_day" value="{{ old('title', isset($rule) ?
                                     $rule->percent_day :  null) }}">
                                     </div>
-                                    <div id="block2">
+                                    <div id="block2" @isset($rule) style="@if($rule->size == 2) display: block @endif"
+                                         @endisset>
                                         <label for="">Процент от всей суммы бронирования</label>
                                         <input type="number" name="percent_book" value="{{ old('title', isset($rule) ?
                                     $rule->percent_book :  null) }}">
@@ -102,13 +128,6 @@
         }
     </script>
 
-    <style>
-        .admin label {
-            display: inline-block;
-        }
-        #block1, #block2{
-            display: none;
-        }
-    </style>
+
 
 @endsection

@@ -15,34 +15,35 @@
                 <div class="price">
                     @php
                         //$comission = \Illuminate\Support\Facades\Auth::user()->comission;
-                        $comission = 10;
+                        //$comission = 10;
+                        $c = \App\Models\Category::where('room_id', $room->id)->first();
                     @endphp
-                    @if(isset($comission))
-                        <td>{{ $room->price + ($room->price * $comission / 100) }} $</td>
-                    @else
-                        <td>{{ $room->price }} $</td>
+                    @isset($c)
+                        <td>
+                            $ {{ $c->price }}
+                        </td>
+                    @endisset
+                    </div>
+                    @if($room->include != '')
+                        <div class="breakfast">{{ $room->include }}</div>
                     @endif
                 </div>
-                @if($room->include != '')
-                    <div class="breakfast">{{ $room->include }}</div>
-                @endif
-            </div>
-            <div class="btn-wrap">
-                <a href="{{ route('room', [isset($hotel) ? $hotel->code : $room->hotel->code, $room->code])
-            }}" class="more">@lang('main.more')</a>
-            </div>
-        @endisset
-    </div>
-    <div class="col-lg-2 d-xl-block d-lg-block d-none" data-aos="fade-left" data-aos-duration="2000">
-        <div class="price">
-            @php
-                //$comission = \Illuminate\Support\Facades\Auth::user()->comission;
+                <div class="btn-wrap">
+                    <a href="{{ route('room', [isset($hotel) ? $hotel->code : $room->hotel->code, $room->code])
+                }}" class="more">@lang('main.more')</a>
+                </div>
+            @endisset
+        </div>
+        <div class="col-lg-2 d-xl-block d-lg-block d-none" data-aos="fade-left" data-aos-duration="2000">
+            <div class="price">
+                @php
+                    //$comission = \Illuminate\Support\Facades\Auth::user()->comission;
             @endphp
-            @if(isset($comission))
-                <td>{{ $room->price + ($room->price * $comission / 100) }} $</td>
-            @else
-                <td>{{ $room->price }} $</td>
-            @endif
+                @isset($c)
+                    <td>
+                        $ {{ $c->price }}
+                    </td>
+                @endisset
         </div>
         @if($room->include != null || $room->include != '' )
             <div class="breakfast">{{ $room->include }}</div>

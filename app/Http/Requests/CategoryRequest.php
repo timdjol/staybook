@@ -24,6 +24,8 @@ class CategoryRequest extends FormRequest
         $rules = [
             'title' => 'required|min:3|max:255',
             'title_en' => 'required|min:3|max:255',
+            'price' => 'required|min:2',
+            'price2' => 'required|min:2',
         ];
         return $rules;
     }

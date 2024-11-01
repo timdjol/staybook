@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Image;
 use App\Models\Page;
@@ -25,7 +26,8 @@ class PageController extends Controller
         //$response = Http::get('https://openapi.emergingtravel.com/', 'Stay', 'stay123');
 
         $hotels = Hotel::all();
-        $rooms = Room::where('status', 1)->where('count', '>=', 1)->orderBy('price', 'ASC')->paginate(20);
+        //$rooms = Room::where('status', 1)->where('count', '>=', 1)->orderBy('price', 'ASC')->paginate(20);
+        $rooms = Room::where('status', 1)->where('count', '>=', 1)->paginate(20);
         return view('pages.home', compact('rooms', 'hotels'));
     }
 
@@ -38,7 +40,7 @@ class PageController extends Controller
     public function hotel($code)
     {
         $hotel = Hotel::where('code', $code)->first();
-        $rooms = Room::where('hotel_id', $hotel->id)->orderBy('price', 'ASC')->paginate(10);
+        $rooms = Room::where('hotel_id', $hotel->id)->paginate(10);
         return view('pages.hotel', compact('hotel', 'rooms'));
     }
 
@@ -51,8 +53,8 @@ class PageController extends Controller
         $date_from = null,
         $date_to = null
     ) {
-        $min = Room::whereNotNull('price')->min("price");
-        $max = Room::whereNotNull('price')->max("price");
+        $min = Category::whereNotNull('price')->min("price");
+        $max = Category::whereNotNull('price')->max("price");
         $max_per = Room::whereNotNull('count')->max("count");
 
         $hotels = Hotel::all();
@@ -69,7 +71,7 @@ class PageController extends Controller
             $count = $count;
         }
 
-        $rooms = Room::query()->where('status', 1)->where('count', '>=', 1)->orderBy('price', 'asc');;
+        $rooms = Room::query()->where('status', 1)->where('count', '>=', 1);
 
         if (isset($hotel) || $price_from !== null || $price_to !== null || isset($count) || $date_from !== null ||
             $date_to !== null) {
@@ -78,7 +80,7 @@ class PageController extends Controller
                 if (isset($hotel)) {
                     $query->where('hotel_id', $hotel)->where('status', 1);
                 } else {
-                    $query->where('status', 1)->orderBy('price', 'asc');
+                    $query->where('status', 1);
                 }
                 if ($price_from !== null) {
                     $query->where(function ($query) use ($price_from, $price_to)
@@ -89,11 +91,11 @@ class PageController extends Controller
                 if (isset($count)) {
                     $query->where('count', '>=', $count)->where('status', 1);
                 } else {
-                    $query->where('status', 1)->orderBy('price', 'asc');
+                    $query->where('status', 1);
                 }
 //                if ($date_from !== null) {
 //                    $query->where(function($query) use ($date_from, $date_to) {
-//                        $query->whereBetween('price', [$price_from, $price_to]);
+//                        $query->whereBetween('pr ice', [$price_from, $price_to]);
 //                    });
 //                }
             });
@@ -110,9 +112,8 @@ class PageController extends Controller
         $room = Room::withTrashed()->byCode($roomCode)->firstOrFail();
         $random = random_int(100000, 999999);
         $images = Image::where('room_id', $room->id)->get();
-        $related = Room::where('id', '!=', $room->id)->where('hotel_id', $room->hotel_id)->where('status', 1)->orderBy
-        ('price', 'asc')
-            ->get();
+        //$related = Room::where('id', '!=', $room->id)->where('hotel_id', $room->hotel_id)->where('status', 1)->orderBy('price', 'asc')->get();
+        $related = Room::where('id', '!=', $room->id)->where('hotel_id', $room->hotel_id)->where('status', 1)->get();
         return view('pages.room', compact('room', 'images', 'related', 'random'));
     }
 

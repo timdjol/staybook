@@ -17,7 +17,7 @@ class MainController extends Controller
     public function index()
     {
         $hotels = Hotel::all();
-        $rooms = Room::where('status', 1)->where('count', '>=', 1)->orderBy('price', 'ASC')->paginate(20);
+        $rooms = Room::where('status', 1)->where('count', '>=', 1)->paginate(20);
         return view('index', compact('hotels', 'rooms'));
     }
 

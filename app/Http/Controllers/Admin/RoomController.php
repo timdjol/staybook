@@ -108,8 +108,7 @@ class RoomController extends Controller
             endforeach;
         endif;
 
-        Mail::to('info@timmedia.store')->send(new RoomCreateMail($request));
-
+        //Mail::to('info@timmedia.store')->send(new RoomCreateMail($request));
         session()->flash('success', 'Room ' . $request->title . ' created');
         return redirect()->route('rooms.index');
     }
@@ -156,7 +155,6 @@ class RoomController extends Controller
             $params['image'] = $request->file('image')->store('rooms');
         }
 
-
         //images
         unset($params['images']);
         $images = $request->file('images');
@@ -194,7 +192,7 @@ class RoomController extends Controller
             Storage::delete($image->image);
         }
         DB::table('images')->where('room_id', $room->id)->delete();
-        Mail::to('info@timmedia.store')->send(new RoomDeleteMail($room));
+        //Mail::to('info@timmedia.store')->send(new RoomDeleteMail($room));
 
         session()->flash('success', 'Room ' . $room->title . ' deleted');
         return redirect()->route('rooms.index');

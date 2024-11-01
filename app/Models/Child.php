@@ -14,8 +14,12 @@ class Child extends Model
     protected $fillable = [
         'hotel_id',
         'room_id',
-        'type',
-        'count'
+        'without_place',
+        'price_without',
+        'extra_place',
+        'price_extra',
+        'age_to',
+        'age_from'
     ];
 
     public function room()

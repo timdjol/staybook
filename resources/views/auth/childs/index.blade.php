@@ -29,6 +29,7 @@
                                 <th>@lang('admin.title')</th>
                                 <th>@lang('admin.child_type')</th>
                                 <th>@lang('admin.child_count')</th>
+                                <th>@lang('admin.price')</th>
                                 <th>@lang('admin.action')</th>
                             </tr>
                             </thead>
@@ -36,9 +37,37 @@
                             @foreach($childs as $child)
                                 <tr>
                                     <td>{{ $child->id }}</td>
-                                    <td>{{ $child->room_id }}</td>
-                                    <td>{{ $child->type }}</td>
-                                    <td>{{ $child->count }}</td>
+                                    <td>{{ $child->room->title }}</td>
+                                    <td>
+                                        <ul class="list">
+                                            <li>Без предоставления места</li>
+                                            <li>На дополнительном месте</li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul class="list">
+                                            <li>{{ $child->without_place }}</li>
+                                            <li>{{ $child->extra_place }}</li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul class="list">
+                                            <li>
+                                                @if($child->price_without == null)
+                                                    $ 0
+                                                @else
+                                                    {{ $child->price_without }}
+                                                @endif
+                                            </li>
+                                            <li>
+                                                @if($child->price_extra == null)
+                                                    $ 0
+                                                @else
+                                                    $ {{ $child->price_extra }}
+                                                @endif
+                                            </li>
+                                        </ul>
+                                    </td>
                                     <td>
                                         <form action="{{ route('childs.destroy', $child) }}" method="post">
                                             <ul>
@@ -64,3 +93,9 @@
     </div>
 
 @endsection
+
+<style>
+    .admin table ul.list li{
+        display: block;
+    }
+</style>

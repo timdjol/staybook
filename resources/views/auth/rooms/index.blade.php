@@ -23,84 +23,83 @@
 
                     @if($rooms->isNotEmpty())
 
-{{--                        <form class="row">--}}
-{{--                            <div class="col px-1">--}}
-{{--                                <label for="">Status</label>--}}
-{{--                                <select class="form-control w-100" id="ch_status">--}}
-{{--                                    <option value="" {{ $status === null ? 'selected' : '' }}>--}}
-{{--                                        Choose--}}
-{{--                                    </option>--}}
-{{--                                    <option value="1" {{ $status === '1' ? 'selected' : '' }}>--}}
-{{--                                        Active--}}
-{{--                                    </option>--}}
-{{--                                    <option value="0" {{ $status === '0' ? 'selected' : '' }}>--}}
-{{--                                        Disable--}}
-{{--                                    </option>--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--                            <div class="col px-1">--}}
-{{--                                <label for="">Show count</label>--}}
-{{--                                <select class="form-control w-100" id="show_item_at_once">--}}
-{{--                                    <option value="0">Choose</option>--}}
-{{--                                    <option value="10" {{ $show_result == 10 ? 'selected' : '' }}>--}}
-{{--                                        10--}}
-{{--                                    </option>--}}
-{{--                                    <option value="20" {{ $show_result == 20 ? 'selected' : '' }}>--}}
-{{--                                        20--}}
-{{--                                    </option>--}}
-{{--                                    <option value="40" {{ $show_result == 40 ? 'selected' : '' }}>--}}
-{{--                                        40--}}
-{{--                                    </option>--}}
-{{--                                    <option value="80" {{ $show_result == 80 ? 'selected' : '' }}>--}}
-{{--                                        80--}}
-{{--                                    </option>--}}
-{{--                                    <option value="120" {{ $show_result == 120 ? 'selected' : '' }}>--}}
-{{--                                        120--}}
-{{--                                    </option>--}}
-{{--                                    <option value="200" {{ $show_result == 200 ? 'selected' : '' }}>--}}
-{{--                                        200--}}
-{{--                                    </option>--}}
-{{--                                    <option value="all"--}}
-{{--                                            {{ $show_result == 'all' ? 'selected' : '' }}>--}}
-{{--                                        Show all--}}
-{{--                                    </option>--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--                            <div class="col px-1">--}}
-{{--                                <label for="">Search</label>--}}
-{{--                                <input type="search" class="form-control w-100" placeholder="Search..."--}}
-{{--                                       name="s_query" id="s_query" value="{{ $s_query ?? '' }}">--}}
-{{--                            </div>--}}
-{{--                            <div class="col ps-1">--}}
-{{--                                <label for=""></label>--}}
-{{--                                <button class="btn btn-primary w-100 more apply" type="button"--}}
-{{--                                        id="filter_btn">Apply--}}
-{{--                                </button>--}}
-{{--                            </div>--}}
-{{--                            <style>--}}
-{{--                                form.row {--}}
-{{--                                    margin-bottom: 30px;--}}
-{{--                                }--}}
+                        {{--                        <form class="row">--}}
+                        {{--                            <div class="col px-1">--}}
+                        {{--                                <label for="">Status</label>--}}
+                        {{--                                <select class="form-control w-100" id="ch_status">--}}
+                        {{--                                    <option value="" {{ $status === null ? 'selected' : '' }}>--}}
+                        {{--                                        Choose--}}
+                        {{--                                    </option>--}}
+                        {{--                                    <option value="1" {{ $status === '1' ? 'selected' : '' }}>--}}
+                        {{--                                        Active--}}
+                        {{--                                    </option>--}}
+                        {{--                                    <option value="0" {{ $status === '0' ? 'selected' : '' }}>--}}
+                        {{--                                        Disable--}}
+                        {{--                                    </option>--}}
+                        {{--                                </select>--}}
+                        {{--                            </div>--}}
+                        {{--                            <div class="col px-1">--}}
+                        {{--                                <label for="">Show count</label>--}}
+                        {{--                                <select class="form-control w-100" id="show_item_at_once">--}}
+                        {{--                                    <option value="0">Choose</option>--}}
+                        {{--                                    <option value="10" {{ $show_result == 10 ? 'selected' : '' }}>--}}
+                        {{--                                        10--}}
+                        {{--                                    </option>--}}
+                        {{--                                    <option value="20" {{ $show_result == 20 ? 'selected' : '' }}>--}}
+                        {{--                                        20--}}
+                        {{--                                    </option>--}}
+                        {{--                                    <option value="40" {{ $show_result == 40 ? 'selected' : '' }}>--}}
+                        {{--                                        40--}}
+                        {{--                                    </option>--}}
+                        {{--                                    <option value="80" {{ $show_result == 80 ? 'selected' : '' }}>--}}
+                        {{--                                        80--}}
+                        {{--                                    </option>--}}
+                        {{--                                    <option value="120" {{ $show_result == 120 ? 'selected' : '' }}>--}}
+                        {{--                                        120--}}
+                        {{--                                    </option>--}}
+                        {{--                                    <option value="200" {{ $show_result == 200 ? 'selected' : '' }}>--}}
+                        {{--                                        200--}}
+                        {{--                                    </option>--}}
+                        {{--                                    <option value="all"--}}
+                        {{--                                            {{ $show_result == 'all' ? 'selected' : '' }}>--}}
+                        {{--                                        Show all--}}
+                        {{--                                    </option>--}}
+                        {{--                                </select>--}}
+                        {{--                            </div>--}}
+                        {{--                            <div class="col px-1">--}}
+                        {{--                                <label for="">Search</label>--}}
+                        {{--                                <input type="search" class="form-control w-100" placeholder="Search..."--}}
+                        {{--                                       name="s_query" id="s_query" value="{{ $s_query ?? '' }}">--}}
+                        {{--                            </div>--}}
+                        {{--                            <div class="col ps-1">--}}
+                        {{--                                <label for=""></label>--}}
+                        {{--                                <button class="btn btn-primary w-100 more apply" type="button"--}}
+                        {{--                                        id="filter_btn">Apply--}}
+                        {{--                                </button>--}}
+                        {{--                            </div>--}}
+                        {{--                            <style>--}}
+                        {{--                                form.row {--}}
+                        {{--                                    margin-bottom: 30px;--}}
+                        {{--                                }--}}
 
-{{--                                form input, form select {--}}
-{{--                                    height: 40px;--}}
-{{--                                }--}}
+                        {{--                                form input, form select {--}}
+                        {{--                                    height: 40px;--}}
+                        {{--                                }--}}
 
-{{--                                .apply {--}}
-{{--                                    height: 40px;--}}
-{{--                                    margin-top: 23px;--}}
-{{--                                }--}}
-{{--                            </style>--}}
-{{--                        </form>--}}
+                        {{--                                .apply {--}}
+                        {{--                                    height: 40px;--}}
+                        {{--                                    margin-top: 23px;--}}
+                        {{--                                }--}}
+                        {{--                            </style>--}}
+                        {{--                        </form>--}}
                         <table class="table">
                             <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>@lang('admin.image')</th>
                                 <th>@lang('admin.title')</th>
-                                <th>@lang('admin.nutrition')</th>
-                                <th>@lang('admin.price')</th>
-                                <th>@lang('admin.number_of_additional_place')</th>
+                                <th>@lang('admin.plans')</th>
+{{--                                <th>@lang('admin.nutrition')</th>--}}
                                 <th>@lang('admin.action')</th>
                             </tr>
                             </thead>
@@ -110,18 +109,22 @@
                                     <td>{{ $room->id }}</td>
                                     <td><img src="{{ Storage::url($room->image) }}" alt="" width="100px"></td>
                                     <td>{{ $room->title }}</td>
-                                    <td>{{ $room->include }}</td>
                                     <td>
-                                        @lang('admin.price_for_1_per'): ${{ $room->price }}<br>
-                                        @if($room->price2 != '')
-                                            @lang('admin.price_for_2_per'): ${{ $room->price2 }}<br>
-                                        @endif
-                                        @if($room->pricec != '')
-                                            @lang('admin.price_for_child'): ${{ $room->pricec }}
-                                        @endif
-
+                                        @php
+                                            $plan = \App\Models\Category::where('room_id', $room->id)->first();
+                                        @endphp
+                                        @isset($plan)
+                                            {{ $plan->title }}
+                                        @endisset
                                     </td>
-                                    <td>{{ $room->extra_place }}</td>
+{{--                                    <td>--}}
+{{--                                        @php--}}
+{{--                                            $food = \App\Models\Category::where('food_id', $room->id)->first();--}}
+{{--                                        @endphp--}}
+{{--                                        @isset($food)--}}
+{{--                                            {{ $food->title }}--}}
+{{--                                        @endisset--}}
+{{--                                    </td>--}}
                                     <td>
                                         <form action="{{ route('rooms.destroy', $room) }}" method="post">
                                             <ul>

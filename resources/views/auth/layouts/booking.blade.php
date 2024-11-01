@@ -168,11 +168,11 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
             ],
             resourceColumns: [
                 {
-                    labelText: 'Категория',
+                    labelText: 'Номер',
                     field: 'building'
                 },
                 {
-                    labelText: '@lang('admin.room')',
+                    labelText: 'Тариф',
                     field: 'title'
                 },
                 {
@@ -186,17 +186,14 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
 
             ],
             resources: [
-                @foreach($rooms as $room)
-                    { id: '{{$room->id}}', building: 'Category', title: '{{$room->title}}', price: '$ ' +
-                        ''+{{$room->price}} },
-                @endforeach
                     @foreach($categories as $room)
                     @php
                         $r = \App\Models\Room::where('id', $room->room_id)->first();
-                        $f = \App\Models\Food::where('room_id', $room->room_id)->first();
+                        $f = \App\Models\Category::where('room_id', $room->room_id)->first();
+                        $food = \App\Models\Food::where('id', $room->food_id)->first();
                     @endphp
                 { id: '{{$room->id}}', building: '{{ $r->title }}', title: '{{$room->title}}', price:
-                        '$ ' + {{ $r->price }}, food: '{{ $f->title }}' },
+                        '$ ' + {{ $f->price }}, food: '{{ $food->title }}' },
                 @endforeach
             ],
             dateClick: function(info) {

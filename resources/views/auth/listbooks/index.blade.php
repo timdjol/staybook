@@ -24,7 +24,7 @@
                                 <th>ID</th>
                                 <th>@lang('admin.booking')</th>
                                 <th>@lang('admin.guests')</th>
-                                <th>@lang('admin.room')</th>
+                                <th>@lang('admin.plans')</th>
                                 <th>@lang('admin.dates_of_stay')</th>
                                 <th>@lang('admin.price')</th>
                                 <th>@lang('admin.action')</th>
@@ -47,9 +47,9 @@
                                     </td>
                                     <td>
                                         @php
-                                            $room = \App\Models\Room::where('id', $book->room_id)->firstOrFail();
+                                            $plan = \App\Models\Category::where('id', $book->room_id)->firstOrFail();
                                         @endphp
-                                        <div class="title">{{ $room->title }}</div>
+                                        <div class="title">{{ $plan->title }}</div>
                                     </td>
                                     <td>{{ $book->showStartDate() }} - {{ $book->showEndDate() }}</td>
                                     <td>

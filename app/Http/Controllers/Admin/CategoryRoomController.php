@@ -88,7 +88,7 @@ class CategoryRoomController extends Controller
         //Mail::to('info@timmedia.store')->send(new RoomDeleteMail($room));
 
         session()->flash('success', 'CategoryRoom ' . $category->title . ' deleted');
-        return redirect()->route('rooms.index');
+        return redirect()->route('categories.index');
     }
 
 

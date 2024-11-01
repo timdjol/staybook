@@ -29,13 +29,7 @@ class RoomRequest extends FormRequest
             'hotel_id' => 'required|min:2',
             'area' => 'required|min:1',
             'count' => 'required|min:1',
-            'price' => 'required|min:2',
-            'pricec' => 'required|min:2',
-            //'extra_place' => 'required|min:2',
-            //'markup' => 'required|min:1',
-            //'cancelled' => 'required|min:5',
-            'include' => 'required|min:5',
-            'bed' => 'required|min:5',
+            'bed' => 'required',
             'image' => 'image|mimes:jpg,bmp,png,svg,jpeg,webp|max:3000'
         ];
         return $rules;

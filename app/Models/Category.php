@@ -16,6 +16,8 @@ class Category extends Model
         'hotel_id',
         'room_id',
         'food_id',
+        'price',
+        'price2',
         'rule_id',
     ];
 

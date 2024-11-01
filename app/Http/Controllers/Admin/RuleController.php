@@ -41,7 +41,7 @@ class RuleController extends Controller
         //Mail::to('info@timmedia.store')->send(new RoomCreateMail($request));
 
         session()->flash('success', 'Rule ' . $request->title . ' created');
-        return redirect()->route('rules.index');
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -63,7 +63,7 @@ class RuleController extends Controller
         $rule->update($params);
         //Mail::to('info@timmedia.store')->send(new RoomUpdateMail($request));
         session()->flash('success', 'Rule ' . $request->title . ' updated');
-        return redirect()->route('rules.index');
+        return redirect()->route('categories.index');
     }
 
     /**

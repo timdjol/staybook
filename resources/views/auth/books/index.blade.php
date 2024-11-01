@@ -14,11 +14,11 @@
                     @if(session()->has('warning'))
                         <p class="alert alert-warning">{{ session()->get('warning') }}</p>
                     @endif
-                        <ul>
-                            @foreach($books as $book)
-                                <li>{{ $book->start_d }} - {{ $book->end_d }}</li>
-                            @endforeach
-                        </ul>
+{{--                        <ul>--}}
+{{--                            @foreach($books as $book)--}}
+{{--                                <li>{{ $book->start_d }} - {{ $book->end_d }}</li>--}}
+{{--                            @endforeach--}}
+{{--                        </ul>--}}
                     @if($rooms->isNotEmpty())
                         <div id='calendar'></div>
                         <div class

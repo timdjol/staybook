@@ -134,29 +134,29 @@
                 <div class="col-md-12">
                     <script src="https://maps.api.2gis.ru/2.0/loader.js"></script>
                     <div id="map" style="width: 100%; height: 300px;"></div>
-                    <script>
-                        DG.then(function () {
-                            var map = DG.map('map', {
-                                center: [42.855608, 74.618626],
-                                zoom: 12
-                            });
+{{--                    <script>--}}
+{{--                        DG.then(function () {--}}
+{{--                            var map = DG.map('map', {--}}
+{{--                                center: [42.855608, 74.618626],--}}
+{{--                                zoom: 12--}}
+{{--                            });--}}
 
-                            @foreach($rooms as $room)
-                            DG.marker([{{ $room->hotel->lat ?? '' }}, {{ $room->hotel->lng ?? '' }}], {
-                                scrollWheelZoom:
-                                    false
-                            })
-                                .addTo(map)
-                                .bindLabel('<a target="_blank" href="{{ route('hotel', $room->hotel->code ?? '')
-                                        }}">{{Illuminate\Support\Str::limit
-                                        (strip_tags($room->hotel->title ?? ''),12)}}<br>{{$room->where('hotel_id',
-                                        $room->hotel->id ?? '')->whereNotNull('price')->min("price")}} @lang('main.som')
-                                    </a>', {
-                                    static: true
-                                });
-                            @endforeach
-                        });
-                    </script>
+{{--                            @foreach($rooms as $room)--}}
+{{--                            DG.marker([{{ $room->hotel->lat ?? '' }}, {{ $room->hotel->lng ?? '' }}], {--}}
+{{--                                scrollWheelZoom:--}}
+{{--                                    false--}}
+{{--                            })--}}
+{{--                                .addTo(map)--}}
+{{--                                .bindLabel('<a target="_blank" href="{{ route('hotel', $room->hotel->code ?? '')--}}
+{{--                                        }}">{{Illuminate\Support\Str::limit--}}
+{{--                                        (strip_tags($room->hotel->title ?? ''),12)}}<br>{{$room->where('hotel_id',--}}
+{{--                                        $room->hotel->id ?? '')->whereNotNull('price')->min("price")}} @lang('main.som')--}}
+{{--                                    </a>', {--}}
+{{--                                    static: true--}}
+{{--                                });--}}
+{{--                            @endforeach--}}
+{{--                        });--}}
+{{--                    </script>--}}
                 </div>
             </div>
         </div>
