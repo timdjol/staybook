@@ -66,18 +66,19 @@
                         <div class="col-md-4">
                             <div class="dashboard-item">
                                 @php
-                                    $room = \App\Models\Category::where('id', $book->room_id)->firstOrFail();
+                                    $room = \App\Models\Category::where('room_id', $book->room_id)->firstOrFail();
+                                    $r = \App\Models\Room::where('id', $room->room_id)->first();
                                 @endphp
-                                <div class="img"><img src="{{ Storage::url($room->image) }}"
-                                                      alt="" width="200px"></div>
+                                <div class="img"><img src="{{ Storage::url($r->image) }}" alt="" width="200px"></div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="dashboard-item">
                                 <div class="name">@lang('admin.hotel')</div>
                                 <div class="wrap">
-                                    {{ $room->hotel_id }}
+                                    {{ $room->hotel->title }}
                                     <div class="name" style="margin-top: 20px">@lang('admin.room')</div>
+                                    {{ $r->title }} <br>
                                     {{ $room->title }}
                                 </div>
                             </div>

@@ -95,7 +95,7 @@
                             <div class="col-md-6">
                                 @include('auth.layouts.error', ['fieldname' => 'price'])
                                 <div class="form-group">
-                                    <label for="">@lang('admin.price_for_1_per') $</label>
+                                    <label for="">@lang('admin.price_for_1_per')</label>
                                     <input type="number" name="price" value="{{ old('price', isset($category) ?
                                     $category->price : null) }}">
                                 </div>
@@ -103,29 +103,26 @@
                             <div class="col-md-6">
                                 @include('auth.layouts.error', ['fieldname' => 'price2'])
                                 <div class="form-group">
-                                    <label for="">@lang('admin.price_for_2_per') $</label>
+                                    <label for="">@lang('admin.price_for_2_per')</label>
                                     <input type="number" name="price2" value="{{ old('price2', isset($category) ?
                                     $category->price2 : null) }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 @include('auth.layouts.error', ['fieldname' => 'rule_id'])
-{{--                                <div class="form-group">--}}
-{{--                                    <label for="">@lang('admin.rule')</label>--}}
-{{--                                    <select name="rule_id" id="">--}}
-{{--                                        @isset($category)--}}
-{{--                                            <option value="{{ $category->rule_id }}" @if($category->rule_id)--}}
-{{--                                                        selected>--}}
-{{--                                                {{ $category->rule->title }}</option>--}}
-{{--                                        @else--}}
-{{--                                            <option value="0">@lang('admin.choose')</option>--}}
-{{--                                        @endif--}}
-{{--                                        @endisset--}}
-{{--                                        @foreach($rules as $rule)--}}
-{{--                                            <option value="{{ $rule->id }}">{{ $rule->__('title') }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
+                                <div class="form-group">
+                                    <label for="">@lang('admin.rule')</label>
+                                    <select name="rule_id" id="">
+
+                                        @isset($category->rule_id)
+                                            <option value="{{ $select_rule->id }}">{{ $select_rule->__('title')
+                                            }}</option>
+                                        @endisset
+                                        @foreach($rules as $rule)
+                                            <option value="{{ $rule->id }}">{{ $rule->__('title') }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
                             </div>
 

@@ -19,7 +19,20 @@ class Child extends Model
         'extra_place',
         'price_extra',
         'age_to',
-        'age_from'
+        'age_from',
+        'without_place2',
+        'price_without2',
+        'extra_place2',
+        'price_extra2',
+        'age_to2',
+        'age_from2',
+        'without_place3',
+        'price_without3',
+        'extra_place3',
+        'price_extra3',
+        'age_to3',
+        'age_from3',
+        'status'
     ];
 
     public function room()

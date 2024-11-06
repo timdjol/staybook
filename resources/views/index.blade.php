@@ -420,11 +420,9 @@
                             <label for="include">@lang('main.search-include')</label>
                             <select id="include" name="include">
                                 <option value="">@lang('main.choose')</option>
-                                <option value="Питание не включено">Питание не включено</option>
-                                <option value="Завтрак включен">Завтрак включен</option>
-                                <option value="Завтрак + обед или ужин">Завтрак + обед или ужин</option>
-                                <option value="Завтрак, обед и ужин">Завтрак, обед и ужин</option>
-                                <option value="Все включено">Все включено</option>
+                                @foreach($foods as $food)
+                                    <option value="{{ $food->id }}">{{ $food->__('title') }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>

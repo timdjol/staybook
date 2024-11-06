@@ -1,3 +1,7 @@
+@php
+    $plans = \App\Models\Category::where('room_id', $room->id)->orderBy('price', 'asc')->get();
+@endphp
+@foreach($plans as $plan)
 <div class="row rooms-item">
     <div class="col-lg-4 col-md-6" data-aos="fade-right" data-aos-duration="2000">
         <a href="{{ route('room', [isset($hotel) ? $hotel->code ?? '' : $room->hotel->code ?? '', $room->code])}}">
@@ -9,22 +13,20 @@
         <div class="end">@lang('main.end_d') {{ $room->hotel->checkout ?? '' }}</div>
         <div class="title">{{ $room->hotel->__('title') ?? '' }}</div>
         <h3>{{ $room->__('title') ?? '' }}</h3>
+        <h5>{{ $plan->__('title') }}</h5>
         <div class="address">{{ $room->hotel->__('address') ?? '' }}</div>
         <div class="d-xl-none d-lg-none d-block">
             <div class="price">
-                @php
-                    //$comission = \Illuminate\Support\Facades\Auth::user()->comission;
-                        $c = \App\Models\Category::where('room_id', $room->id)->first();
-                @endphp
+
                 @isset($c)
                     <td>
                         $ {{ $c->price }}
                     </td>
                 @endisset
             </div>
-            @if($room->include != '')
-                <div class="breakfast">{{ $room->include }}</div>
-            @endif
+{{--            @if($plan->food->title != '')--}}
+{{--                <div class="breakfast">{{ $plan->food->title }}</div>--}}
+{{--            @endif--}}
         </div>
         <div class="btn-wrap">
             <a href="{{ route('room', [isset($hotel) ? $hotel->code ?? '' : $room->hotel->code ?? '', $room->code])
@@ -296,15 +298,11 @@
     </div>
     <div class="col-lg-2 d-xl-block d-lg-block d-none" data-aos="fade-left" data-aos-duration="2000">
         <div class="price">
-            @isset($c)
                 <td>
-                    $ {{ $c->price }}
+                    $ {{ $plan->price }}
                 </td>
-            @endisset
         </div>
-        @if($room->include != null || $room->include != '' )
-            <div class="breakfast">{{ $room->include }}</div>
-        @endif
+{{--        <div class="breakfast">{{ $plan->food->title }}</div>--}}
         @if($room->hotel->early_in ?? '')
             <div class="early">@lang('main.early')</div>
         @endif
@@ -324,5 +322,8 @@
                 <div class="early">@lang('main.cancelled') до {{ $get }} </div>
             @endisset
         @endif
+
     </div>
 </div>
+
+@endforeach

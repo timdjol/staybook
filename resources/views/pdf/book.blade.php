@@ -63,15 +63,18 @@
                             @endisset
                         </td>
                     </tr>
-                    <tr>
-                        <td>Meal</td>
-                        <td>
-                            @php
-                                $room = \App\Models\Room::where('id', $book->room_id)->firstOrFail();
-                            @endphp
-                            {{ $room->include }}
-                        </td>
-                    </tr>
+                    @php
+                    $room = \App\Models\Room::where('id', $book->room_id)->firstOrFail();
+                    @endphp
+                    {{--                    <tr>--}}
+{{--                        <td>Meal</td>--}}
+{{--                        <td>--}}
+{{--                            @php--}}
+{{--                                $room = \App\Models\Room::where('id', $book->room_id)->firstOrFail();--}}
+{{--                            @endphp--}}
+{{--                            {{ $room->include }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
                     <tr>
                         <td>Check In</td>
                         <td>{{ $book->showStartDate() }} from {{ $hotel->checkin }}</td>
@@ -106,31 +109,31 @@
                         <td>Beddings</td>
                         <td>{{ $room->bed }}</td>
                     </tr>
-                    <tr>
-                        <td>Free cancellation</td>
-                        <td>
-                            @php
-                                $date = \Carbon\Carbon::parse($book->end_d);
-                                //$date->locale('ru');
-                                $exp = $date->subDays($room->cancel_day);
-                                $month = $exp->getTranslatedMonthName('Do MMMM');
-                                $get = $exp->day . ' ' . $month;
-                            @endphp
-                            until {{ $get }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Meal price</td>
-                        <td>Included</td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <td>Free cancellation</td>--}}
+{{--                        <td>--}}
+{{--                            @php--}}
+{{--                                $date = \Carbon\Carbon::parse($book->end_d);--}}
+{{--                                //$date->locale('ru');--}}
+{{--                                $exp = $date->subDays($room->cancel_day);--}}
+{{--                                $month = $exp->getTranslatedMonthName('Do MMMM');--}}
+{{--                                $get = $exp->day . ' ' . $month;--}}
+{{--                            @endphp--}}
+{{--                            until {{ $get }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
+{{--                    <tr>--}}
+{{--                        <td>Meal price</td>--}}
+{{--                        <td>Included</td>--}}
+{{--                    </tr>--}}
                     <tr>
                         <td>Accommodation price</td>
                         <td>{{ $book->sum }}</td>
                     </tr>
-                    <tr>
-                        <td>Price per day</td>
-                        <td>{{ $room->price }} $</td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <td>Price per day</td>--}}
+{{--                        <td>{{ $room->price }} $</td>--}}
+{{--                    </tr>--}}
                 </table>
             </div>
         </div>

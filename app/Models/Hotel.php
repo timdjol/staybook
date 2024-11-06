@@ -40,6 +40,11 @@ class Hotel extends Model
         return $this->hasMany(Room::class, 'id', 'room_id');
     }
 
+    public function categories()
+    {
+        return $this->hasMany(Category::class, 'id', 'category_id');
+    }
+
 //    public function policy(){
 //        return $this->hasOne(Policy::class);
 //    }

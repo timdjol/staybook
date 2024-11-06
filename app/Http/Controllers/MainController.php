@@ -6,6 +6,7 @@ use App\Mail\ContactMail;
 use App\Mail\BookMail;
 use App\Models\Book;
 use App\Models\Contact;
+use App\Models\Food;
 use App\Models\Hotel;
 use App\Models\Room;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class MainController extends Controller
     {
         $hotels = Hotel::all();
         $rooms = Room::where('status', 1)->where('count', '>=', 1)->paginate(20);
+        $foods = Food::all();
         return view('index', compact('hotels', 'rooms'));
     }
 
@@ -43,7 +45,7 @@ class MainController extends Controller
     {
         $params = $request->all();
         Book::create($params);
-        Mail::to('info@timmedia.store')->cc($request->email)->send(new BookMail($request));
+        //Mail::to('info@timmedia.store')->cc($request->email)->send(new BookMail($request));
         session()->flash('success', 'Booking ' . $request->title . ' is created');
         return redirect()->route('homepage');
     }
@@ -64,7 +66,7 @@ class MainController extends Controller
         //$reservedCount = Book::where('hotel_id', $hotel->id)->whereBetween('start_d', [$start_d, $end_d])->count();
 
 
-        $query = Room::with('hotel');
+        $query = Room::with('hotel', 'category');
 
         if ($request->filled('title')) {
             $title = (array) $request->input('title');
@@ -92,9 +94,13 @@ class MainController extends Controller
             });
         }
 
-        if ($request->filled('include')) {
-            $query->where('include', $request->include);
-        }
+//        if ($request->filled('include')) {
+//            //$query->where('include', $request->include);
+//            $food = (array) $request->input('include');
+//            $query->whereHas('category', function ($quer) use ($food) {
+//                $quer->where('food_id', $food);
+//            });
+//        }
 
         if ($request->filled('early_in')) {
             $early_in = (array) $request->input('early_in');
@@ -116,14 +122,12 @@ class MainController extends Controller
             $query->orWhere('cancelled', '==', null);
         }
 
-        if ($request->filled('extra_place')) {
-            $query->where('extra_place', '!=', '');
-            $query->orWhere('extra_place', '!=', null);
-            $query->orWhere('extra_place', '!=', 0);
-        }
-        $rooms = $query->get();
-
-
+//        if ($request->filled('extra_place')) {
+//            $query->where('extra_place', '!=', '');
+//            $query->orWhere('extra_place', '!=', null);
+//            $query->orWhere('extra_place', '!=', 0);
+//        }
+        $rooms = $query->where('status', 1)->get();
 
         $contacts = Contact::get();
 

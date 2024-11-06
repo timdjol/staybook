@@ -15,7 +15,7 @@ class BookingController extends Controller
     public function index(Request $request)
     {
         $hotel = $request->session()->get('hotel_id');
-        $categories = Category::all();
+        $categories = Category::where('hotel_id', $hotel)->get();
         $foods = Food::all();
         $books = Book::whereBetween('start_d', ['2024-10-01', '2024-10-31'])->where('hotel_id', $hotel)->get();
         $bookings = Book::where('hotel_id', $hotel)->get();

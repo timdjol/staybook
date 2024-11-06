@@ -11,7 +11,7 @@
                     <div class="row align-items-center aic">
                         <div class="col-md-7">
                             <h1>@lang('admin.rooms')</h1>
-                            @include('auth.layouts.subroom')
+
                         </div>
                         <div class="col-md-5">
                             <div class="btn-wrap">
@@ -22,6 +22,7 @@
                     </div>
 
                     @if($rooms->isNotEmpty())
+                        @include('auth.layouts.subroom')
 
                         {{--                        <form class="row">--}}
                         {{--                            <div class="col px-1">--}}

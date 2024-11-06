@@ -15,7 +15,6 @@
                     @include('auth.layouts.sidebar')
                 </div>
                 <div class="col-md-9">
-                    @include('auth.layouts.subroom')
                     @isset($room)
                         <h1>@lang('admin.edit') {{ $room->title }}</h1>
                     @else

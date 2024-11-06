@@ -104,7 +104,7 @@ class HotelController extends Controller
             )
         );
 
-        Mail::to('info@timmedia.store')->send(new HotelMail($request));
+        //Mail::to('info@timmedia.store')->send(new HotelMail($request));
 
         session()->flash('success', $request->title . ' added');
         return redirect()->route('hotels.index');
@@ -187,7 +187,7 @@ class HotelController extends Controller
                 'rules' => $pathname2,
             ]);
 
-        Mail::to('info@timmedia.store')->send(new HotelUpdateMail($request));
+        //Mail::to('info@timmedia.store')->send(new HotelUpdateMail($request));
 
         session()->flash('success', $request->title . ' updated');
         return redirect()->route('hotels.index');
@@ -209,7 +209,7 @@ class HotelController extends Controller
         }
         DB::table('images')->where('hotel_id', $hotel->id)->delete();
         DB::table('bills')->where('hotel_id', $hotel->id)->delete();
-        Mail::to('info@timmedia.store')->send(new HotelDeleteMail($hotel));
+        //Mail::to('info@timmedia.store')->send(new HotelDeleteMail($hotel));
         session()->flash('success', 'Property ' . $hotel->title . ' deleted');
         return redirect()->route('hotels.index');
     }

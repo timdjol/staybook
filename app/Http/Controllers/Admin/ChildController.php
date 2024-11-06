@@ -16,8 +16,8 @@ class ChildController extends Controller
      */
     public function index(Request $request)
     {
-        $childs = Child::paginate(10);
         $hotel = $request->session()->get('hotel_id');
+        $childs = Child::where('hotel_id', $hotel)->paginate(10);
         $rooms = Room::where('hotel_id', $hotel)->get();
         return view('auth.childs.index', compact('childs', 'rooms'));
     }
@@ -28,8 +28,14 @@ class ChildController extends Controller
     public function create(Request $request)
     {
         $hotel = $request->session()->get('hotel_id');
+        $childs = Child::where('hotel_id', $hotel)->get();
+//        foreach ($childs as $child) {
+//            $data[] = $child->room_id;
+//        }
+        //$rooms = Room::where('hotel_id', $hotel)->whereNotIn('id', $data)->get();
         $rooms = Room::where('hotel_id', $hotel)->get();
-        return view('auth.childs.form', compact('rooms'));
+
+        return view('auth.childs.form', compact('rooms', 'hotel'));
     }
 
     /**
@@ -50,8 +56,13 @@ class ChildController extends Controller
     public function edit(Request $request, Child $child)
     {
         $hotel = $request->session()->get('hotel_id');
-        $rooms = Room::where('hotel_id', $hotel)->get();
-        return view('auth.childs.form', compact('child', 'rooms'));
+        $childs = Child::where('hotel_id', $hotel)->get();
+        foreach ($childs as $child) {
+            $data[] = $child->room_id;
+        }
+        $rooms = Room::where('hotel_id', $hotel)->whereNotIn('id', $data)->get();
+
+        return view('auth.childs.form', compact('child', 'rooms', 'hotel'));
     }
 
     /**

@@ -61,8 +61,9 @@ class CategoryRoomController extends Controller
         $hotel = $request->session()->get('hotel_id');
         $rooms = Room::where('hotel_id', $hotel)->get();
         $foods = Food::all();
-        $rules = Rule::where('hotel_id', $hotel)->get();
-        return view('auth.categories.form', compact('category', 'hotel', 'rooms', 'foods', 'rules'));
+        $rules = Rule::where('hotel_id', $hotel)->where('id', '!=', $category->rule_id)->get();
+        $select_rule = Rule::where('hotel_id', $hotel)->where('id', $category->rule_id)->first();
+        return view('auth.categories.form', compact('category', 'hotel', 'rooms', 'foods', 'rules', 'select_rule'));
     }
 
     /**
