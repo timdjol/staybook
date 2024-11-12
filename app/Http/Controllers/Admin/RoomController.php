@@ -83,6 +83,11 @@ class RoomController extends Controller
         $request['code'] = Str::slug($request->title);
         $params = $request->all();
 
+        unset($params['bed']);
+        if($request->has('bed')){
+            $params['bed'] = implode(', ', $request->bed);
+        }
+
         unset($params['services']);
         if($request->has('services')){
             $params['services'] = implode(', ', $request->services);
@@ -141,6 +146,12 @@ class RoomController extends Controller
     {
         $request['code'] = Str::slug($request->title);
         $params = $request->all();
+
+        // bed
+        unset($params['bed']);
+        if($request->has('bed')){
+            $params['bed'] = implode(', ', $request->bed);
+        }
 
         // services
         unset($params['services']);

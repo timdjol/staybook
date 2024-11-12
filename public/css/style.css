@@ -15,7 +15,7 @@ body{
 }
 .rooms-item{
     background: #fff;
-    padding: 10px 0 20px;
+    padding: 10px 0;
     border-radius: 10px;
     margin-top: 20px
 }
@@ -54,10 +54,39 @@ body{
     border-radius: 10px;
 }
 .book-popup{
-    max-width: 450px;
+    max-width: 600px;
     position: relative;
     margin: auto;
 }
 .hotel .servlisting{
     margin-top: 20px;
+}
+header .logo img{
+    max-width: 140px;
+}
+.homesearch form button.more {
+    background-color: #74bb39;
+    color: #fff;
+    border: none;
+}
+body{
+    font-family: "Fira Sans", sans-serif;
+}
+h1, h2, b, strong{
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+}
+h3, h4{
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+}
+h5{
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 500;
+}
+.read{
+    background-color: #1bc839;
+}
+.rooms i{
+    color: #0163b4;
 }

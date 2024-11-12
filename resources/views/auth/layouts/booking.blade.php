@@ -7,6 +7,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <link rel="icon" href="{{route('index')}}/img/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="{{route('index')}}/img/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/eliyantosarage/font-awesome-pro@main/fontawesome-pro-6.5.1-web/css/all.min.css"
+          rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" />
     <link href="
 https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
@@ -24,7 +29,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
         <div class="row">
             <div class="col-md-2">
                 <div class="logo">
-                    <a href="{{route('hotels.index')}}"><img src="https://silkway.timmedia.store/img/logo.png" alt=""></a>
+                    <a href="{{route('hotels.index')}}"><img src="{{ route('index') }}/img/logo.svg" alt="Stay
+                    Book"></a>
                 </div>
             </div>
             <div class="col-md-3">
@@ -33,11 +39,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
                         <option>@lang('main.choose')</option>
                         @foreach($hotels as $hotel)
                             <option @if($hotel->id == $hotel_id) selected @endif value="{{ route('hotels.show', $hotel)
-                            }}"
-                                    data-hotel="{{
-                            $hotel->id
-                            }}">{{
-                            $hotel->title}}</option>
+                            }}" data-hotel="{{ $hotel->id }}">{{ $hotel->__('title')}}</option>
                         @endforeach
                     </select>
                 </form>
@@ -63,7 +65,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
             </div>
             <div class="col-md-3">
                 <div class="homelink">
-                    <a href="{{route('index')}}"><i class="fas fa-house"></i> Перейти на сайт</a></a>
+                    <a href="{{route('index')}}"><i class="fas fa-house"></i> @lang('admin.visit')</a></a>
                 </div>
             </div>
         </div>
@@ -179,10 +181,6 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
                     labelText: '@lang('admin.price')',
                     field: 'price'
                 },
-                {
-                    labelText: 'Вид питания',
-                    field: 'food'
-                },
 
             ],
             resources: [
@@ -190,10 +188,9 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
                     @php
                         $r = \App\Models\Room::where('id', $room->room_id)->first();
                         $f = \App\Models\Category::where('room_id', $room->room_id)->first();
-                        $food = \App\Models\Food::where('id', $room->food_id)->first();
                     @endphp
                 { id: '{{$room->id}}', building: '{{ $r->title }}', title: '{{$room->title}}', price:
-                        '$ ' + {{ $f->price }}, food: '{{ $food->title }}' },
+                        '$ ' + {{ $f->price }} },
                 @endforeach
             ],
             dateClick: function(info) {
@@ -243,6 +240,73 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
         display: none;
     }
 </style>
+
+<link rel="stylesheet" href="{{ route('index') }}/css/daterangepicker.css">
+
+<script src="{{ route('index') }}/js/daterangepicker.min.js"></script>
+
+<script>
+    $('#date').daterangepicker({
+        "autoApply": true,
+        "locale": {
+            "format": "DD/MM/YYYY",
+            "separator": " - ",
+            "applyLabel": "Apply",
+            "cancelLabel": "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel": "W",
+            "daysOfWeek": [
+                "Вс",
+                "Пн",
+                "Вт",
+                "Ср",
+                "Чт",
+                "Пт",
+                "Сб"
+            ],
+            "monthNames": [
+                "Январь",
+                "Февраль",
+                "Март",
+                "Апрель",
+                "Maй",
+                "Июнь",
+                "Июль",
+                "Август",
+                "Сентябрь",
+                "Октябрь",
+                "Ноябрь",
+                "Декабрь"
+            ],
+            "firstDay": 1
+        },
+        "startDate": new Date(),
+        "endDate": moment(new Date(),).add(1,'days'),
+        "minDate": new Date(),
+    }, function (start, end, label) {
+        $('#start_d').val(start.format('YYYY-MM-DD'));
+        $('#end_d').val(end.format('YYYY-MM-DD'));
+
+    });
+
+    $(function() {
+        $('#dynamic_select').on('change', function() {
+            let url = $(this).val();
+            if (url) {
+                window.location = url;
+            }
+            return false;
+        });
+    });
+
+    $(document).ready(function () {
+        $('#country').selectize({
+            sortField: 'text'
+        });
+    });
+</script>
 
 
 </body>

@@ -24,6 +24,8 @@ class Room extends Model
         'bed',
         'area',
         'services',
+        'price',
+        'price2',
     ];
 
     public function hotel()

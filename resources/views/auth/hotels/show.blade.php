@@ -33,7 +33,7 @@
                         <div class="col-md-6">
                             <div class="dashboard-item">
                                 <div class="name">@lang('admin.title')</div>
-                                <h5>{{ $hotel->title }}</h5>
+                                <h5>{{ $hotel->__('title') }}</h5>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -44,7 +44,7 @@
                             {{--                            </div>--}}
                             <div class="dashboard-item">
                                 <div class="name">@lang('admin.address')</div>
-                                <div class="address">{{ $hotel->address }}</div>
+                                <div class="address">{{ $hotel->__('address') }}</div>
                             </div>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                         <div class="col-md-12">
                             <div class="dashboard-item">
                                 <div class="name">@lang('admin.description')</div>
-                                <div class="descr">{!! $hotel->description !!}</div>
+                                <div class="descr">{!! $hotel->__('description') !!}</div>
                             </div>
                             <div class="dashboard-item">
                                 <div class="images">

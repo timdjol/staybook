@@ -119,6 +119,11 @@ return [
     'child_count' => 'Максимальное количество детей',
     'from' => 'от',
     'to' => 'до',
-    'bookings_not_found' => 'Брони не найдены'
+    'bookings_not_found' => 'Брони не найдены',
+    'availability' => 'Доступность',
+    'prices' => 'Цены',
+    'close' => 'Закрыть',
+    'book' => 'Забронировать',
+    'rates_not_found' => 'Брони не найдены',
 
 ];

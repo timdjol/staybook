@@ -104,6 +104,9 @@ return [
     '15_year' => '15 year',
     '16_year' => '16 year',
     '17_year' => '17 year',
+    'bed' => 'Bed',
+    'paid' => 'Paid',
+
 
 
 ];

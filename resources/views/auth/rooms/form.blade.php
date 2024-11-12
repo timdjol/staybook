@@ -78,6 +78,24 @@
                                     console.error(error);
                                 });
                         </script>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    @include('auth.layouts.error', ['fieldname' => 'price'])
+                                    <div class="form-group">
+                                        <label for="">Стоимость($) за 1</label>
+                                        <input type="number" name="price" value="{{ old('price', isset($room) ?
+                                $room->price : null) }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    @include('auth.layouts.error', ['fieldname' => 'price2'])
+                                    <div class="form-group">
+                                        <label for="">Стоимость($) за 2</label>
+                                        <input type="number" name="price2" value="{{ old('price2', isset($room) ?
+                                $room->price : null) }}">
+                                    </div>
+                                </div>
+                            </div>
                         <div class="row">
                             <div class="col-md-6">
                                 @include('auth.layouts.error', ['fieldname' => 'area'])
@@ -100,7 +118,7 @@
                                 <div class="form-group">
                                     @include('auth.layouts.error', ['fieldname' => 'bed'])
                                     <label for="bed">@lang('admin.bed')</label>
-                                    <select name="bed" id="bed">
+                                    <select name="bed[]" id="bed" multiple style="height: auto">
                                         @isset($room)
                                             <option @if($room->bed)
                                                         selected>
@@ -111,7 +129,7 @@
                                         @endisset
                                         <option value="Single">Single</option>
                                         <option value="Double">Double</option>
-                                        <option value="Separate">Separate</option>
+                                        <option value="Twin">Twin</option>
                                         <option value="King Size">King Size</option>
                                     </select>
                                 </div>

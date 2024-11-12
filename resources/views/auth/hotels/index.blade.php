@@ -35,8 +35,8 @@
                         @foreach($hotels as $hotel)
                             <tr>
                                 <td>{{ $hotel->id }}</td>
-                                <td>{{ $hotel->title }}</td>
-                                <td>{{ $hotel->address }}</td>
+                                <td>{{ $hotel->__('title') }}</td>
+                                <td>{{ $hotel->__('address') }}</td>
                                 <td>
                                     <form action="{{ route('hotels.destroy', $hotel) }}" method="post">
                                         <ul>

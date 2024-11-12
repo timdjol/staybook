@@ -47,10 +47,12 @@
                                     </td>
                                     <td>
                                         @php
+                                            $room = \App\Models\Room::where('id', $book->room_id)->first();
                                             $plan = \App\Models\Category::where('room_id', $book->room_id)->first();
                                         @endphp
+                                        <div class="title">{{ $room->__('title') }}</div><br>
                                         @isset($plan)
-                                            <div class="title">{{ $plan->title }}</div>
+                                            <div class="title">{{ $plan->__('title') }}</div>
                                         @endisset
                                     </td>
                                     <td>{{ $book->showStartDate() }} - {{ $book->showEndDate() }}</td>

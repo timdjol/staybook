@@ -14,11 +14,6 @@
                     @if(session()->has('warning'))
                         <p class="alert alert-warning">{{ session()->get('warning') }}</p>
                     @endif
-                    {{--                        <ul>--}}
-                    {{--                            @foreach($books as $book)--}}
-                    {{--                                <li>{{ $book->start_d }} - {{ $book->end_d }}</li>--}}
-                    {{--                            @endforeach--}}
-                    {{--                        </ul>--}}
                     @if($rooms->isNotEmpty())
                         <ul class="btns">
                             <li @routeactive('booking*')><a href="{{route('bookings.index')}}">@lang('admin.availability')</a></li>
@@ -26,8 +21,7 @@
                             </a></li>
                         </ul>
                         <div id='calendar'></div>
-                        <div class
-                             ="modal fade" tabindex="-1" role="dialog" id="show_modal">
+                        <div class="modal fade" tabindex="-1" role="dialog" id="show_modal">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -55,8 +49,7 @@
                                                                id="email" value="1"/>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="col-xs-4" for="count">@lang('admin.quotes')
-                                                        </label>
+                                                        <label class="col-xs-4" for="count">@lang('admin.quotes')</label>
                                                         <select name="count" id="count" required>
                                                             <option value="0">0</option>
                                                             <option value="1">1</option>

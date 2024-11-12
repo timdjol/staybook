@@ -10,18 +10,16 @@ use App\Models\Hotel;
 use App\Models\Room;
 use Illuminate\Http\Request;
 
-class BookingController extends Controller
+class PriceController extends Controller
 {
     public function index(Request $request)
     {
         $hotel = $request->session()->get('hotel_id');
         $categories = Category::where('hotel_id', $hotel)->get();
-        $foods = Food::all();
         $books = Book::where('hotel_id', $hotel)->get();
         $bookings = Book::where('hotel_id', $hotel)->get();
         $rooms = Room::where('hotel_id', $hotel)->get();
         $events = array();
-        $removed = Book::onlyTrashed()->get();
 
         foreach ($bookings as $booking){
             $events[] = [
@@ -39,7 +37,7 @@ class BookingController extends Controller
                 'end' => $booking->end_d,
             ];
         }
-        return view('auth.books.index', compact('events', 'bookings', 'removed', 'rooms', 'books', 'categories', 'foods'));
+        return view('auth.books.index', compact('events', 'bookings', 'rooms', 'books', 'categories'));
     }
 
     public function create()
@@ -52,18 +50,12 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         $plan = Category::where('id', $request->room_id)->first();
-        $room = Room::where('id', $plan->room_id)->first();
 
-        if($request->count > $room->count){
-            session()->flash('warning', 'Превышена квота для ' . $room->title);
-            return redirect()->route('bookings.index');
-        }
         $params = $request->all();
 
         Book::create($params);
         session()->flash('success', 'Booking created');
-        //return view('auth.books.index', compact('rooms', 'bookings'));
-        return redirect()->route('bookings.index');
+        return redirect()->route('prices.index');
     }
 
 

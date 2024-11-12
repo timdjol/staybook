@@ -11,7 +11,6 @@
                     <div class="row align-items-center aic">
                         <div class="col-md-7">
                             <h1>@lang('admin.rooms')</h1>
-
                         </div>
                         <div class="col-md-5">
                             <div class="btn-wrap">
@@ -100,6 +99,7 @@
                                 <th>@lang('admin.image')</th>
                                 <th>@lang('admin.title')</th>
                                 <th>@lang('admin.plans')</th>
+                                <th>@lang('admin.price')</th>
 {{--                                <th>@lang('admin.nutrition')</th>--}}
                                 <th>@lang('admin.action')</th>
                             </tr>
@@ -109,14 +109,17 @@
                                 <tr>
                                     <td>{{ $room->id }}</td>
                                     <td><img src="{{ Storage::url($room->image) }}" alt="" width="100px"></td>
-                                    <td>{{ $room->title }}</td>
+                                    <td>{{ $room->__('title') }}</td>
                                     <td>
                                         @php
                                             $plan = \App\Models\Category::where('room_id', $room->id)->first();
                                         @endphp
                                         @isset($plan)
-                                            {{ $plan->title }}
+                                            {{ $plan->__('title') }}
                                         @endisset
+                                    </td>
+                                    <td>$ {{ $room->price }}<br>
+                                        $ {{ $room->price2 }}
                                     </td>
 {{--                                    <td>--}}
 {{--                                        @php--}}

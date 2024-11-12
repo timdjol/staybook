@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RuleRequest;
+use App\Models\Category;
+use App\Models\Product;
 use App\Models\Room;
 use App\Models\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class RuleController extends Controller
@@ -71,9 +74,11 @@ class RuleController extends Controller
      */
     public function destroy(Rule $rule)
     {
+
         $rule->delete();
+        Category::where('rule_id', $rule->id)->update(['rule_id' => null]);
         //Mail::to('info@timmedia.store')->send(new RoomDeleteMail($room));
         session()->flash('success', 'Rule ' . $rule->title . ' deleted');
-        return redirect()->route('rules.index');
+        return redirect()->route('categories.index');
     }
 }

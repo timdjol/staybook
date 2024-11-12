@@ -1,329 +1,350 @@
-@php
-    $plans = \App\Models\Category::where('room_id', $room->id)->orderBy('price', 'asc')->get();
-@endphp
-@foreach($plans as $plan)
-<div class="row rooms-item">
-    <div class="col-lg-4 col-md-6" data-aos="fade-right" data-aos-duration="2000">
-        <a href="{{ route('room', [isset($hotel) ? $hotel->code ?? '' : $room->hotel->code ?? '', $room->code])}}">
-            <div class="img" style="background-image: url({{ Storage::url($room->image) }})"></div>
-        </a>
-    </div>
-    <div class="col-lg-6 col-md-6">
-        <div class="start">@lang('main.start_d') {{ $room->hotel->checkin ?? '' }}</div>
-        <div class="end">@lang('main.end_d') {{ $room->hotel->checkout ?? '' }}</div>
-        <div class="title">{{ $room->hotel->__('title') ?? '' }}</div>
-        <h3>{{ $room->__('title') ?? '' }}</h3>
-        <h5>{{ $plan->__('title') }}</h5>
-        <div class="address">{{ $room->hotel->__('address') ?? '' }}</div>
-        <div class="d-xl-none d-lg-none d-block">
-            <div class="price">
-
-                @isset($c)
-                    <td>
-                        $ {{ $c->price }}
-                    </td>
-                @endisset
+@auth
+    @php
+        $plans = \App\Models\Category::where('room_id', $room->id)->orderBy('price', 'asc')->get();
+        $child = \App\Models\Child::where('room_id', $room->id)->first();
+    @endphp
+    @foreach($plans as $plan)
+        <div class="row rooms-item">
+            <div class="col-lg-4 col-md-6" data-aos="fade-right" data-aos-duration="2000">
+                <a href="{{ route('room', [isset($hotel) ? $hotel->code ?? '' : $room->hotel->code ?? '', $room->code])}}">
+                    <div class="img" style="background-image: url({{ Storage::url($room->image) }})"></div>
+                </a>
             </div>
-{{--            @if($plan->food->title != '')--}}
-{{--                <div class="breakfast">{{ $plan->food->title }}</div>--}}
-{{--            @endif--}}
-        </div>
-        <div class="btn-wrap">
-            <a href="{{ route('room', [isset($hotel) ? $hotel->code ?? '' : $room->hotel->code ?? '', $room->code])
-            }}" class="more">@lang('main.more')</a>
-            <a href="#" class="book-item more">@lang('main.book')
-                <div class="hidden">
-                    <div class="book-popup">
-                        <form action="{{ route('book_mail') }}" method="post"
-                              id="callback"
-                              class="form-callback">
-                            @csrf
-                            <h3>@lang('main.book') {{ $room->__('title') ?? '' }} <br> {{ $room->hotel->__('title')
+            <div class="col-lg-6 col-md-6">
+                <div class="start">@lang('main.start_d') {{ $room->hotel->checkin ?? '' }}</div>
+                <div class="end">@lang('main.end_d') {{ $room->hotel->checkout ?? '' }}</div>
+                <div class="title">{{ $room->hotel->__('title') ?? '' }}</div>
+                <h3>{{ $room->__('title') ?? '' }}</h3>
+                <h5>{{ $plan->__('title') }}</h5>
+                <div class="address">{{ $room->hotel->__('address') ?? '' }}</div>
+                <div class="d-xl-none d-lg-none d-block">
+                    <div class="price">
+                        <td>
+                            $ {{ $room->price }}
+                        </td>
+                    </div>
+                    {{--            @if($plan->food->title != '')--}}
+                    {{--                <div class="breakfast">{{ $plan->food->title }}</div>--}}
+                    {{--            @endif--}}
+                </div>
+                <div class="btn-wrap">
+                    <a href="{{ route('room', [isset($hotel) ? $hotel->code ?? '' : $room->hotel->code ?? '', $room->code])
+            }}" class="more read">@lang('main.more')</a>
+                    <a href="#" class="book-item more">@lang('main.book')
+                        <div class="hidden">
+                            <div class="book-popup">
+                                <form action="{{ route('book_mail') }}" method="post"
+                                      id="callback"
+                                      class="form-callback">
+                                    @csrf
+                                    <h3>@lang('main.book') {{ $room->__('title') ?? '' }} <br> {{ $room->hotel->__('title')
                             ?? ''
                             }}</h3>
-                            <input type="hidden" name="room_id" value="{{ $room->id}}">
-                            <input type="hidden" name="hotel_id" value="{{ $room->hotel->id ?? ''}}">
-                            @if($start_d != '' && $end_d != '')
-                                <input type="hidden" id="start_d" name="start_d"
-                                       value="{{ $start_d }}">
-                                <input type="hidden" id="end_d" name="end_d"
-                                       value="{{ $end_d }}">
-                            @else
-                                <div class="form-group">
-                                    <label class="col-xs-4" for="end_d">@lang('main.date')</label>
-                                    <input type="text" id="date">
-                                    <input type="hidden" id="start_d"
-                                           @php
-                                           $now = \Carbon\Carbon::now();
-                                               $date = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $now);
-                                              //$date = date('Y-m-d H:s:i');
-                                             @endphp
-                                           name="start_d" value="{{ date('Y-m-d H:s:i') }}">
-                                    <input type="hidden" id="end_d" name="end_d" value="{{ $date->addDays(1) }}">
-                                </div>
-                            @endif
-
-                            @if($count == 1)
-                                <div class="form-group">
-                                    <label class="col-xs-4" for="title">@lang('main.adult_name1')</label>
-                                    <input type="text" class="form-control" name="title"
-                                           id="title"
-                                    />
-                                </div>
-                                <input type="hidden" name="count" value="{{ $count }}">
-                            @elseif($count == 2)
-                                <input type="hidden" name="count" value="{{ $count }}">
-                                <div class="form-group">
-                                    <label class="col-xs-4" for="title">@lang('main.adult_name1')</label>
-                                    <input type="text" class="form-control" name="title"
-                                           id="title"
-                                    />
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-xs-4" for="title2">@lang('main.adult_name2')</label>
-                                    <input type="text" class="form-control" name="title2"
-                                           id="title2"/>
-                                </div>
-                            @else
-                                <div class="form-group">
-                                    <label class="col-xs-4" for="count">@lang('main.search-count')</label>
-                                    <select name="count" id="count" onchange="countCheck(this);" required>
-                                        <option value="">@lang('main.choose')</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group" id="title">
-                                    <label class="col-xs-4" for="title">@lang('main.adult_name1')</label>
-                                    <input type="text" class="form-control" name="title"
-                                           id="title" required/>
-                                </div>
-                                <div class="form-group" id="title2">
-                                    <label class="col-xs-4" for="title2">@lang('main.adult_name2')</label>
-                                    <input type="text" class="form-control" name="title2"/>
-                                </div>
-                            @endif
-
-                            @if($countc == 1)
-                                <input type="hidden" name="countc" class="countc" id="countc" value="{{ $countc }}">
-                                <input type="hidden" name="age1" value="{{ $age1 }}">
-                                <div class="form-group">
-                                    <label class="col-xs-4" for="titlec1">@lang('main.child_name1') ({{ $age1 }})
-                                    </label>
-                                    <input type="text" class="form-control" name="titlec1"
-                                           id="titlec1"/>
-                                </div>
-                            @elseif($countc == 2)
-                                <input type="hidden" name="countc" class="countc" id="countc" value="{{ $countc }}">
-                                <input type="hidden" name="age1" value="{{ $age1 }}">
-                                <input type="hidden" name="age2" value="{{ $age2 }}">
-                                <div class="form-group">
-                                    <label class="col-xs-4" for="titlec1">@lang('main.child_name1') ({{ $age1 }})
-                                    </label>
-                                    <input type="text" class="form-control" name="titlec1"
-                                           id="titlec1"/>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-xs-4" for="titlec2">@lang('main.child_name2') ({{ $age2 }})
-                                    </label>
-                                    <input type="text" class="form-control" name="titlec2"
-                                           id="titlec2"/>
-                                </div>
-                            @elseif($countc == 3)
-                                <input type="hidden" name="countc" class="countc" id="countc" value="{{ $countc }}">
-                                <input type="hidden" name="age1" value="{{ $age1 }}">
-                                <input type="hidden" name="age2" value="{{ $age2 }}">
-                                <input type="hidden" name="age3" value="{{ $age3 }}">
-                                <div class="form-group">
-                                    <label class="col-xs-4" for="titlec1">@lang('main.child_name1') ({{ $age1 }})</label>
-                                    <input type="text" class="form-control" name="titlec1"
-                                           id="titlec1" required/>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-xs-4" for="titlec2">@lang('main.child_name2') ({{ $age2 }})
-                                    </label>
-                                    <input type="text" class="form-control" name="titlec2"
-                                           id="titlec2"/>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-xs-4" for="titlec3">@lang('main.child_name3') ({{ $age3 }})
-                                    </label>
-                                    <input type="text" class ="form-control" name="titlec3"
-                                           id="titlec3"/>
-                                </div>
-                            @else
-                                <div class="form-group">
-                                    <label for="">@lang('main.count_child')</label>
-                                    <select name="countc" class="countc" id="countc" onchange="ageCheck(this);">
-                                        <option value="">@lang('main.choose')</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                </div>
-                                <div class="row" id="child1">
-                                    <div class="col-md-4">
-                                        <select name="age1">
-                                            <option value="@lang('main.1_year')">@lang('main.1_year')</option>
-                                            <option value="@lang('main.2_year')">@lang('main.2_year')</option>
-                                            <option value="@lang('main.3_year')">@lang('main.3_year')</option>
-                                            <option value="@lang('main.4_year')">@lang('main.4_year')</option>
-                                            <option value="@lang('main.5_year')">@lang('main.5_year')</option>
-                                            <option value="@lang('main.6_year')">@lang('main.6_year')</option>
-                                            <option value="@lang('main.7_year')">@lang('main.7_year')</option>
-                                            <option value="@lang('main.8_year')">@lang('main.8_year')</option>
-                                            <option value="@lang('main.9_year')">@lang('main.9_year')</option>
-                                            <option value="@lang('main.10_year')">@lang('main.10_year')</option>
-                                            <option value="@lang('main.11_year')">@lang('main.11_year')</option>
-                                            <option value="@lang('main.12_year')">@lang('main.12_year')</option>
-                                            <option value="@lang('main.13_year')">@lang('main.13_year')</option>
-                                            <option value="@lang('main.14_year')">@lang('main.14_year')</option>
-                                            <option value="@lang('main.15_year')">@lang('main.15_year')</option>
-                                            <option value="@lang('main.16_year')">@lang('main.16_year')</option>
-                                            <option value="@lang('main.17_year')">@lang('main.17_year')</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-8">
+                                    <input type="hidden" name="room_id" value="{{ $room->id}}">
+                                    <input type="hidden" name="hotel_id" value="{{ $room->hotel->id ?? ''}}">
+                                    @if($request->start_d != '' && $request->end_d != '')
+                                        <input type="hidden" id="start_d" name="start_d"
+                                               value="{{ $request->start_d }}">
+                                        <input type="hidden" id="end_d" name="end_d"
+                                               value="{{ $request->end_d }}">
+                                    @else
                                         <div class="form-group">
+                                            <label class="col-xs-4" for="end_d">@lang('main.date')</label>
+                                            <input type="text" id="date" class="date">
+                                            <input type="hidden" id="start_d"
+                                                   @php
+                                                       $now = \Carbon\Carbon::now();
+                                                       $date = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $now);
+                                                          //$date = date('Y-m-d H:s:i');
+                                                   @endphp
+                                                   name="start_d" value="{{ date('Y-m-d H:s:i') }}">
+                                            <input type="hidden" id="end_d" name="end_d"
+                                                   value="{{ $date->addDays(1) }}">
+                                        </div>
+                                    @endif
+
+                                    @if($request->count == 1)
+                                        <div class="form-group">
+                                            <label class="col-xs-4" for="title">@lang('main.adult_name1')</label>
+                                            <input type="text" class="form-control" name="title"
+                                                   id="title"
+                                            />
+                                        </div>
+                                        <input type="hidden" name="count" value="{{ $request->count }}">
+                                    @elseif($request->count == 2)
+                                        <input type="hidden" name="count" value="{{ $request->count }}">
+                                        <div class="form-group">
+                                            <label class="col-xs-4" for="title">@lang('main.adult_name1')</label>
+                                            <input type="text" class="form-control" name="title"
+                                                   id="title"
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-xs-4" for="title2">@lang('main.adult_name2')</label>
+                                            <input type="text" class="form-control" name="title2"
+                                                   id="title2"/>
+                                        </div>
+                                        <style>
+                                            #title2 {
+                                                display: block;
+                                            }
+                                        </style>
+                                    @else
+                                        <div class="form-group">
+                                            <label class="col-xs-4" for="count">@lang('main.search-count')</label>
+                                            <select name="count" id="count" onchange="countCheck(this);" required>
+                                                <option value="">@lang('main.choose')</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group" id="title">
+                                            <label class="col-xs-4" for="title">@lang('main.adult_name1')</label>
+                                            <input type="text" class="form-control" name="title"
+                                                   id="title" required/>
+                                        </div>
+                                        <div class="form-group" id="title2">
+                                            <label class="col-xs-4" for="title2">@lang('main.adult_name2')</label>
+                                            <input type="text" class="form-control" name="title2"/>
+                                        </div>
+                                        <style>
+                                            #title2, #child1, #child2, #child3 {
+                                                display: none;
+                                            }
+                                        </style>
+                                    @endif
+
+                                    @if($request->countc == 1)
+                                        <input type="hidden" name="countc" class="countc" id="countc"
+                                               value="{{ $request->countc }}">
+                                        <input type="hidden" name="age1" value="{{ $request->age1 }}">
+                                        <div class="form-group">
+                                            <label class="col-xs-4" for="titlec1">@lang('main.child_name1') ({{
+                                            $request->age1 }}
+                                                )
+                                            </label>
                                             <input type="text" class="form-control" name="titlec1"
-                                                   id="titlec1" placeholder="@lang('main.child_name1')"/>
+                                                   id="titlec1"/>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="row" id="child2">
-                                    <div class="col-md-4">
-                                        <select name="age2">
-                                            <option value="@lang('main.1_year')">@lang('main.1_year')</option>
-                                            <option value="@lang('main.2_year')">@lang('main.2_year')</option>
-                                            <option value="@lang('main.3_year')">@lang('main.3_year')</option>
-                                            <option value="@lang('main.4_year')">@lang('main.4_year')</option>
-                                            <option value="@lang('main.5_year')">@lang('main.5_year')</option>
-                                            <option value="@lang('main.6_year')">@lang('main.6_year')</option>
-                                            <option value="@lang('main.7_year')">@lang('main.7_year')</option>
-                                            <option value="@lang('main.8_year')">@lang('main.8_year')</option>
-                                            <option value="@lang('main.9_year')">@lang('main.9_year')</option>
-                                            <option value="@lang('main.10_year')">@lang('main.10_year')</option>
-                                            <option value="@lang('main.11_year')">@lang('main.11_year')</option>
-                                            <option value="@lang('main.12_year')">@lang('main.12_year')</option>
-                                            <option value="@lang('main.13_year')">@lang('main.13_year')</option>
-                                            <option value="@lang('main.14_year')">@lang('main.14_year')</option>
-                                            <option value="@lang('main.15_year')">@lang('main.15_year')</option>
-                                            <option value="@lang('main.16_year')">@lang('main.16_year')</option>
-                                            <option value="@lang('main.17_year')">@lang('main.17_year')</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-8">
+                                    @elseif($request->countc == 2)
+                                        <input type="hidden" name="countc" class="countc" id="countc"
+                                               value="{{ $request->countc }}">
+                                        <input type="hidden" name="age1" value="{{ $request->age1 }}">
+                                        <input type="hidden" name="age2" value="{{ $request->age2 }}">
                                         <div class="form-group">
+                                            <label class="col-xs-4" for="titlec1">@lang('main.child_name1') ({{
+                                            $request->age1 }}
+                                                )
+                                            </label>
+                                            <input type="text" class="form-control" name="titlec1"
+                                                   id="titlec1"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-xs-4" for="titlec2">@lang('main.child_name2') ({{
+                                            $request->age2 }}
+                                                )
+                                            </label>
                                             <input type="text" class="form-control" name="titlec2"
-                                                   id="titlec2" placeholder="@lang('main.child_name2')"/>
+                                                   id="titlec2"/>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="row" id="child3">
-                                    <div class="col-md-4">
-                                        <select name="age3">
-                                            <option value="@lang('main.1_year')">@lang('main.1_year')</option>
-                                            <option value="@lang('main.2_year')">@lang('main.2_year')</option>
-                                            <option value="@lang('main.3_year')">@lang('main.3_year')</option>
-                                            <option value="@lang('main.4_year')">@lang('main.4_year')</option>
-                                            <option value="@lang('main.5_year')">@lang('main.5_year')</option>
-                                            <option value="@lang('main.6_year')">@lang('main.6_year')</option>
-                                            <option value="@lang('main.7_year')">@lang('main.7_year')</option>
-                                            <option value="@lang('main.8_year')">@lang('main.8_year')</option>
-                                            <option value="@lang('main.9_year')">@lang('main.9_year')</option>
-                                            <option value="@lang('main.10_year')">@lang('main.10_year')</option>
-                                            <option value="@lang('main.11_year')">@lang('main.11_year')</option>
-                                            <option value="@lang('main.12_year')">@lang('main.12_year')</option>
-                                            <option value="@lang('main.13_year')">@lang('main.13_year')</option>
-                                            <option value="@lang('main.14_year')">@lang('main.14_year')</option>
-                                            <option value="@lang('main.15_year')">@lang('main.15_year')</option>
-                                            <option value="@lang('main.16_year')">@lang('main.16_year')</option>
-                                            <option value="@lang('main.17_year')">@lang('main.17_year')</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-8">
+                                    @elseif($request->countc == 3)
+                                        <input type="hidden" name="countc" class="countc" id="countc"
+                                               value="{{ $request->countc }}">
+                                        <input type="hidden" name="age1" value="{{ $request->age1 }}">
+                                        <input type="hidden" name="age2" value="{{ $request->age2 }}">
+                                        <input type="hidden" name="age3" value="{{ $request->age3 }}">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="titlec3"
-                                                   id="titlec3" placeholder="@lang('main.child_name3')"/>
+                                            <label class="col-xs-4" for="titlec1">@lang('main.child_name1') ({{
+                                            $request->age1 }}
+                                                )</label>
+                                            <input type="text" class="form-control" name="titlec1"
+                                                   id="titlec1" required/>
                                         </div>
+                                        <div class="form-group">
+                                            <label class="col-xs-4" for="titlec2">@lang('main.child_name2') ({{
+                                            $request->age2 }}
+                                                )
+                                            </label>
+                                            <input type="text" class="form-control" name="titlec2"
+                                                   id="titlec2"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-xs-4" for="titlec3">@lang('main.child_name3')
+                                                ({{ $request->age3 }}
+                                                )
+                                            </label>
+                                            <input type="text" class="form-control" name="titlec3"
+                                                   id="titlec3"/>
+                                        </div>
+                                    @endif
+
+                                    <div class="form-group">
+                                        <label class="col-xs-4" for="phone">@lang('main.phone')</label>
+                                        <input type="number" class="form-control"
+                                               name="phone" id="phone" required
+                                        >
+                                        <div id="output" class="output"></div>
                                     </div>
-                                </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-4" for="email">Email</label>
+                                        <input type="email" class="form-control"
+                                               name="email" id="email" required/>
+                                    </div>
 
+                                    <input type="hidden" id="price" class="price" value="{{ $room->price }}">
+                                    <input type="hidden" id="price2" class="price2" value="{{ $room->price2 }}">
 
-                                <style>
-                                    #title2, #child1, #child2, #child3 {
-                                        display: none;
-                                    }
-                                </style>
-                            @endif
+                                    @php
+                                        $start = \Carbon\Carbon::parse($request->start_d);
+                                        $end = \Carbon\Carbon::parse($request->end_d);
+                                        $days = $end->diffInDays($start);
+                                        if($days == 0){
+                                            $days = 1;
+                                        } else {
+                                            $days = $end->diffInDays($start);
+                                        }
+                                            $countc = $request->countc;
+                                            $count = $request->count;
+                                            $price = $room->price;
+                                            $price2 = $room->price2;
 
+                                            $age1 = $request->age1;
+                                            $age2 = $request->age2;
+                                            $age3 = $request->age3;
+                                            $from = $child->age_from ?? 0;
+                                            $from2 = $child->age_from2 ?? 0;
+                                            $from3 = $child->age_from3 ?? 0;
 
-                            <div class="form-group">
-                                <label class="col-xs-4" for="phone">@lang('main.phone')</label>
-                                <input type="number" class="form-control"
-                                       name="phone" id="phone" required
-                                >
-                                <div id="output" class="output"></div>
+                                            $to = $child->age_to ?? 1;
+                                            $to2 = $child->age_to2 ?? 1;
+                                            $to3 = $child->age_to3 ?? 1;
+
+                                            //cat age1
+                                            if ($age1 >= $from && $age1 <= $to)
+                                            {
+                                                $pricec = $child->price_extra ?? 0;
+                                            }
+                                            elseif ($age1 >= $from2 && $age1 <= $to2) {
+                                                $pricec = $child->price_extra2 ?? 0;
+                                            }
+                                            elseif ($age1 >= $from3 && $age1 <= $to3)
+                                            {
+                                                $pricec = $child->price_extra3 ?? 0;
+                                            } else{
+                                                $pricec = $child->price_extra ?? 0;
+                                            }
+
+                                            //cat age2
+                                            if ($age2 >= $from && $age2 <= $to)
+                                            {
+                                                $pricec2 = $child->price_extra ?? 0;
+                                            } elseif ($age2 >= $from2 && $age2 <= $to2) {
+                                                $pricec2 = $child->price_extra2 ?? 0;
+                                            } elseif ($age2 >= $from3 && $age2 <= $to3)
+                                            {
+                                                $pricec2 = $child->price_extra3 ?? 0;
+                                            } else{
+                                                $pricec2 = $child->price_extra ?? 0;
+                                            }
+
+                                            //cat age1
+                                            if ($age3 >= $from && $age3 <= $to)
+                                            {
+                                                $pricec3 = $child->price_extra ?? 0;
+                                            } elseif ($age3 >= $from2 && $age3 <= $to2) {
+                                                $pricec3 = $child->price_extra2 ?? 0;
+                                            } elseif ($age3 >= $from3 && $age3 <= $to3)
+                                            {
+                                                $pricec3 = $child->price_extra3 ?? 0;
+                                            } else{
+                                                $pricec3 = $child->price_extra ?? 0;
+                                            }
+
+                                            if($countc == 2){
+                                                $sum = $price * $days + (($pricec + $pricec2) * $days);
+                                                $sum2 = $price2 * $days + (($pricec + $pricec2) * $days);
+                                            } elseif($countc == 3) {
+                                                $sum = $price * $days + (($pricec + $pricec2 + $pricec3) * $days);
+                                                $sum2 = $price2 * $days + (($pricec + $pricec2 + $pricec3) * $days);
+                                            } elseif($countc == null) {
+                                                $sum = $price * $days + 0 * $days;
+                                                $sum2 = $price2 * $days + 0 * $days;
+                                            } else {
+                                                $sum = $price * $days + $pricec * $days;
+                                                $sum2 = $price2 * $days + $pricec * $days;
+                                            }
+                                    @endphp
+
+                                    <div class="form-group">
+                                        <label for="">@lang('main.sum')</label>
+                                        @if ($count == 2)
+                                            <input type="text" id="sum" name="sum" class="sum" value="$ {{ $sum2 }}"
+                                                   readonly>
+                                        @else
+                                            <input type="text" id="sum" name="sum" class="sum" value="$ {{ $sum }}"
+                                                   readonly>
+                                        @endif
+
+                                    </div>
+                                    <div class="form-group">
+                                        @include('auth.layouts.error', ['fieldname' => 'comment'])
+                                        <label for="">Комментарий</label>
+                                        <textarea name="comment" rows="3"></textarea>
+                                    </div>
+                                    <input type="hidden" name="book_id" value="{{ $random }}">
+                                    <input type="hidden" name="status" value="@lang('main.paid')">
+                                    <button class="more" id="saveBtn">@lang('main.book')</button>
+                                </form>
                             </div>
-                            <div class="form-group">
-                                <label class="col-xs-4" for="email">Email</label>
-                                <input type="email" class="form-control"
-                                       name="email" id="email" required/>
-                            </div>
-                            {{--                            <input type="hidden" id="price" class="price" value="--}}
-                            {{--                                                                @if(isset($comission))--}}
-                            {{--                                                            {{ $room->price + ($room->price * $comission / 100) }}--}}
-                            {{--                                                            @else--}}
-                            {{--                                                            {{ $room->price }}--}}
-                            {{--                                                        @endif">--}}
-                            <input type="hidden" id="price" class="price" value="{{ $room->price }}">
-                            <input type="hidden" id="price2" class="price2" value="{{ $room->price2 }}">
-                            <input type="hidden" id="count" class="count" value="{{ $count }}">
-                            <input type="hidden" id="countc" class="countc" value="{{ $countc }}">
-                            <div class="form-group">
-                                <label for="">@lang('main.sum')</label>
-                                <input type="text" id="sum" name="sum" class="sum" readonly>
-                            </div>
-                            <button class="more" id="saveBtn">@lang('main.book')</button>
-                        </form>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-2 d-xl-block d-lg-block d-none" data-aos="fade-left" data-aos-duration="2000">
+                <div class="price">
+                    <td>
+                        $ {{ $room->price }}
+                    </td>
+                </div>
+                {{--        <div class="breakfast">{{ $plan->food->title }}</div>--}}
+                @if($room->hotel->early_in ?? '')
+                    <div class="early">@lang('main.early')</div>
+                @endif
+                @if($room->hotel->early_out ?? '')
+                    <div class="early">@lang('main.late')</div>
+                @endif
+                @if($room->bed != '')
+                    <p><i class="fa-light fa-bed"></i> @lang('main.bed'): {{$room->bed}}</p>
+                @endif
+                @if($room->hotel->cancelled ?? '')
+                    @isset($end)
+                        @php
+                            $end = $_GET['end_d'] ?? null;
+                            $date = \Carbon\Carbon::parse($end);
+                            $date->locale('ru');
+                            $exp = $date->subDays($room->cancel_day);
+                            $month = $exp->getTranslatedMonthName('Do MMMM');
+                            $get = $exp->day . ' ' . $month;
+                        @endphp
+                        <div class="early">@lang('main.cancelled') до {{ $get }} </div>
+                    @endisset
+                @endif
+
+            </div>
+        </div>
+
+    @endforeach
+@else
+    <div class="page">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">
+                        <div class="descr">Необходимо пройти <a href="{{ route('login') }}">авторизацию</a></div>
                     </div>
                 </div>
-            </a>
-
-
+            </div>
         </div>
     </div>
-    <div class="col-lg-2 d-xl-block d-lg-block d-none" data-aos="fade-left" data-aos-duration="2000">
-        <div class="price">
-                <td>
-                    $ {{ $plan->price }}
-                </td>
-        </div>
-{{--        <div class="breakfast">{{ $plan->food->title }}</div>--}}
-        @if($room->hotel->early_in ?? '')
-            <div class="early">@lang('main.early')</div>
-        @endif
-        @if($room->hotel->early_out ?? '')
-            <div class="early">@lang('main.late')</div>
-        @endif
-        @if($room->hotel->cancelled ?? '')
-            @isset($end)
-                @php
-                    $end = $_GET['end_d'] ?? null;
-                    $date = \Carbon\Carbon::parse($end);
-                    $date->locale('ru');
-                    $exp = $date->subDays($room->cancel_day);
-                    $month = $exp->getTranslatedMonthName('Do MMMM');
-                    $get = $exp->day . ' ' . $month;
-                @endphp
-                <div class="early">@lang('main.cancelled') до {{ $get }} </div>
-            @endisset
-        @endif
-
-    </div>
-</div>
-
-@endforeach
+@endauth

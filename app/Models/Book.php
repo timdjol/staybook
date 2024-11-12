@@ -32,6 +32,7 @@ class Book extends Model
         'age1',
         'age2',
         'age3',
+        'comment'
     ];
 
     public function rooms(){

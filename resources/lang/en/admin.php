@@ -132,5 +132,13 @@ return [
     'rule' => 'Сancellation policy',
     'childs' => 'Living with children',
     'child_type' => 'Accommodation type',
-    'child_count' => 'Maximum number of children'
+    'child_count' => 'Maximum number of children',
+    'from' => 'from',
+    'to' => 'to',
+    'bookings_not_found' => 'Bookings not found',
+    'availability' => 'Availability',
+    'prices' => 'Prices',
+    'close' => 'Close',
+    'book' => 'Book',
+    'rates_not_found' => 'Rates not found',
 ];

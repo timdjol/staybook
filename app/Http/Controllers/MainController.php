@@ -20,7 +20,7 @@ class MainController extends Controller
         $hotels = Hotel::all();
         $rooms = Room::where('status', 1)->where('count', '>=', 1)->paginate(20);
         $foods = Food::all();
-        return view('index', compact('hotels', 'rooms'));
+        return view('index', compact('hotels', 'rooms', 'foods'));
     }
 
     public function changeLocale($locale)
@@ -53,7 +53,7 @@ class MainController extends Controller
 
     public function search(Request $request)
     {
-
+        $random = random_int(100000, 999999);
         $start_d = $request->start_d;
         $end_d = $request->end_d;
         $count = $request->count;
@@ -135,8 +135,10 @@ class MainController extends Controller
 //            $query->whereBetween('price',[$request->left_value, $request->right_value]);
 //        }
 
+        $relrooms = Room::all();
 
-        return view('search', compact('rooms', 'contacts', 'start_d', 'end_d', 'count', 'countc', 'age1', 'age2', 'age3'));
+
+        return view('search', compact('rooms', 'contacts','request', 'relrooms', 'random'));
     }
 
 

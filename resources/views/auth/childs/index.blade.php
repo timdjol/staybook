@@ -37,7 +37,7 @@
                             @foreach($childs as $child)
                                 <tr>
                                     <td>{{ $child->id }}</td>
-                                    <td>{{ $child->room->title }}</td>
+                                    <td>{{ $child->room->__('title') }}</td>
                                     <td>
                                         <ul class="list">
                                             <li>Без предоставления места</li>

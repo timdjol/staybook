@@ -243,7 +243,8 @@
                                 @include('auth.layouts.error', ['fieldname' => 'phone'])
                                 <div class="form-group">
                                     <label for="">@lang('admin.phone_number')</label>
-                                    <input type="text" name="phone" value="{{ old('phone', isset($hotel) ? $hotel->phone :
+                                    <input type="text" id="phone" name="phone" value="{{ old('phone', isset($hotel) ?
+                                    $hotel->phone :
                              null) }}">
                                 </div>
                             </div>

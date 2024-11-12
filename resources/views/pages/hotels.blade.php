@@ -20,6 +20,8 @@
         </div>
     </div>
 
+    @auth
+
     <div class="page hotels">
         <div class="container">
             <div class="row">
@@ -39,5 +41,19 @@
             </div>
         </div>
     </div>
+
+    @else
+        <div class="page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            <div class="descr">Необходимо пройти <a href="{{ route('login') }}">авторизацию</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endauth
 
 @endsection

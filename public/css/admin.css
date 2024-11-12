@@ -194,3 +194,21 @@ ul.btns li a{
     text-decoration: none;
     font-size: 14px;
 }
+body{
+    font-family: "Fira Sans", sans-serif;
+}
+h1, h2, b, strong{
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 700;
+}
+h3, h4{
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 600;
+}
+h5{
+    font-family: "Fira Sans", sans-serif;
+    font-weight: 500;
+}
+header .logo img{
+    max-width: 140px;
+}

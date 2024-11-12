@@ -4,6 +4,7 @@
 
 @section('content')
 
+    @auth
     <div class="owl-carousel owl-slider">
         <div class="slider-item">
             <div class="slider-item"
@@ -37,7 +38,7 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="">@lang('main.search-date')</label>
-                            <input type="text" id="date">
+                            <input type="text" id="date" class="date">
                             <input type="hidden" id="start_d" name="start_d">
                             <input type="hidden" id="end_d" name="end_d">
                         </div>
@@ -46,8 +47,7 @@
                         <div class="form-group">
                             <label for="">@lang('main.search-adult')</label>
                             <select name="count" id="">
-                                <option value="">@lang('main.choose')</option>
-                                <option value="1">1</option>
+                                <option value="1" selected>1</option>
                                 <option value="2">2</option>
                             </select>
                         </div>
@@ -505,11 +505,6 @@
             height: auto;
             display: inline-block;
         }
-        .homesearch form button.more {
-            background-color: transparent;
-            color: #fff;
-            border: 1px solid #fff;
-        }
         .homesearch form button.more:hover {
             background-color: #035497;
             color: #fff;
@@ -532,10 +527,19 @@
             top: -5px;
             position: relative;
         }
-        .selectize-input > * {
-            position: relative;
-            top: 10px;
-        }
     </style>
+    @else
+        <div class="page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            <div class="descr">Необходимо пройти <a href="{{ route('login') }}">авторизацию</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endauth
 
 @endsection

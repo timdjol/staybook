@@ -24,7 +24,7 @@
                             @foreach($rules as $rule)
                                 <tr>
                                     <td>{{ $rule->id }}</td>
-                                    <td>{{ $rule->title }}</td>
+                                    <td>{{ $rule->__('title') }}</td>
                                     <td>
                                         <form action="{{ route('rules.destroy', $rule) }}" method="post">
                                             <ul>
@@ -45,7 +45,7 @@
                     @else
                         <h2 style="text-align: center">@lang('admin.rooms_not_found')</h2>
                     @endif
-                    <div class="btn-wrap">
+                    <div class="btn-wrap" style="margin-top: 20px">
                         <a class="btn add" href="{{ route('rules.create') }}"><i class="fa-solid
                                 fa-plus"></i> @lang('admin.add')</a>
                     </div>
@@ -67,10 +67,18 @@
                             @foreach($categories as $category)
                                 <tr>
                                     <td>{{ $category->id }}</td>
-                                    <td>{{ $category->title }}</td>
-                                    <td>{{ $category->room->title }}</td>
-                                    <td>{{ $category->food->title }}</td>
-                                    <td>{{ $category->rule->title }}</td>
+                                    <td>{{ $category->__('title') }}</td>
+                                    <td>{{ $category->room->__('title') }}</td>
+                                    <td>
+                                        @isset($category->food)
+                                            {{ $category->food->__('title') }}
+                                        @endisset
+                                    </td>
+                                    <td>
+                                        @isset($category->rule)
+                                            {{ $category->rule->__('title') }}
+                                        @endisset
+                                    </td>
                                     <td>
                                         <form action="{{ route('categories.destroy', $category) }}" method="post">
                                             <ul>
@@ -91,7 +99,7 @@
                     @else
                         <h2 style="text-align: center">@lang('admin.rooms_not_found')</h2>
                     @endif
-                    <div class="btn-wrap">
+                    <div class="btn-wrap" style="margin-top: 20px">
                         <a class="btn add" href="{{ route('categories.create') }}"><i class="fa-solid
                                 fa-plus"></i> @lang('admin.add')</a>
                     </div>

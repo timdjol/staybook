@@ -57,11 +57,11 @@
                                 <div class="form-group">
                                     <label for="">Какие номера можно забронировать по этому тарифу?
                                     </label>
-                                    <select name="room_id" multiple style="height: auto">
+                                    <select name="room_id">
                                         @isset($category)
                                             <option value="{{ $category->room_id }}" @if($category->room_id)
                                                         selected>
-                                                {{ $category->room->title }}</option>
+                                                {{ $category->room->__('title') }}</option>
                                         @else
                                             <option>@lang('admin.choose')</option>
                                         @endif
@@ -81,7 +81,7 @@
                                         @isset($category)
                                             <option value="{{ $category->food_id }}" @if($category->food_id)
                                                         selected>
-                                                {{ $category->food->title }}</option>
+                                                {{ $category->food->__('title') }}</option>
                                         @else
                                             <option>@lang('admin.choose')</option>
                                         @endif
@@ -93,27 +93,10 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                @include('auth.layouts.error', ['fieldname' => 'price'])
-                                <div class="form-group">
-                                    <label for="">@lang('admin.price_for_1_per')</label>
-                                    <input type="number" name="price" value="{{ old('price', isset($category) ?
-                                    $category->price : null) }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                @include('auth.layouts.error', ['fieldname' => 'price2'])
-                                <div class="form-group">
-                                    <label for="">@lang('admin.price_for_2_per')</label>
-                                    <input type="number" name="price2" value="{{ old('price2', isset($category) ?
-                                    $category->price2 : null) }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
                                 @include('auth.layouts.error', ['fieldname' => 'rule_id'])
                                 <div class="form-group">
                                     <label for="">@lang('admin.rule')</label>
                                     <select name="rule_id" id="">
-
                                         @isset($category->rule_id)
                                             <option value="{{ $select_rule->id }}">{{ $select_rule->__('title')
                                             }}</option>

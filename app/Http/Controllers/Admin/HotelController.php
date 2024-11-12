@@ -7,6 +7,7 @@ use App\Http\Requests\HotelRequest;
 use App\Mail\HotelDeleteMail;
 use App\Mail\HotelMail;
 use App\Mail\HotelUpdateMail;
+use App\Models\Category;
 use App\Models\Hotel;
 use App\Models\Image;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -209,6 +210,12 @@ class HotelController extends Controller
         }
         DB::table('images')->where('hotel_id', $hotel->id)->delete();
         DB::table('bills')->where('hotel_id', $hotel->id)->delete();
+        DB::table('rooms')->where('hotel_id', $hotel->id)->delete();
+        DB::table('categories')->where('hotel_id', $hotel->id)->delete();
+        DB::table('childs')->where('hotel_id', $hotel->id)->delete();
+        DB::table('rules')->where('hotel_id', $hotel->id)->delete();
+        DB::table('services')->where('hotel_id', $hotel->id)->delete();
+        DB::table('payments')->where('hotel_id', $hotel->id)->delete();
         //Mail::to('info@timmedia.store')->send(new HotelDeleteMail($hotel));
         session()->flash('success', 'Property ' . $hotel->title . ' deleted');
         return redirect()->route('hotels.index');

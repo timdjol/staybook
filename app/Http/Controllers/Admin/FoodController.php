@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FoodRequest;
+use App\Models\Category;
 use App\Models\Food;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -65,6 +66,7 @@ class FoodController extends Controller
     public function destroy(Food $food)
     {
         $food->delete();
+        Category::where('food_id', $food->id)->update(['food_id' => null]);
         //Mail::to('info@timmedia.store')->send(new RoomDeleteMail($room));
         session()->flash('success', 'Food ' . $food->title . ' deleted');
         return redirect()->route('foods.index');

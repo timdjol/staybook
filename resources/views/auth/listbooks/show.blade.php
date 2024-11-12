@@ -66,7 +66,7 @@
                         <div class="col-md-4">
                             <div class="dashboard-item">
                                 @php
-                                    $room = \App\Models\Category::where('room_id', $book->room_id)->firstOrFail();
+                                    $room = \App\Models\Category::where('id', $book->room_id)->firstOrFail();
                                     $r = \App\Models\Room::where('id', $room->room_id)->first();
                                 @endphp
                                 <div class="img"><img src="{{ Storage::url($r->image) }}" alt="" width="200px"></div>

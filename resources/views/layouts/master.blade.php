@@ -22,6 +22,9 @@
     <!-- Custom Browsers Color Start -->
     <meta name="theme-color" content="#000">
     <!-- Custom Browsers Color End -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/eliyantosarage/font-awesome-pro@main/fontawesome-pro-6.5.1-web/css/all.min.css"
           rel="stylesheet">
     <link rel="stylesheet" href="{{route('index')}}/css/main.min.css">
@@ -39,7 +42,7 @@
         <div class="row">
             <div class="col-lg-2 col-md-4 col-6">
                 <div class="logo">
-                    <a href="{{route('homepage')}}"><img src="https://silkway.timmedia.store/img/logo.png" alt=""></a>
+                    <a href="{{route('homepage')}}"><img src="{{ route('index') }}/img/logo.svg" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-10 col-md-8 col-6">
@@ -109,7 +112,7 @@
             <div class="row">
                 <div class="col-lg-2 col-md-6">
                     <div class="footer-item">
-                        <div class="logo"><img src="{{ url('/') }}/img/logo.png" alt=""></div>
+                        <div class="logo"><img src="{{ url('/') }}/img/logo.svg" alt=""></div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -163,22 +166,18 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <p>@lang('main.copy') &copy; {{ date('Y') }} silkwaytravel.kg</p>
+                    <p>@lang('main.copy') &copy; {{ date('Y') }} staybook.kg</p>
                 </div>
             </div>
         </div>
     </div>
 </footer>
 
-
 <style>
     header nav{
         text-align: right;
     }
 </style>
-
-
-
 
 </body>
 
