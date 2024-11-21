@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-payment|edit-payment|delete-payment', ['only' => ['index','show']]);
+        $this->middleware('permission:create-payment', ['only' => ['create','store']]);
+        $this->middleware('permission:edit-payment', ['only' => ['edit','update']]);
+        $this->middleware('permission:delete-payment', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         $hotel = $request->session()->get('hotel_id');

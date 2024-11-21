@@ -2,12 +2,16 @@
     <table>
         <tr>
             <td>
-                <div class="logo"><img src="https://silkway.timmedia.store/img/logo.png" alt="Logo" style="width:
+                <div class="logo"><img src={{ route('index')  }}/img/logo.svg" alt="Logo" style="width:
                     100px;"></div>
             </td>
             <td>
-                <div class=" phone"><a href="0999999999">0999999999</a></div>
+                <div class="phone"><a href="tel:+996 772 511 511">+996 772 511 511</a></div>
             </td>
+        </tr>
+        <tr>
+            <td>ID</td>
+            <td>{{ $book->book_id }}</td>
         </tr>
         <tr>
             <td>
@@ -36,15 +40,15 @@
                 @endisset
             </td>
         </tr>
-        <tr>
-            <td>Meal</td>
-            <td>
-                @php
-                    $room = \App\Models\Room::where('id', $book->room_id)->firstOrFail();
-                @endphp
-                {{ $room->include }}
-            </td>
-        </tr>
+{{--        <tr>--}}
+{{--            <td>Meal</td>--}}
+{{--            <td>--}}
+{{--                @php--}}
+{{--                    $room = \App\Models\Room::where('id', $book->room_id)->firstOrFail();--}}
+{{--                @endphp--}}
+{{--                {{ $room->include }}--}}
+{{--            </td>--}}
+{{--        </tr>--}}
         <tr>
             <td>Check In</td>
             <td>{{ $book->start_d }} from {{ $hotel->checkin }}</td>
@@ -60,10 +64,7 @@
             </td>
             <td>{{ $room->title }}</td>
         </tr>
-        <tr>
-            <td>ID</td>
-            <td>{{ $book->book_id }}</td>
-        </tr>
+
         <tr>
             <td>Booking made on</td>
             <td>{{ date('Y-m-d H:i:s') }}</td>
@@ -77,38 +78,38 @@
             <td>B2B</td>
         </tr>
         <tr>
-            <td>Beddings</td>
+            <td>Bedding</td>
             <td>{{ $room->bed }}</td>
         </tr>
-        <tr>
-            <td>Free cancellation</td>
-            <td>
-                @if($room->hotel->cancelled == 0 || $room->hotel->cancelled == '')
-                    @isset($book->end_d)
-                        @php
-                            $date = \Carbon\Carbon::parse($book->end_d);
-                            //$date->locale('ru');
-                            $exp = $date->subDays($room->cancel_day);
-                            $month = $exp->getTranslatedMonthName('Do MMMM');
-                            $get = $exp->day . ' ' . $month;
-                        @endphp
-                    @endisset
-                @endif
-                until {{ $get }}
-            </td>
-        </tr>
-        <tr>
-            <td>Meal price</td>
-            <td>Included</td>
-        </tr>
+{{--        <tr>--}}
+{{--            <td>Free cancellation</td>--}}
+{{--            <td>--}}
+{{--                @if($room->hotel->cancelled == 0 || $room->hotel->cancelled == '')--}}
+{{--                    @isset($book->end_d)--}}
+{{--                        @php--}}
+{{--                            $date = \Carbon\Carbon::parse($book->end_d);--}}
+{{--                            //$date->locale('ru');--}}
+{{--                            $exp = $date->subDays($room->cancel_day);--}}
+{{--                            $month = $exp->getTranslatedMonthName('Do MMMM');--}}
+{{--                            $get = $exp->day . ' ' . $month;--}}
+{{--                        @endphp--}}
+{{--                    @endisset--}}
+{{--                @endif--}}
+{{--                until {{ $get }}--}}
+{{--            </td>--}}
+{{--        </tr>--}}
+{{--        <tr>--}}
+{{--            <td>Meal price</td>--}}
+{{--            <td>Included</td>--}}
+{{--        </tr>--}}
         <tr>
             <td>Accommodation price</td>
             <td>{{ $book->sum }}</td>
         </tr>
-        <tr>
-            <td>Price per day</td>
-            <td>{{ $room->price }} $</td>
-        </tr>
+{{--        <tr>--}}
+{{--            <td>Price per day</td>--}}
+{{--            <td>{{ $room->price }} $</td>--}}
+{{--        </tr>--}}
     </table>
 
     <style>

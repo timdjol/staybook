@@ -54,7 +54,7 @@
                                 $cat = \App\Models\Category::where('room_id', $room->id)->first();
                                 $rule = \App\Models\Rule::where('id', $cat->rule_id)->first();
                             @endphp
-                            $ {{ $plan->price }}
+                            $ {{ $room->price }}
                         </div>
                         <div class="btn-wrap">
                             <a href="#callback" class="more">@lang('main.book')</a>
@@ -331,7 +331,7 @@
                                     <div class="form-group">
                                         @include('auth.layouts.error', ['fieldname' => 'phone'])
                                         <label class="col-xs-4" for="phone">@lang('main.phone')</label>
-                                        <input type="number" class="form-control" name="phone" id="phone"
+                                        <input type="text" class="form-control" name="phone" id="phone"
                                                required>
                                         <div id="output" class="output"></div>
                                     </div>
@@ -340,8 +340,8 @@
                                         <label class="col-xs-4" for="email">Email</label>
                                         <input type="email" class="form-control" name="email" id="email"/>
                                     </div>
-                                    <input type="hidden" id="price" value="{{ $plan->price }}">
-                                    <input type="hidden" id="price2" value="{{ $plan->price2 }}">
+                                    <input type="hidden" id="price" value="{{ $room->price }}">
+                                    <input type="hidden" id="price2" value="{{ $room->price2 }}">
                                     @isset($child)
                                         <input type="hidden" id="pricec" class="pricec"
                                                value="{{$child->price_extra }}">
@@ -464,9 +464,9 @@
                                     {{$room->hotel->early_out}}</p>
                             @endif
 
-                            @if($rule->title != '')
+                            @isset($rule)
                                 <p><i class="fa-regular fa-money-bill"></i> {{ $rule->title }}</p>
-                            @endif
+                            @endisset
 
                         </div>
                         <div class="servlisting">

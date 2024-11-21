@@ -41,7 +41,7 @@
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn delete"><i class="fa-regular fa-trash"></i></button>
+                                                <button onclick="return confirm('Do you want to delete this?');" class="btn delete"><i class="fa-regular fa-trash"></i></button>
                                             </ul>
                                         </form>
                                     </td>
@@ -51,7 +51,7 @@
                         </table>
                         {{ $rules->links('pagination::bootstrap-4') }}
                     @else
-                        <h2 style="text-align: center">@lang('admin.rooms_not_found')</h2>
+                        <h2 style="text-align: center">@lang('admin.rules_not_found')</h2>
                     @endif
                 </div>
             </div>

@@ -25,7 +25,7 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>#</th>
                                 <th>@lang('admin.title')</th>
                                 <th>@lang('admin.child_type')</th>
                                 <th>@lang('admin.child_count')</th>
@@ -36,7 +36,7 @@
                             <tbody>
                             @foreach($childs as $child)
                                 <tr>
-                                    <td>{{ $child->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $child->room->__('title') }}</td>
                                     <td>
                                         <ul class="list">
@@ -75,7 +75,8 @@
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn delete"><i class="fa-regular fa-trash"></i></button>
+                                                <button onclick="return confirm('Do you want to delete this?');"
+                                                        class="btn delete"><i class="fa-regular fa-trash"></i></button>
                                             </ul>
                                         </form>
                                     </td>
@@ -85,7 +86,7 @@
                         </table>
                         {{ $childs->links('pagination::bootstrap-4') }}
                     @else
-                        <h2 style="text-align: center">@lang('admin.rooms_not_found')</h2>
+                        <h2 style="text-align: center">@lang('admin.childs_not_found')</h2>
                     @endif
                 </div>
             </div>

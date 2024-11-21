@@ -46,68 +46,51 @@
                             <input type="email" name="email" id="email" value="{{ old('email', isset($user) ?
                                 $user->email : null) }}">
                         </div>
-                        @isset($user)
-                        @else
+                        @error('phone')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                        <div class="form-group">
+                            <label for="phone">@lang('admin.phone')</label>
+                            <input type="tel" name="phone" class="phone" id="phone" value="{{ old('phone', isset
+                            ($user) ? $user->phone : null) }}">
+                            <div id="output" class="output"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="role">@lang('admin.role')</label>
+                            <select class="form-select @error('roles') is-invalid @enderror" aria-label="Roles"
+                                    id="roles" name="roles[]">
+                                @forelse ($roles as $role)
+
+                                    @if ($role!='Super Admin')
+                                        <option value="{{ $role }}" {{ in_array($role, $userRoles ?? []) ? 'selected' : '' }}>
+                                            {{ $role }}
+                                        </option>
+                                    @else
+                                        @if (Auth::user()->hasRole('Super Admin'))
+                                            <option value="{{ $role }}" {{ in_array($role, $userRoles ?? []) ? 'selected' : '' }}>
+                                                {{ $role }}
+                                            </option>
+                                        @endif
+                                    @endif
+                                @empty
+                                @endforelse
+                            </select>
+                        </div>
+                        <div class="form-group">
                             @error('password')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
-                            <div class="form-group">
-                                <label for="password">@lang('admin.password')</label>
-                                <input type="password" name="password" id="password" value="{{ old('password', isset
-                            ($user) ?
-                                $user->password : null) }}">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="checkbox"><label for="checkbox">@lang('admin.show_password')
-                                    </label>
-                                </div>
-                                <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-                                        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-                                        crossorigin="anonymous"></script>
-                                <script>
-                                    $(document).ready(function () {
-                                        $('#checkbox').on('change', function () {
-                                            $('#password').attr('type', $('#checkbox').prop('checked') == true ? "text" : "password");
-                                        });
-                                    });
-                                </script>
-
-                                <style>
-                                    .checkbox {
-                                        margin-top: 10px;
-                                    }
-
-                                    .checkbox label {
-                                        display: inline-block;
-                                    }
-                                </style>
-                            </div>
-                        @endisset
-
+                            <label for="">Пароль</label>
+                            <input type="password" name="password" value="{{ old('password', isset
+                            ($user) ? $user->password : null) }}">
+                        </div>
                         <div class="form-group">
-                            <label for="role">@lang('admin.role')</label>
-                            <select name="is_admin" id="role">
-                                @isset($user)
-                                    <option value="{{ $user->is_admin }}">
-                                        @if($user->is_admin == 1)
-                                            Администратор
-                                        @elseif($user->is_admin == 2)
-                                            Менеджер
-                                        @elseif($user->is_admin == 3)
-                                            Бухгалтер
-                                        @elseif($user->is_admin == 4)
-                                            Менеджер Отеля
-                                        @else
-                                            Пользователь
-                                        @endif
-                                    </option>
-                                @else
-                                    <option>@lang('admin.choose')</option>
-                                @endisset
-                                <option value="1">Администратор</option>
-                                <option value="2">Менеджер</option>
-                                <option value="3">Бухгалтер</option>
-                                <option value="4">Менеджер Отеля</option>
-                            </select>
+                            @error('password_confirmation')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                            <label for="">Подтвердите пароль</label>
+                            <input type="password" name="password_confirmation" value="{{ old('password', isset
+                            ($user) ? $user->password : null) }}">
                         </div>
                         @csrf
                         <button class="more">@lang('admin.send')</button>

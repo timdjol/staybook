@@ -3,23 +3,26 @@
 @section('title', 'Главная страница')
 
 @section('content')
-
     @auth
-        <div class="owl-carousel owl-slider">
-            <div class="slider-item">
-                <div class="slider-item"
-                     style="background-image: url(https://silkway.timmedia.store/storage/app/public/sliders/zcST2Jgo1uaK3e3CkF1Kbmq8gu4E1TD7HpvL4Mza.jpg)"></div>
-            </div>
-            <div class="slider-item">
-                <div class="slider-item"
-                     style="background-image: url(https://silkway.timmedia.store/storage/app/public/sliders/PNdFu2gwhQIbrteQ5tpzwGjLJiakmMfnyBE3Zw5E.jpg)"></div>
-            </div>
-            <div class="slider-item">
-                <div class="slider-item"
-                     style="background-image: url(https://silkway.timmedia.store/storage/app/public/sliders/Kim5wvZ8yQoPQUx5f6LjCgyQsMZAPewkr7eJULRF.jpg)"></div>
+        <div class="page welcome">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Добро пожаловать в StayBook, бронируйте по лучшей цене
+                        </h1>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="search homesearch">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+                integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk="
+                crossorigin="anonymous"></script>
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+              integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous"/>
+        <div class="search homesearch d-xl-block d-lg-block d-none">
+
             <div class="container">
                 <form action="{{ route('search') }}" class="row">
                     <div class="row">
@@ -151,12 +154,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
-                                integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk="
-                                crossorigin="anonymous"></script>
-                        <link rel="stylesheet"
-                              href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
-                              integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous"/>
                         <div class="col">
                             <div class="form-group">
                                 <label for="citizenship">@lang('main.citizenship')</label>
@@ -476,6 +473,226 @@
             </div>
         </div>
 
+
+        <div class="search homesearch d-xl-none d-lg-none d-block">
+            <div class="container">
+                <form action="{{ route('search') }}" class="row">
+                    <div class="row">
+                        <div class="col-md-4 col-6">
+                            <div class="form-group">
+                                <label for="title">@lang('main.search-title')</label>
+                                <select name="title" id="hotel">
+                                    <option value="">@lang('main.choose')</option>
+                                    @foreach($hotels as $hotel)
+                                        <option value="{{ $hotel->__('title') }}" data-address="{{ $hotel->__('address')
+                                    }}">{{ $hotel->title_en }} ({{ $hotel->title}})</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-6">
+                            <div class="form-group">
+                                <label for="">@lang('main.search-date')</label>
+                                <input type="text" id="date" class="date">
+                                <input type="hidden" id="start_d" name="start_d">
+                                <input type="hidden" id="end_d" name="end_d">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <div class="form-group">
+                                <label for="">@lang('main.search-adult')</label>
+                                <select name="count" id="">
+                                    <option value="1" selected>1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-6">
+                            <div class="form-group" style="position: relative">
+                                <label for="">@lang('main.search-child')</label>
+                                <select name="countc" onchange="ageCheck(this);">
+                                    <option value="">@lang('main.choose')</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                                <select name="age1" id="age1" class="age">
+                                    <option value="1">1 год</option>
+                                    <option value="2">2 года</option>
+                                    <option value="3">3 года</option>
+                                    <option value="4">4 года</option>
+                                    <option value="5">5 лет</option>
+                                    <option value="6">6 лет</option>
+                                    <option value="7">7 лет</option>
+                                    <option value="8">8 лет</option>
+                                    <option value="9">9 лет</option>
+                                    <option value="10">10 лет</option>
+                                    <option value="11">11 лет</option>
+                                    <option value="12">12 лет</option>
+                                    <option value="13">13 лет</option>
+                                    <option value="14">14 лет</option>
+                                    <option value="15">15 лет</option>
+                                    <option value="16">16 лет</option>
+                                    <option value="17">17 лет</option>
+                                </select>
+                                <select name="age2" id="age2" class="age">
+                                    <option value="1">1 год</option>
+                                    <option value="2">2 года</option>
+                                    <option value="3">3 года</option>
+                                    <option value="4">4 года</option>
+                                    <option value="5">5 лет</option>
+                                    <option value="6">6 лет</option>
+                                    <option value="7">7 лет</option>
+                                    <option value="8">8 лет</option>
+                                    <option value="9">9 лет</option>
+                                    <option value="10">10 лет</option>
+                                    <option value="11">11 лет</option>
+                                    <option value="12">12 лет</option>
+                                    <option value="13">13 лет</option>
+                                    <option value="14">14 лет</option>
+                                    <option value="15">15 лет</option>
+                                    <option value="16">16 лет</option>
+                                    <option value="17">17 лет</option>
+                                </select>
+                                <select name="age3" id="age3" class="age">
+                                    <option value="1">1 год</option>
+                                    <option value="2">2 года</option>
+                                    <option value="3">3 года</option>
+                                    <option value="4">4 года</option>
+                                    <option value="5">5 лет</option>
+                                    <option value="6">6 лет</option>
+                                    <option value="7">7 лет</option>
+                                    <option value="8">8 лет</option>
+                                    <option value="9">9 лет</option>
+                                    <option value="10">10 лет</option>
+                                    <option value="11">11 лет</option>
+                                    <option value="12">12 лет</option>
+                                    <option value="13">13 лет</option>
+                                    <option value="14">14 лет</option>
+                                    <option value="15">15 лет</option>
+                                    <option value="16">16 лет</option>
+                                    <option value="17">17 лет</option>
+                                </select>
+                                <script>
+                                    function ageCheck(that) {
+                                        if (that.value == 1) {
+                                            document.getElementById("age1").style.display = "inline-block";
+                                            document.getElementById("age2").style.display = "none";
+                                            document.getElementById("age3").style.display = "none";
+                                        }
+                                        else if (that.value == 2) {
+                                            document.getElementById("age1").style.display = "inline-block";
+                                            document.getElementById("age2").style.display = "inline-block";
+                                            document.getElementById("age3").style.display = "none";
+                                        }
+                                        else if (that.value == 3) {
+                                            document.getElementById("age1").style.display = "inline-block";
+                                            document.getElementById("age2").style.display = "inline-block";
+                                            document.getElementById("age3").style.display = "inline-block";
+                                        }
+                                        else {
+                                            document.getElementById("age1").style.display = "none";
+                                            document.getElementById("age2").style.display = "none";
+                                            document.getElementById("age3").style.display = "none";
+                                        }
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <script>
+                            $(document).ready(function () {
+                                $('#hotel').selectize({
+                                    sortField: 'text'
+                                });
+                                $('#citizen').selectize({
+                                    sortField: 'text'
+                                });
+                                // $('#rating').selectize({
+                                //     sortField: 'text'
+                                // });
+                            });
+                        </script>
+                        <div class="col-md-4 col-6">
+                            <div class="form-group">
+                                <label for="rating">@lang('main.search-rating')</label>
+                                <select name="rating" id="rating">
+                                    <option value="">@lang('main.choose')</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-6">
+                            <div class="form-group">
+                                <label for="include">@lang('main.search-include')</label>
+                                <select id="include" name="include">
+                                    <option value="">@lang('main.choose')</option>
+                                    @foreach($foods as $food)
+                                        <option value="{{ $food->id }}">{{ $food->__('title') }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-6">
+                            <div class="form-group">
+                                <label for="check">@lang('main.search-early')</label>
+                                <select name="early_in" id="early_in">
+                                    <option value="">@lang('main.choose')</option>
+                                    <option value="06:00">06:00</option>
+                                    <option value="07:00">07:00</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="12:00">12:00</option>
+                                    <option value="13:00">13:00</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-6">
+                            <div class="form-group">
+                                <label for="check">@lang('main.search-late')</label>
+                                <select name="early_out" id="early_out">
+                                    <option value="">@lang('main.choose')</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                    <option value="18:00">18:00</option>
+                                    <option value="19:00">19:00</option>
+                                    <option value="20:00">20:00</option>
+                                    <option value="21:00">21:00</option>
+                                    <option value="22:00">22:00</option>
+                                    <option value="23:00">23:00</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-6">
+                            <div class="form-group check">
+                                <input type="checkbox" id="cancelled">
+                                <label for="cancelled">@lang('main.cancelled')</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-6">
+                            <div class="form-group check">
+                                <input type="checkbox" name="extra_place" id="extra_place">
+                                <label for="extra_place">@lang('main.search-extra')</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button class="more">@lang('main.search')</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <div class="rooms home-rooms">
             <div class="container">
                 <div class="row">
@@ -502,11 +719,6 @@
                 width: auto;
                 height: auto;
                 display: inline-block;
-            }
-            .homesearch form button.more {
-                background-color: transparent;
-                color: #fff;
-                border: 1px solid #fff;
             }
             .homesearch form button.more:hover {
                 background-color: #035497;

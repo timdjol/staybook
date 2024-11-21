@@ -26,7 +26,7 @@
     border-radius: 5px;
 }
 .admin a.add{
-    background-color: green;
+    background-color: #74bb39;
 }
 .admin a.view{
     background-color: var(--blue);
@@ -149,6 +149,14 @@
 }
 .mainhotels .add a{
     display: inline-block;
+    background-color: #74bb39;
+}
+.admin .sidebar ul li a{
+    border: none;
+    background-color: #fff;
+}
+header .status.active, .bills .status{
+    color: #74bb39;
 }
 header ul.lang{
     padding-left: 0;
@@ -187,12 +195,17 @@ ul.btns li.current a{
     color: #fff;
 }
 ul.btns li a{
-    padding: 5px 20px;
-    border: 1px solid var(--blue);
+    padding: 10px 30px;
+    background-color: #fff;
     border-radius: 5px;
-    color: var(--blue);
+    color: #333;
     text-decoration: none;
     font-size: 14px;
+    transition: all .3s ease;
+}
+ul.btns li a:hover{
+    background-color: var(--blue);
+    color: #fff;
 }
 body{
     font-family: "Fira Sans", sans-serif;
@@ -211,4 +224,11 @@ h5{
 }
 header .logo img{
     max-width: 140px;
+}
+.bookings .stick{
+    background-color: #74bb39;
+    color: #fff;
+}
+.bookings .status i{
+    color: #74bb39;
 }

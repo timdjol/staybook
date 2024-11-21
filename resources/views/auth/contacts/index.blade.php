@@ -1,6 +1,6 @@
 @extends('auth.layouts.master')
 
-@section('title', 'Контакты')
+@section('title', __('admin.contacts'))
 
 @section('content')
 

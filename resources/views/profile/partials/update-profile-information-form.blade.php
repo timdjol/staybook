@@ -19,7 +19,7 @@
     @enderror
     <div class="form-group">
         <label for="">Email</label>
-        <input type="email" name="email" value="{{ old('name', $user->email) }}">
+        <input type="email" name="email" value="{{ old('email', $user->email) }}">
         @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
             <div>
                 <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
@@ -44,7 +44,8 @@
     @enderror
     <div class="form-group">
         <label for="">@lang('admin.phone')</label>
-        <input type="number" name="phone" id="phone" value="{{ old('phone', $user->phone) }}">
+        <input type="tel" name="phone" id="phone" class="phone" value="{{ old('phone', $user->phone) }}">
+        <div id="output" class="output"></div>
     </div>
     <div class="form-group">
         <label for="">@lang('admin.comission') (%)</label>

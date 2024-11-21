@@ -1,6 +1,6 @@
 @extends('auth.layouts.master')
 
-@section('title', 'Bookings')
+@section('title', __('admin.bookings'))
 
 @section('content')
 
@@ -21,7 +21,7 @@
                         <div id="search_list"></div>
                         <table>
                             <tr>
-                                <th>ID</th>
+                                <th>#</th>
                                 <th>@lang('admin.booking')</th>
                                 <th>@lang('admin.guests')</th>
                                 <th>@lang('admin.plans')</th>
@@ -32,9 +32,9 @@
                             <tbody>
                             @foreach($books as $book)
                                 <tr>
-                                    <td>{{ $book->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>
-                                        <div class="title"># {{ $book->book_id }}</div>
+                                        <div class="title"># {{ $book->id }}</div>
                                         <div class="stick">B2B</div>
                                         <div class="date">@lang('admin.created') {{ $book->created_at }}</div>
                                     </td>
@@ -57,8 +57,12 @@
                                     </td>
                                     <td>{{ $book->showStartDate() }} - {{ $book->showEndDate() }}</td>
                                     <td>
-                                        <div class="title">{{ $book->sum }}</div>
-                                        <div class="status"><i class="fa-regular fa-money-bill"></i> {{ $book->status }}
+                                        @if($book->sum != 1)
+                                            <div class="title">{{ $book->sum }}</div>
+                                        @else
+                                            <div class="title">$ {{ $book->price }}</div>
+                                        @endif
+                                        <div class="status"><i class="fa-regular fa-money-bill"></i> @lang('main.paid')
                                         </div>
                                     </td>
                                     <td>
@@ -68,7 +72,10 @@
                                                             class="fa-regular fa-eye"></i></a>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn delete"><i class="fa-regular fa-trash"></i></button>
+                                                @can('delete-book')
+                                                    <button class="btn delete" onclick="return confirm('Do you want to delete this?');"><i class="fa-regular
+                                                    fa-trash"></i></button>
+                                                @endcan
                                             </ul>
                                         </form>
                                     </td>

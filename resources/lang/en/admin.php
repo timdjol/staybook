@@ -141,4 +141,10 @@ return [
     'close' => 'Close',
     'book' => 'Book',
     'rates_not_found' => 'Rates not found',
+    'roles' => 'User roles',
+    'permissions' => 'Permissions',
+    'rules_not_found' => 'Rules not found',
+    'categories_not_found' => 'Tariffs not found',
+    'foods_not_found' => 'No food types found',
+    'childs_not_found' => 'Accommodations with children not found'
 ];

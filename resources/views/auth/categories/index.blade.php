@@ -15,7 +15,7 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>#</th>
                                 <th>@lang('admin.title')</th>
                                 <th>@lang('admin.action')</th>
                             </tr>
@@ -23,7 +23,7 @@
                             <tbody>
                             @foreach($rules as $rule)
                                 <tr>
-                                    <td>{{ $rule->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $rule->__('title') }}</td>
                                     <td>
                                         <form action="{{ route('rules.destroy', $rule) }}" method="post">
@@ -32,7 +32,8 @@
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn delete"><i class="fa-regular fa-trash"></i></button>
+                                                <button onclick="return confirm('Do you want to delete this?');"
+                                                        class="btn delete"><i class="fa-regular fa-trash"></i></button>
                                             </ul>
                                         </form>
                                     </td>
@@ -41,9 +42,8 @@
                             </tbody>
                         </table>
                         {{ $rules->links('pagination::bootstrap-4') }}
-
                     @else
-                        <h2 style="text-align: center">@lang('admin.rooms_not_found')</h2>
+                        <h2 style="text-align: center">@lang('admin.rules_not_found')</h2>
                     @endif
                     <div class="btn-wrap" style="margin-top: 20px">
                         <a class="btn add" href="{{ route('rules.create') }}"><i class="fa-solid
@@ -55,7 +55,7 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>#</th>
                                 <th>@lang('admin.title')</th>
                                 <th>@lang('admin.room')</th>
                                 <th>@lang('admin.food')</th>
@@ -66,7 +66,7 @@
                             <tbody>
                             @foreach($categories as $category)
                                 <tr>
-                                    <td>{{ $category->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $category->__('title') }}</td>
                                     <td>{{ $category->room->__('title') }}</td>
                                     <td>
@@ -86,7 +86,8 @@
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn delete"><i class="fa-regular fa-trash"></i></button>
+                                                <button onclick="return confirm('Do you want to delete this?');"
+                                                        class="btn delete"><i class="fa-regular fa-trash"></i></button>
                                             </ul>
                                         </form>
                                     </td>
@@ -97,7 +98,7 @@
                         {{ $categories->links('pagination::bootstrap-4') }}
 
                     @else
-                        <h2 style="text-align: center">@lang('admin.rooms_not_found')</h2>
+                        <h2 style="text-align: center">@lang('admin.categories_not_found')</h2>
                     @endif
                     <div class="btn-wrap" style="margin-top: 20px">
                         <a class="btn add" href="{{ route('categories.create') }}"><i class="fa-solid

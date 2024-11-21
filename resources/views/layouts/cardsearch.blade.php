@@ -181,7 +181,7 @@
 
                                     <div class="form-group">
                                         <label class="col-xs-4" for="phone">@lang('main.phone')</label>
-                                        <input type="number" class="form-control"
+                                        <input type="text" class="form-control"
                                                name="phone" id="phone" required
                                         >
                                         <div id="output" class="output"></div>

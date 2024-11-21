@@ -12,8 +12,8 @@
 
     <!-- Template Basic Images Start -->
     <meta property="og:image" content="path/to/image.jpg">
-    <link rel="icon" href="{{route('index')}}/img/favicon/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{route('index')}}/img/favicon/apple-touch-icon-180x180.png">
+    <link rel="icon" href="{{route('index')}}/img/favicon.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{route('index')}}/img/favicon.jpg">
     <!-- Template Basic Images End -->
 
     <!-- Custom Browser Color Start -->
@@ -28,7 +28,6 @@
     <link rel="stylesheet" href="{{route('index')}}/css/main.min.css">
     <link rel="stylesheet" href="{{route('index')}}/css/admin.css">
     <link href="{{route('index')}}/css/print.css" rel="stylesheet" media="print" type="text/css">
-
 </head>
 
 <body>
@@ -41,7 +40,12 @@
                                                              alt="Stay Book"></a>
                 </div>
             </div>
+            @can('edit-hotel')
+                @empty($hotels)
+
+                @else
             <div class="col-md-3">
+
                 <form>
                     <select id="dynamic_select">
                         <option>@lang('main.choose')</option>
@@ -51,13 +55,17 @@
                         @endforeach
                     </select>
                 </form>
+
             </div>
             <div class="col-md-4">
+                @empty($hotel)
+                    @else
                 @if($hotel->status == 1)
                 <div class="status active"><i class="fa-solid fa-circle"></i> @lang('admin.active')</div>
                     @else
                     <div class="status"><i class="fa-solid fa-circle"></i> @lang('admin.disable')</div>
                 @endif
+                @endempty
                     <ul class="lang d-xl-inline-block d-lg-inline-block d-none">
                         <li class="
                             @if(session('locale')=='ru')
@@ -71,9 +79,12 @@
                             "><a href="{{ route('locale', 'en') }}">EN</a></li>
                     </ul>
             </div>
+
+                @endempty
+            @endcan
             <div class="col-md-3">
                 <div class="homelink">
-                    <a href="{{route('homepage')}}" target="_blank"><i class="fas fa-house"></i> @lang('admin.visit')
+                    <a href="{{route('index')}}" target="_blank"><i class="fas fa-house"></i> @lang('admin.visit')
                     </a>
                 </div>
             </div>
@@ -85,24 +96,38 @@
                 <div class="col-md-8">
                     <nav>
                         <ul>
-                            <li @routeactive('hotels.index')><a href="{{route('hotels.index')}}"><i class="fas
-                            fa-hotel"></i> @lang('admin.hotels')</a></li>
-                            <li @routeactive('bookings.index')><a href="{{route('bookings.index')}}"><i
-                                        class="fa-regular
-                            fa-tag"></i> @lang('admin.rates_and_availability')</a></li>
-                            <li @routeactive('listbooks.index')><a href="{{route('listbooks.index')}}"><i
-                                        class="fa-regular fa-tag"></i> @lang('admin.bookings')</a></li>
-                            <li @routeactive('rooms.index')><a href="{{route('rooms.index')}}"><i class="fas
-                            fa-booth-curtain"></i> @lang('admin.rooms')</a></li>
-                            <li @routeactive('bills.index')><a href="{{route('bills.index')}}"><i class="fa-thin
+                            @can('edit-hotel')
+                                <li @routeactive('hotels.index')><a href="{{route('hotels.index')}}"><i class="fas
+                                fa-hotel"></i> @lang('admin.hotels')</a></li>
+                                <li @routeactive('bookings.index')><a href="{{route('bookings.index')}}"><i
+                                            class="fa-regular
+                                fa-tag"></i> @lang('admin.rates_and_availability')</a></li>
+                                <li @routeactive('listbooks.index')><a href="{{route('listbooks.index')}}"><i
+                                            class="fa-regular fa-tag"></i> @lang('admin.bookings')</a></li>
+                                <li @routeactive('rooms.index')><a href="{{route('rooms.index')}}"><i class="fas
+                                fa-booth-curtain"></i> @lang('admin.rooms')</a></li>
+                            @endcan
+                            @can('edit-bill')
+                                <li @routeactive('bills.index')><a href="{{route('bills.index')}}"><i class="fa-thin
                             fa-money-bills"></i> @lang('admin.bills')</a></li>
+                            @endcan
                         </ul>
                     </nav>
                 </div>
+                @auth
                 <div class="col-md-4 person">
-                    <a href="{{route('profile.edit')}}"><i class="fa-regular fa-address-card"></i> @lang('admin.profile')</a>
+                    <a href="{{route('profile.edit')}}"><i class="fa-regular fa-address-card"></i>
+                        @auth
+                            @php
+                                echo \Illuminate\Support\Facades\Auth::user()->name
+                            @endphp
+                        @else
+                            @lang('admin.profile')
+                        @endauth
+                    </a>
                     <a href="{{route('logout')}}" class="delete"><i class="fa-regular fa-door-open"></i> @lang('admin.logout')</a>
                 </div>
+                @endauth
             </div>
         </div>
     </div>
@@ -123,6 +148,7 @@
 @yield('content')
 
 <footer>
+    @can('edit-page')
     <div class="bottom">
         <div class="container">
             <div class="row">
@@ -130,6 +156,9 @@
                     <ul>
                         <li @routeactive('pages.index')><a href="{{ route('pages.index')}}"><i class="fas
             fa-page"></i> @lang('admin.pages')</a></li>
+                        <li @routeactive('users.index')><a href="{{ route('users.index')}}"><i class="fa-solid fa-user"></i> @lang('admin.users')</a></li>
+                        <li @routeactive('roles.index')><a href="{{ route('roles.index')}}"><i class="fa-solid fa-mask"></i> @lang('admin.roles')</a></li>
+                        <li @routeactive('permissions.index')><a href="{{ route('permissions.index')}}"><i class="fa-solid fa-lock"></i> @lang('admin.permissions')</a></li>
                         <li @routeactive('contacts.index')><a href="{{ route('contacts.index')}}"><i class="fas
             fa-address-book"></i> @lang('admin.contacts')</a></li>
                     </ul>
@@ -137,6 +166,7 @@
             </div>
         </div>
     </div>
+    @endcan
     <div class="copy">
         <div class="container">
             <div class="row">
@@ -148,7 +178,8 @@
     </div>
 </footer>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script src="{{ route('index') }}/js/scripts.min.js"></script>
 <script>
     $(function() {
         $('#dynamic_select').on('change', function() {

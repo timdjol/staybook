@@ -11,6 +11,14 @@ use Illuminate\Support\Str;
 
 class PageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-page|edit-page|delete-page', ['only' => ['index','show']]);
+        $this->middleware('permission:create-page', ['only' => ['create','store']]);
+        $this->middleware('permission:edit-page', ['only' => ['edit','update']]);
+        $this->middleware('permission:delete-page', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */

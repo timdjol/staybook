@@ -1,6 +1,6 @@
 @extends('auth.layouts.master')
 
-@section('title', 'Rooms')
+@section('title', __('admin.rooms'))
 
 @section('content')
 
@@ -95,7 +95,7 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>#</th>
                                 <th>@lang('admin.image')</th>
                                 <th>@lang('admin.title')</th>
                                 <th>@lang('admin.plans')</th>
@@ -107,7 +107,7 @@
                             <tbody>
                             @foreach($rooms as $room)
                                 <tr>
-                                    <td>{{ $room->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td><img src="{{ Storage::url($room->image) }}" alt="" width="100px"></td>
                                     <td>{{ $room->__('title') }}</td>
                                     <td>
@@ -138,7 +138,8 @@
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn delete"><i class="fa-regular fa-trash"></i></button>
+                                                <button onclick="return confirm('Do you want to delete this?');"
+                                                        class="btn delete"><i class="fa-regular fa-trash"></i></button>
                                             </ul>
                                         </form>
                                     </td>

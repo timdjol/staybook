@@ -12,8 +12,8 @@
 
     <!-- Template Basic Images Start -->
     <meta property="og:image" content="path/to/image.jpg">
-    <link rel="icon" href="{{route('index')}}/img/favicon/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{route('index')}}/img/favicon/apple-touch-icon-180x180.png">
+    <link rel="icon" href="{{route('index')}}/img/favicon.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{route('index')}}/img/favicon.jpg">
     <!-- Template Basic Images End -->
 
     <!-- Custom Browser Color Start -->
@@ -35,13 +35,13 @@
 <header>
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="logo">
                     <a href="{{route('hotels.index')}}"><img src="{{ route('index') }}/img/logo.svg" alt="Stay
                     Book"></a>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-2">
                 <ul class="lang d-xl-inline-block d-lg-inline-block d-none">
                     <li class="
                             @if(session('locale')=='ru')
@@ -55,11 +55,25 @@
                             "><a href="{{ route('locale', 'en') }}">EN</a></li>
                 </ul>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="homelink">
-                    <a href="{{route('homepage')}}" target="_blank"><i class="fas fa-house"></i> @lang('admin.visit')</a>
+                    <a href="{{route('index')}}" target="_blank"><i class="fas fa-house"></i> @lang('admin.visit')</a>
                 </div>
             </div>
+            @auth
+                <div class="col-md-4 person">
+                    <a href="{{route('profile.edit')}}"><i class="fa-regular fa-address-card"></i>
+                        @auth
+                            @php
+                                echo \Illuminate\Support\Facades\Auth::user()->name
+                            @endphp
+                        @else
+                            @lang('admin.profile')
+                        @endauth
+                    </a>
+                    <a href="{{route('logout')}}" class="delete"><i class="fa-regular fa-door-open"></i> @lang('admin.logout')</a>
+                </div>
+            @endauth
         </div>
     </div>
 </header>
@@ -78,17 +92,6 @@
 </div>
 @yield('content')
 
-{{--<footer>--}}
-{{--    <div class="copy">--}}
-{{--        <div class="container">--}}
-{{--            <div class="row">--}}
-{{--                <div class="col-md-12">--}}
-{{--                    <p>@lang('main.copy') &copy; {{ date('Y') }} StayBook</p>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--</footer>--}}
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>

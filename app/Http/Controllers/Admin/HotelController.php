@@ -18,15 +18,30 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Nnjeim\World\World;
+use Spatie\Permission\Models\Role;
 
 class HotelController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-hotel|edit-hotel|delete-hotel', ['only' => ['index','show']]);
+        $this->middleware('permission:create-hotel', ['only' => ['create','store']]);
+        $this->middleware('permission:edit-hotel', ['only' => ['edit','update']]);
+        $this->middleware('permission:delete-hotel', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $hotels = Hotel::paginate(10);
+        $user = Auth::user()->id;
+        if($user != 1 && $user != 3){
+            $hotels = Hotel::where('user_id', $user)->paginate(10);
+        } else{
+            $hotels = Hotel::paginate(10);
+        }
+
         return view('auth.hotels.index', compact('hotels'));
     }
 

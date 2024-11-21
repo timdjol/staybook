@@ -1,6 +1,6 @@
 @extends('auth.layouts.master')
 
-@section('title', 'Bills')
+@section('title', __('admin.bills'))
 
 @section('content')
 
@@ -25,7 +25,7 @@
                         <tbody>
                         @foreach($bills as $bill)
                             <tr>
-                                <td>{{ $bill->id }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $bill->created_at->format('d.m.Y') }}</td>
                                 <td>
                                     @if($bill->status==1)
@@ -49,7 +49,8 @@
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn delete"><i class="fa-regular fa-trash"></i></button>
+                                            <button onclick="return confirm('Do you want to delete this?');"
+                                                    class="btn delete"><i class="fa-regular fa-trash"></i></button>
                                         </ul>
                                     </form>
                                 </td>

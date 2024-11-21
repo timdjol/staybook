@@ -5,8 +5,6 @@
 @section('content')
 
     @auth
-{{--    {{ $reservedCount }}--}}
-
     <div class="pagetitle" style="background-image: url({{ url('/') }}/img/page.jpg)">
         <div class="overlay"></div>
         <div class="container">
@@ -14,7 +12,7 @@
                 <div class="col-md-12">
                     <h1 data-aos="fade-up" data-aos-duration="2000">@lang('main.search')</h1>
                     <ul class="breadcrumbs">
-                        <li><a href="{{route('homepage')}}">@lang('main.home')</a></li>
+                        <li><a href="{{route('index')}}">@lang('main.home')</a></li>
                         <li>></li>
                         <li>@lang('main.search')</li>
                     </ul>

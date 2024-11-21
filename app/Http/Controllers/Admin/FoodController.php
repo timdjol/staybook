@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Mail;
 
 class FoodController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-food|edit-food|delete-food', ['only' => ['index','show']]);
+        $this->middleware('permission:create-food', ['only' => ['create','store']]);
+        $this->middleware('permission:edit-food', ['only' => ['edit','update']]);
+        $this->middleware('permission:delete-food', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */

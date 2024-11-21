@@ -1,6 +1,5 @@
 @extends('auth.layouts.master')
-
-@section('title', 'Пользователи')
+@section('title', __('admin.users'))
 
 @section('content')
 
@@ -11,12 +10,6 @@
                     @include('auth.layouts.sidebar')
                 </div>
                 <div class="col-md-9">
-                    @if(session()->has('success'))
-                        <p class="alert alert-success">{{ session()->get('success') }}</p>
-                    @endif
-                    @if(session()->has('warning'))
-                        <p class="alert alert-warning">{{ session()->get('warning') }}</p>
-                    @endif
                     <div class="row">
                         <div class="col-md-7">
                             <h1>@lang('admin.users')</h1>
@@ -29,6 +22,7 @@
                     <table class="table">
                         <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Email</th>
                             <th>@lang('admin.name')</th>
                             <th>@lang('admin.role')</th>
@@ -38,20 +32,14 @@
                         <tbody>
                         @foreach($users as $user)
                             <tr>
+                                <td>{{ $user->id }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>
-                                    @if($user->is_admin == 1)
-                                        Администратор
-                                    @elseif($user->is_admin == 2)
-                                        Менеджер
-                                    @elseif($user->is_admin == 3)
-                                        Бухгалтер
-                                    @elseif($user->is_admin == 4)
-                                        Менеджер Отеля
-                                    @else
-                                        Пользователь
-                                    @endif
+                                    @forelse ($user->getRoleNames() as $role)
+                                        <span class="badge bg-primary">{{ $role }}</span>
+                                    @empty
+                                    @endforelse
                                 </td>
                                 <td>
                                     <form action="{{ route('users.destroy', $user) }}" method="post">

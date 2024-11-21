@@ -4,8 +4,7 @@
 
 @section('content')
 
-    <div class="pagetitle" style="background-image: url({{ Storage::url($page->image) }})">
-        <div class="overlay"></div>
+    <div class="pagetitle">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">

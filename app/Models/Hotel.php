@@ -32,7 +32,8 @@ class Hotel extends Model
         'early_in',
         'early_out',
         'rating',
-        'top'
+        'top',
+        'user_id'
     ];
 
     public function rooms()

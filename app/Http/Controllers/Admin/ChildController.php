@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Mail;
 
 class ChildController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-child|edit-child|delete-child', ['only' => ['index','show']]);
+        $this->middleware('permission:create-child', ['only' => ['create','store']]);
+        $this->middleware('permission:edit-child', ['only' => ['edit','update']]);
+        $this->middleware('permission:delete-child', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */

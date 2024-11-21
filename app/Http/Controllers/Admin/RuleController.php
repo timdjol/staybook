@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Mail;
 
 class RuleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-rule|edit-rule|delete-rule', ['only' => ['index','show']]);
+        $this->middleware('permission:create-rule', ['only' => ['create','store']]);
+        $this->middleware('permission:edit-rule', ['only' => ['edit','update']]);
+        $this->middleware('permission:delete-rule', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */

@@ -26,16 +26,16 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::if('admin', function(){
-            return Auth::user()->isAdmin();
+            return Auth::user()->hasRole('Super Admin');
         });
         Blade::if('manager', function(){
-            return Auth::user()->isManager();
+            return Auth::user()->hasRole('Manager');
         });
         Blade::if('buh', function(){
-            return Auth::user()->isBuh();
+            return Auth::user()->hasRole('Accoundate');
         });
         Blade::if('hotel', function(){
-            return Auth::user()->isHotel();
+            Auth::user()->hasRole('Hotel');
         });
 
     }

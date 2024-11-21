@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-service|edit-service|delete-service', ['only' => ['index','show']]);
+        $this->middleware('permission:create-service', ['only' => ['create','store']]);
+        $this->middleware('permission:edit-service', ['only' => ['edit','update']]);
+        $this->middleware('permission:delete-service', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         $hotel = $request->session()->get('hotel_id');

@@ -25,7 +25,7 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>#</th>
                                 <th>@lang('admin.title')</th>
                                 <th>EN</th>
                                 <th>@lang('admin.action')</th>
@@ -34,7 +34,7 @@
                             <tbody>
                             @foreach($foods as $food)
                                 <tr>
-                                    <td>{{ $food->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $food->title }}</td>
                                     <td>{{ $food->title_en }}</td>
                                     <td>
@@ -44,7 +44,8 @@
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn delete"><i class="fa-regular fa-trash"></i></button>
+                                                <button onclick="return confirm('Do you want to delete this?');"
+                                                        class="btn delete"><i class="fa-regular fa-trash"></i></button>
                                             </ul>
                                         </form>
                                     </td>
@@ -54,7 +55,7 @@
                         </table>
                         {{ $foods->links('pagination::bootstrap-4') }}
                     @else
-                        <h2 style="text-align: center">@lang('admin.rooms_not_found')</h2>
+                        <h2 style="text-align: center">@lang('admin.foods_not_found')</h2>
                     @endif
                 </div>
             </div>

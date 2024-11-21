@@ -1,6 +1,6 @@
 @extends('auth.layouts.master', compact('hotel'))
 
-@section('title', 'Services and Facilities')
+@section('title', __('admin.services'))
 
 @section('content')
 

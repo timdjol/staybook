@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Storage;
 
 class BillController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-bill|edit-bill|delete-bill', ['only' => ['index','show']]);
+        $this->middleware('permission:create-bill', ['only' => ['create','store']]);
+        $this->middleware('permission:edit-bill', ['only' => ['edit','update']]);
+        $this->middleware('permission:delete-bill', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         $hotel = $request->session()->get('hotel_id');

@@ -14,6 +14,14 @@ use Illuminate\Support\Str;
 
 class CategoryRoomController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-category|edit-category|delete-category', ['only' => ['index','show']]);
+        $this->middleware('permission:create-category', ['only' => ['create','store']]);
+        $this->middleware('permission:edit-category', ['only' => ['edit','update']]);
+        $this->middleware('permission:delete-category', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */

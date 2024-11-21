@@ -10,11 +10,18 @@ use Illuminate\Support\Facades\Mail;
 
 class ListbookController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:create-book|edit-book|delete-book', ['only' => ['index','show']]);
+        $this->middleware('permission:create-book', ['only' => ['create','store']]);
+        $this->middleware('permission:edit-book', ['only' => ['edit','update']]);
+        $this->middleware('permission:delete-book', ['only' => ['destroy']]);
+    }
     public function index(Request $request)
     {
         $hotel = $request->session()->get('hotel_id');
-        $books = Book::where('hotel_id', $hotel)->where('title', '!=', 'Admin')->paginate(40);
-        //$books = Book::where('hotel_id', $hotel)->where('sum', '!=', 1)->paginate(40);
+        $books = Book::where('hotel_id', $hotel)->paginate(40);
         return view('auth.listbooks.index', compact('books'));
     }
 

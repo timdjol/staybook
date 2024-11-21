@@ -31,6 +31,7 @@
                             @method('PUT')
                         @endisset
                         <input type="hidden" value="{{ $hotel }}" name="hotel_id">
+                        <input type="hidden" name="user_id" value="{{ \Illuminate\Support\Facades\Auth::user()->id }}">
                         <div class="row">
                             <div class="col-md-6">
                                 @include('auth.layouts.error', ['fieldname' => 'title'])

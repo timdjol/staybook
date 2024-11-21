@@ -1,6 +1,6 @@
 @extends('auth.layouts.hotelhead')
 
-@section('title', 'Отели')
+@section('title', __('admin.hotels'))
 
 @section('content')
 
@@ -27,14 +27,14 @@
                     <div id="search_list"></div>
                     <table>
                         <tr>
-                            <th>ID</th>
+                            <th>#</th>
                             <th>@lang('admin.title')</th>
                             <th>@lang('admin.address')</th>
                             <th>@lang('admin.action')</th>
                         </tr>
                         @foreach($hotels as $hotel)
                             <tr>
-                                <td>{{ $hotel->id }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $hotel->__('title') }}</td>
                                 <td>{{ $hotel->__('address') }}</td>
                                 <td>
@@ -44,7 +44,7 @@
                                 fa-pen-to-square"></i> @lang('admin.choose')</a>
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn delete"><i class="fa-regular fa-trash"></i></button>
+                                            <button onclick="return confirm('Do you want to delete this?');" class="btn delete"><i class="fa-regular fa-trash"></i></button>
                                         </ul>
                                     </form>
                                 </td>

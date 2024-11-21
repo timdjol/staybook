@@ -1,6 +1,6 @@
-@extends('auth.layouts.booking')
+@extends('auth.layouts.headbook')
 
-@section('title', 'Бронирование')
+@section('title', __('admin.bookings'))
 
 @section('content')
 
@@ -21,8 +21,10 @@
                     {{--                        </ul>--}}
                     @if($rooms->isNotEmpty())
                         <ul class="btns">
-                            <li @routeactive('booking*')><a href="{{route('bookings.index')}}">@lang('admin.availability')</a></li>
-                            <li @routeactive('price*')><a href="{{route('prices.index')}}">@lang('admin.prices')
+                            <li @routeactive(
+                            'booking*')><a href="{{route('bookings.index')}}">@lang('admin.availability')</a></li>
+                            <li @routeactive(
+                            'price*')><a href="{{route('prices.index')}}">@lang('admin.prices')
                             </a></li>
                         </ul>
                         <div id='calendar'></div>
@@ -48,16 +50,16 @@
                                                     <div class="form-group">
                                                         <input type="hidden" name="room_id" id="room_id">
                                                         <input type="hidden" class="form-control" name="title"
-                                                               id="title" value="Admin"/>
+                                                               id="title" value="{{ Auth::user()->name }}"/>
                                                         <input type="hidden" class="form-control" name="email"
-                                                               id="email" value="test@mail.com"/>
+                                                               id="email" value="{{ Auth::user()->email }}"/>
                                                         <input type="hidden" class="form-control" name="sum"
                                                                id="email" value="1"/>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="col-xs-4" for="count">@lang('admin.quotes')
                                                         </label>
-                                                        <select name="count" id="count" required>
+                                                        <select name="quote" id="quote" required>
                                                             <option value="0">0</option>
                                                             <option value="1">1</option>
                                                             <option value="2">2</option>
@@ -72,6 +74,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
+                                                        @lang('admin.date')
                                                         <input type="text" id="date">
                                                         <input type="hidden" id="start_d" name="start_d">
                                                         <input type="hidden" id="end_d" name="end_d">

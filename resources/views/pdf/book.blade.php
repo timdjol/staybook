@@ -19,7 +19,36 @@
         padding: 10px;
         border-bottom: 1px solid #ddd;
     }
+    table a{
+        text-decoration: none;
+        color: #000;
+    }
+    .address{
+        font-size: 14px;
+    }
+    .stick{
+        background-color: orange;
+        color: #333;
+        display: inline-block;
+        padding: 2px 5px;
+        font-size: 12px;
+        border-radius: 5px;
+    }
+    .pay{
+        color: green;
+        opacity: .8;
+    }
+    .descr{
+        font-size: 12px;
+    }
 </style>
+
+@php
+    $hotel = \App\Models\Hotel::where('id', $book->hotel_id)->firstOrFail();
+    $contacts = \App\Models\Contact::first();
+    $room = \App\Models\Room::where('id', $book->room_id)->firstOrFail();
+    $category = \App\Models\Category::where('room_id', $book->room_id)->firstOrFail();
+@endphp
 
 <div class="page admin">
     <div class="container">
@@ -28,27 +57,33 @@
                 <table>
                     <tr>
                         <td>
-                            <div class="logo"><img src="{{ public_path("img/logo.png") }}" width="120px"
+                            <div class="logo"><img src="{{ public_path("img/logo.svg") }}" width="120px"
                                                    alt="Logo"></div>
                         </td>
                         <td>
-                            <div class="phone"><a href="0999999999">0999999999</a></div>
+                            <div class="phone">
+                                <a href="tel:{{ $contacts->phone }}">{{ $contacts->phone }}</a><br>
+                                <a href="tel:{{ $contacts->phone2 }}">{{ $contacts->phone2 }}</a><br>
+                            </div>
+                            <div class="address">{{ $contacts->address }}</div>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            @php
-                                $hotel = \App\Models\Hotel::where('id', $book->hotel_id)->firstOrFail();
-                            @endphp
-                            {{ $hotel->title }}<br>
-                            {{ $hotel->address }}
-                        </td>
-                        <td></td>
+                        <td>ID</td>
+                        <td>{{ $book->id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Booking made on</td>
+                        <td>{{ $book->created_at }}</td>
+                    </tr>
+                    <tr>
+                        <td>Rate</td>
+                        <td><div class="stick">B2B</div></td>
                     </tr>
                     <tr>
                         <td>Guest</td>
                         <td>
-                            {{ $book->title }}<br>
+                            {{ $book->title }} ({{ $book->count }} @lang('admin.adult'))<br>
                             @isset($book->title2)
                                 {{ $book->title2 }}<br>
                             @endisset
@@ -63,18 +98,6 @@
                             @endisset
                         </td>
                     </tr>
-                    @php
-                    $room = \App\Models\Room::where('id', $book->room_id)->firstOrFail();
-                    @endphp
-                    {{--                    <tr>--}}
-{{--                        <td>Meal</td>--}}
-{{--                        <td>--}}
-{{--                            @php--}}
-{{--                                $room = \App\Models\Room::where('id', $book->room_id)->firstOrFail();--}}
-{{--                            @endphp--}}
-{{--                            {{ $room->include }}--}}
-{{--                        </td>--}}
-{{--                    </tr>--}}
                     <tr>
                         <td>Check In</td>
                         <td>{{ $book->showStartDate() }} from {{ $hotel->checkin }}</td>
@@ -87,53 +110,31 @@
                         <td>
                             <img src="{{ storage_path('app/public/'.$room->image) }}" width="220px" alt="Logo">
                         </td>
-                        <td>{{ $room->title }}</td>
+                        <td>{{ $room->title }}<br>
+                            {{ $category->title }}
+                        </td>
                     </tr>
                     <tr>
-                        <td>ID</td>
-                        <td>{{ $book->book_id }}</td>
-                    </tr>
-                    <tr>
-                        <td>Booking made on</td>
-                        <td>{{ $book->created_at }}</td>
-                    </tr>
-                    <tr>
-                        <td>Payment type</td>
-                        <td>{{ $book->status }}</td>
-                    </tr>
-                    <tr>
-                        <td>Rate</td>
-                        <td>B2B</td>
-                    </tr>
-                    <tr>
-                        <td>Beddings</td>
+                        <td>Bedding</td>
                         <td>{{ $room->bed }}</td>
                     </tr>
-{{--                    <tr>--}}
-{{--                        <td>Free cancellation</td>--}}
-{{--                        <td>--}}
-{{--                            @php--}}
-{{--                                $date = \Carbon\Carbon::parse($book->end_d);--}}
-{{--                                //$date->locale('ru');--}}
-{{--                                $exp = $date->subDays($room->cancel_day);--}}
-{{--                                $month = $exp->getTranslatedMonthName('Do MMMM');--}}
-{{--                                $get = $exp->day . ' ' . $month;--}}
-{{--                            @endphp--}}
-{{--                            until {{ $get }}--}}
-{{--                        </td>--}}
-{{--                    </tr>--}}
-{{--                    <tr>--}}
-{{--                        <td>Meal price</td>--}}
-{{--                        <td>Included</td>--}}
-{{--                    </tr>--}}
+                    <tr>
+                        <td colspan="2">
+                            {{ $hotel->title }}<br>
+                            {{ $hotel->address }}
+                            <div class="descr">{!! $hotel->description !!}</div>
+                            <img src="https://maps.googleapis.com/maps/api/staticmap?center=Berkeley,CA&amp;zoom=13&amp;size=400x400&amp;key=AIzaSyA3kg7YWugGl1lTXmAmaBGPNhDW9pEh5bo&amp;signature=45D4gqkHrzXqD1o0ucV_geljI6A=" alt="">
+                        </td>
+
+                    </tr>
                     <tr>
                         <td>Accommodation price</td>
                         <td>{{ $book->sum }}</td>
                     </tr>
-{{--                    <tr>--}}
-{{--                        <td>Price per day</td>--}}
-{{--                        <td>{{ $room->price }} $</td>--}}
-{{--                    </tr>--}}
+                    <tr>
+                        <td>Payment type</td>
+                        <td><div class="pay">{{ $book->status }}</div></td>
+                    </tr>
                 </table>
             </div>
         </div>

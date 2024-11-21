@@ -3,20 +3,22 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title') - SilkWayTravel</title>
+    <title>@yield('title') - StayBook</title>
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
-    <link rel="icon" href="{{route('index')}}/img/favicon.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{route('index')}}/img/favicon.png">
+    <link rel="icon" href="{{route('index')}}/img/favicon.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{route('index')}}/img/favicon.jpg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+          rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/eliyantosarage/font-awesome-pro@main/fontawesome-pro-6.5.1-web/css/all.min.css"
           rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"/>
     <link href="
 https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
 " rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/eliyantosarage/font-awesome-pro@main/fontawesome-pro-6.5.1-web/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/eliyantosarage/font-awesome-pro@main/fontawesome-pro-6.5.1-web/css/all.min.css"
+          rel="stylesheet">
     <link rel="stylesheet" href="/css/main.min.css">
     <link rel="stylesheet" href="{{route('index')}}/css/admin.css">
     <link rel="stylesheet" href="{{route('index')}}/css/main.min.css">
@@ -65,7 +67,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
             </div>
             <div class="col-md-3">
                 <div class="homelink">
-                    <a href="{{route('index')}}"><i class="fas fa-house"></i> @lang('admin.visit')</a></a>
+                    <a href="{{route('index')}}" target="_blank"><i class="fas fa-house"></i> @lang('admin.visit')
+                    </a></a>
                 </div>
             </div>
         </div>
@@ -76,23 +79,38 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
                 <div class="col-md-8">
                     <nav>
                         <ul>
-                            <li @routeactive('hotels.index')><a href="{{route('hotels.index')}}"><i class="fas
+                            <li @routeactive(
+                            'hotels.index')><a href="{{route('hotels.index')}}"><i class="fas
                             fa-hotel"></i> @lang('admin.hotels')</a></li>
-                            <li @routeactive('bookings.index')><a href="{{route('bookings.index')}}"><i
+                            <li @routeactive(
+                            'bookings.index')><a href="{{route('bookings.index')}}"><i
                                         class="fa-regular
                             fa-tag"></i> @lang('admin.rates_and_availability')</a></li>
-                            <li @routeactive('listbooks.index')><a href="{{route('listbooks.index')}}"><i
+                            <li @routeactive(
+                            'listbooks.index')><a href="{{route('listbooks.index')}}"><i
                                         class="fa-regular fa-tag"></i> @lang('admin.bookings')</a></li>
-                            <li @routeactive('rooms.index')><a href="{{route('rooms.index')}}"><i class="fas
+                            <li @routeactive(
+                            'rooms.index')><a href="{{route('rooms.index')}}"><i class="fas
                             fa-booth-curtain"></i> @lang('admin.rooms')</a></li>
-                            <li @routeactive('bills.index')><a href="{{route('bills.index')}}"><i class="fa-thin
+                            <li @routeactive(
+                            'bills.index')><a href="{{route('bills.index')}}"><i class="fa-thin
                             fa-money-bills"></i> @lang('admin.bills')</a></li>
                         </ul>
                     </nav>
                 </div>
                 <div class="col-md-4 person">
-                    <a href="{{route('profile.edit')}}"><i class="fa-regular fa-address-card"></i> @lang('admin.profile')</a>
-                    <a href="{{route('logout')}}" class="delete"><i class="fa-regular fa-door-open"></i> @lang('admin.logout')</a>
+                    <a href="{{route('profile.edit')}}"><i
+                                class="fa-regular fa-address-card"></i>
+                        @auth
+                            @php
+                                echo \Illuminate\Support\Facades\Auth::user()->name
+                            @endphp
+                        @else
+                            @lang('admin.profile')
+                        @endauth
+                    </a>
+                    <a href="{{route('logout')}}" class="delete"><i
+                                class="fa-regular fa-door-open"></i> @lang('admin.logout')</a>
                 </div>
             </div>
         </div>
@@ -133,7 +151,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var calendarEl = document.getElementById('calendar');
         $.ajaxSetup({
             headers: {
@@ -143,7 +161,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
 
 
         let calendar = new FullCalendar.Calendar(calendarEl, {
-            plugins: [ 'resourceTimeline', 'interaction' ],
+            plugins: ['resourceTimeline', 'interaction'],
             header: {
                 left: 'today prev,next',
                 center: 'title',
@@ -159,10 +177,10 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
             locale: 'en',
             editable: true,
             events: [
-                @foreach($bookings as $booking)
+                    @foreach($bookings as $booking)
                 {
                     resourceId: '{{ $booking->room_id }}',
-                    title: '{{ $booking->count }}',
+                    title: '{{ $booking->quote }}',
                     start: '{{ $booking->start_d }}',
                     end: '{{ $booking->end_d }}'
                 },
@@ -189,18 +207,20 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
                         $r = \App\Models\Room::where('id', $room->room_id)->first();
                         $f = \App\Models\Category::where('room_id', $room->room_id)->first();
                     @endphp
-                { id: '{{$room->id}}', building: '{{ $r->title }}', title: '{{$room->title}}', price:
-                        '$ ' + {{ $f->price }} },
+                {
+                    id: '{{$r->id}}', building: '{{ $r->title }}', title: '{{$room->title}}', price:
+                        '$ ' + {{ $r->price }}
+                },
                 @endforeach
             ],
-            dateClick: function(info) {
+            dateClick: function (info) {
                 $("#room_id").val(info.resource.id);
                 let start_d = info.startStr;
                 let end_d = info.endStr;
                 $("#start_d").val(start_d);
                 $("#end_d").val(end_d);
             },
-            select: function(info) {
+            select: function (info) {
                 $("#room_id").val(info.resource.id);
                 let start_d = info.startStr;
                 let end_d = info.endStr;
@@ -219,8 +239,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
 
         calendar.render();
 
-        $('#saveBtn').click(function (){
-           // let room_id = $('#room_id option:selected').val();
+        $('#saveBtn').click(function () {
+            // let room_id = $('#room_id option:selected').val();
             let title = $(".modal").find("#title").val();
             let phone = $(".modal").find("#phone").val();
             let email = $(".modal").find("#email").val();
@@ -230,13 +250,15 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
 </script>
 
 <style>
-    .fc-view-container{
+    .fc-view-container {
         background-color: #ddf7d9;
     }
-    .fc-no-scrollbars, .fc-rows colgroup{
+
+    .fc-no-scrollbars, .fc-rows colgroup {
         background-color: #fff;
     }
-    .fc-timeline-event .fc-time{
+
+    .fc-timeline-event .fc-time {
         display: none;
     }
 </style>
@@ -283,7 +305,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
             "firstDay": 1
         },
         "startDate": new Date(),
-        "endDate": moment(new Date(),).add(1,'days'),
+        "endDate": moment(new Date(),).add(1, 'days'),
         "minDate": new Date(),
     }, function (start, end, label) {
         $('#start_d').val(start.format('YYYY-MM-DD'));
@@ -291,8 +313,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
 
     });
 
-    $(function() {
-        $('#dynamic_select').on('change', function() {
+    $(function () {
+        $('#dynamic_select').on('change', function () {
             let url = $(this).val();
             if (url) {
                 window.location = url;
@@ -301,11 +323,6 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
         });
     });
 
-    $(document).ready(function () {
-        $('#country').selectize({
-            sortField: 'text'
-        });
-    });
 </script>
 
 

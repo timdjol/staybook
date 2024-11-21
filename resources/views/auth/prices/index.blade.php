@@ -1,4 +1,4 @@
-@extends('auth.layouts.booking')
+@extends('auth.layouts.headprice')
 
 @section('title', 'Бронирование')
 
@@ -16,8 +16,10 @@
                     @endif
                     @if($rooms->isNotEmpty())
                         <ul class="btns">
-                            <li @routeactive('booking*')><a href="{{route('bookings.index')}}">@lang('admin.availability')</a></li>
-                            <li @routeactive('price*')><a href="{{route('prices.index')}}">@lang('admin.prices')
+                            <li @routeactive(
+                            'booking*')><a href="{{route('bookings.index')}}">@lang('admin.availability')</a></li>
+                            <li @routeactive(
+                            'price*')><a href="{{route('prices.index')}}">@lang('admin.prices')
                             </a></li>
                         </ul>
                         <div id='calendar'></div>
@@ -33,36 +35,19 @@
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <form action="{{ route('listbooks.store') }}" method="post">
+                                                <form action="{{ route('prices.store') }}" method="post">
                                                     @csrf
+                                                    <input type="hidden" name="hotel_id"
+                                                           value="{{$hotel_id}}">
+                                                    <input type="hidden" name="room_id" id="room_id">
+                                                    <input type="hidden" class="form-control" name="title"
+                                                           id="title" value="{{ Auth::user()->name }}"/>
+                                                    <input type="hidden" class="form-control" name="email"
+                                                           id="email" value="{{ Auth::user()->email }}"/>
+                                                    <input type="hidden" class="form-control" name="sum" value="1"/>
                                                     <div class="form-group">
-                                                        <input type="hidden" name="hotel_id"
-                                                               value="{{$rooms->firstOrFail()->hotel_id}}">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input type="hidden" name="room_id" id="room_id">
-                                                        <input type="hidden" class="form-control" name="title"
-                                                               id="title" value="Admin"/>
-                                                        <input type="hidden" class="form-control" name="email"
-                                                               id="email" value="test@mail.com"/>
-                                                        <input type="hidden" class="form-control" name="sum"
-                                                               id="email" value="1"/>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-xs-4" for="count">@lang('admin.quotes')</label>
-                                                        <select name="count" id="count" required>
-                                                            <option value="0">0</option>
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
-                                                            <option value="8">8</option>
-                                                            <option value="9">9</option>
-                                                            <option value="10">10</option>
-                                                        </select>
+                                                        <label class="col-xs-4" for="count">@lang('admin.price')</label>
+                                                        <input type="text" name="price">
                                                     </div>
                                                     <div class="form-group">
                                                         <input type="text" id="date">
@@ -70,7 +55,6 @@
                                                         <input type="hidden" id="end_d" name="end_d">
                                                     </div>
                                                     <button class="more" id="saveBtn">@lang('admin.book')</button>
-
                                                 </form>
                                             </div>
                                         </div>

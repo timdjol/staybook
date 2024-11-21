@@ -3,11 +3,9 @@
 <html lang="ru">
 
 <head>
-
     <meta charset="utf-8">
-    <!-- <base href="/"> -->
 
-    <title>@yield('title') - SilkWayTravel</title>
+    <title>@yield('title') - StayBook</title>
     <meta name="description" content="">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,8 +13,8 @@
 
     <!-- Template Basic Images Start -->
     <meta property="og:image" content="path/to/image.jpg">
-    <link rel="icon" href="{{route('index')}}/img/favicon.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{route('index')}}/img/favicon.png">
+    <link rel="icon" href="{{route('index')}}/img/favicon.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{route('index')}}/img/favicon.jpg">
     <!-- Template Basic Images End -->
 
     <!-- Custom Browsers Color Start -->
@@ -42,7 +40,7 @@
         <div class="row">
             <div class="col-lg-2 col-md-4 col-6">
                 <div class="logo">
-                    <a href="{{route('homepage')}}"><img src="{{ route('index') }}/img/logo.svg" alt=""></a>
+                    <a href="{{route('index')}}"><img src="{{ route('index') }}/img/logo.svg" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-10 col-md-8 col-6">
@@ -62,7 +60,7 @@
                     <a href="#" class="toggle-mnu d-xl-none d-lg-none"><span></span></a>
                     <ul>
                         <li @routeactive(
-                        'homepage')><a href="{{route('index')}}">@lang('main.home')</a></li>
+                        'index')><a href="{{route('index')}}">@lang('main.home')</a></li>
                         <li @routeactive(
                         'hotels')><a href="{{route('hotels')}}">@lang('main.hotels')</a></li>
                         <li @routeactive(
@@ -148,13 +146,13 @@
                         <ul>
                             <li>{{ $contacts->first()->__('address') }}</li>
                             <li><a href="tel:{{ $contacts->first()->phone }}">{{ $contacts->first()->phone }}</a></li>
-                            <li><a href="tel:{{ $contacts->first()->phone2 }}">{{ $contacts->first()->phone2 }}</a></li>
                         </ul>
                         <ul class="soc">
-                            <li><a href="{{ $contacts->first()->instagram }}" target="_blank"><img
+                            <li class="instagram"><a href="{{ $contacts->first()->instagram }}" target="_blank"><img
                                             src="{{route('index')}}/img/instagram.svg" alt=""></a>
                             </li>
-                            <li><a href="https://wa.me/{{ $contacts->first()->whatsapp }}" target="_blank"><img
+                            <li class="whatsapp"><a href="https://wa.me/{{ $contacts->first()->whatsapp }}"
+                                             target="_blank"><img
                                             src="{{route('index')}}/img/whatsapp.svg" alt=""></a></li>
                         </ul>
                     </div>
@@ -166,18 +164,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <p>@lang('main.copy') &copy; {{ date('Y') }} staybook.kg</p>
+                    <p>@lang('main.copy') &copy; {{ date('Y') }} staybook.asia</p>
                 </div>
             </div>
         </div>
     </div>
 </footer>
 
-<style>
-    header nav{
-        text-align: right;
-    }
-</style>
 
 </body>
 

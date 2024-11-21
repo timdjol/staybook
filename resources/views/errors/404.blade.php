@@ -16,7 +16,7 @@
                 <h1>{{ __('main.error_title') }}</h1>
                 <h4>@lang('main.error_not')</h4>
                 <div class="btn-wrap">
-                    <a href="{{ route('homepage') }}">@lang('main.error_back')</a>
+                    <a href="{{ route('index') }}">@lang('main.error_back')</a>
                 </div>
             </div>
         </div>

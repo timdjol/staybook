@@ -1,6 +1,6 @@
 @extends('auth.layouts.master')
 
-@section('title', 'Payment Methods')
+@section('title', __('admin.payments'))
 
 @section('content')
 

@@ -3,15 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use http\Env\Request;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -47,21 +47,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function isAdmin(){
-        return $this->is_admin === 1;
-    }
-
-    public function isManager(){
-        return $this->is_admin === 2;
-    }
-
-    public function isBuh(){
-        return $this->is_admin === 3;
-    }
-
-    public function isHotel(){
-        return $this->is_admin === 4;
-    }
 
     public function books(){
         return $this->hasMany(Book::class);

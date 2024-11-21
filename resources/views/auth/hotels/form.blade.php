@@ -27,6 +27,13 @@
                         @isset($hotel)
                             @method('PUT')
                         @endisset
+                        @php
+                            $user = \Illuminate\Support\Facades\Auth::user()->id;
+                        @endphp
+                        @if($user != 1 && $user != 3)
+                            <input type="hidden" name="user_id" value="{{ \Illuminate\Support\Facades\Auth::user()
+                            ->id }}">
+                        @endif
                         <div class="row">
                             <div class="col-md-6">
                                 @error('title')
@@ -243,9 +250,11 @@
                                 @include('auth.layouts.error', ['fieldname' => 'phone'])
                                 <div class="form-group">
                                     <label for="">@lang('admin.phone_number')</label>
-                                    <input type="text" id="phone" name="phone" value="{{ old('phone', isset($hotel) ?
+                                    <input type="tel" id="phone" name="phone" class="phone" value="{{ old('phone', isset
+                                    ($hotel) ?
                                     $hotel->phone :
                              null) }}">
+                                    <div id="output" class="output"></div>
                                 </div>
                             </div>
 
@@ -270,7 +279,8 @@
                                 <label for="">@lang('admin.choose')</label>
                                 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
                                 <div id="map"></div>
-                                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDuGt0E5IEGkcE6ZfrKfUtE9Ko_de66pA&callback=initMap&v=weekly&channel=2" async></script>
+                                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDuGt0E5IEGkcE6ZfrKfUtE9Ko_de66pA&callback=initMap&v=weekly&channel=2"
+                                        async></script>
                                 <script>
                                     function initMap() {
                                         const myLatlng = {
@@ -308,7 +318,7 @@
                                     }
                                 </script>
                                 <style>
-                                    #map{
+                                    #map {
                                         height: 500px;
                                     }
                                 </style>
