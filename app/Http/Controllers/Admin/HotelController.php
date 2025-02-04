@@ -7,7 +7,6 @@ use App\Http\Requests\HotelRequest;
 use App\Mail\HotelDeleteMail;
 use App\Mail\HotelMail;
 use App\Mail\HotelUpdateMail;
-use App\Models\Category;
 use App\Models\Hotel;
 use App\Models\Image;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -17,8 +16,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Nnjeim\World\World;
-use Spatie\Permission\Models\Role;
 
 class HotelController extends Controller
 {
@@ -36,13 +33,14 @@ class HotelController extends Controller
     public function index()
     {
         $user = Auth::user()->id;
+        $chotel = Hotel::all();
         if($user != 1 && $user != 3){
-            $hotels = Hotel::where('user_id', $user)->paginate(10);
+            $hotels = Hotel::where('user_id', $user)->paginate(20);
         } else{
-            $hotels = Hotel::paginate(10);
+            $hotels = Hotel::paginate(20);
         }
 
-        return view('auth.hotels.index', compact('hotels'));
+        return view('auth.hotels.index', compact('hotels', 'chotel'));
     }
 
     /**
@@ -120,7 +118,7 @@ class HotelController extends Controller
             )
         );
 
-        //Mail::to('info@timmedia.store')->send(new HotelMail($request));
+        Mail::to('info@timmedia.store')->send(new HotelMail($request));
 
         session()->flash('success', $request->title . ' added');
         return redirect()->route('hotels.index');
@@ -165,13 +163,13 @@ class HotelController extends Controller
         unset($params['images']);
         $images = $request->file('images');
         if ($request->hasFile('images')) {
-            $dimages = Image::where('hotel_id', $hotel->id)->get();
-            if ($dimages != null) {
-                foreach ($dimages as $image) {
-                    Storage::delete($image->image);
-                }
-                DB::table('images')->where('hotel_id', $hotel->id)->delete();
-            }
+//            $dimages = Image::where('hotel_id', $hotel->id)->get();
+//            if ($dimages != null) {
+//                foreach ($dimages as $image) {
+//                    Storage::delete($image->image);
+//                }
+//                DB::table('images')->where('hotel_id', $hotel->id)->delete();
+//            }
             foreach ($images as $image):
                 $image = $image->store('hotels');
                 DB::table('images')
@@ -203,10 +201,10 @@ class HotelController extends Controller
                 'rules' => $pathname2,
             ]);
 
-        //Mail::to('info@timmedia.store')->send(new HotelUpdateMail($request));
+        Mail::to('info@timmedia.store')->send(new HotelUpdateMail($request));
 
         session()->flash('success', $request->title . ' updated');
-        return redirect()->route('hotels.index');
+        return redirect()->route('hotels.show', $hotel);
     }
 
     /**
@@ -231,7 +229,7 @@ class HotelController extends Controller
         DB::table('rules')->where('hotel_id', $hotel->id)->delete();
         DB::table('services')->where('hotel_id', $hotel->id)->delete();
         DB::table('payments')->where('hotel_id', $hotel->id)->delete();
-        //Mail::to('info@timmedia.store')->send(new HotelDeleteMail($hotel));
+        Mail::to('info@timmedia.store')->send(new HotelDeleteMail($hotel));
         session()->flash('success', 'Property ' . $hotel->title . ' deleted');
         return redirect()->route('hotels.index');
     }

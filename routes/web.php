@@ -42,6 +42,7 @@ Route::middleware('set_locale')->group(function ()
             Route::resource("rules", "App\Http\Controllers\Admin\RuleController");
             Route::resource("childs", "App\Http\Controllers\Admin\ChildController");
             Route::resource("pages", "App\Http\Controllers\Admin\PageController");
+            Route::resource("images", "App\Http\Controllers\Admin\ImageController");
             Route::resource("bills", "App\Http\Controllers\Admin\BillController");
             Route::resource("users", "App\Http\Controllers\Admin\UserController");
             Route::resource("roles", "App\Http\Controllers\Admin\RoleController");
@@ -78,11 +79,7 @@ Route::middleware('set_locale')->group(function ()
 
 
     Route::get('/', [PageController::class, 'index'])->name('index');
-    Route::get('/allrooms/{hotel?}/{price_from?}/{price_to?}/{count?}/{date_from?}/{date_to?}', [
-        PageController::class,
-        'allrooms'
-    ])->name
-    ('allrooms');
+    Route::get('/allrooms', [PageController::class,'allrooms'])->name('allrooms');
 
     Route::get('/products/create-step-one', [PageController::class, 'createStepOne'])->name('createStepOne');
     Route::post('/products/create-step-one', [PageController::class, 'postCreateStepOne'])->name('postCreateStepOne');

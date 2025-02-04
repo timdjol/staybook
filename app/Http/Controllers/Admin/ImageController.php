@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Image;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
@@ -20,5 +21,13 @@ class ImageController extends Controller
         $image = Image::create($params);
         session()->flash('success', $request->room->title . ' добавлен' );
         return redirect()->route('rooms.index', $room);
+    }
+
+    public function destroy(Image $image)
+    {
+        $image->delete();
+        Storage::delete($image);
+        session()->flash('success', 'Image deleted');
+        return redirect()->back();
     }
 }

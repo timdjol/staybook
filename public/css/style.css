@@ -158,6 +158,12 @@ body{
 .footer-item ul.soc li.whatsapp{
     background-color: #25d366;
 }
+.search .container{
+    background-color: transparent;
+}
+.hotels .pagination a{
+    color: #000;
+}
 @media (max-width: 991px) {
     nav .toggle-mnu {
         top: 5px;

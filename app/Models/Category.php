@@ -10,7 +10,6 @@ class Category extends Model
     use Translatable;
 
     protected $fillable = [
-        'code',
         'title',
         'title_en',
         'hotel_id',
@@ -29,6 +28,11 @@ class Category extends Model
     public function room()
     {
         return $this->belongsTo(Room::class);
+    }
+
+    public function child()
+    {
+        return $this->belongsTo(Child::class);
     }
 
     public function food()

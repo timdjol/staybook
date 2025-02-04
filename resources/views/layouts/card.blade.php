@@ -1,7 +1,4 @@
-@php
-    $plans = \App\Models\Category::where('room_id', $room->id)->get();
-@endphp
-@foreach($plans as $plan)
+
     <div class="row rooms-item">
         <div class="col-lg-4 col-md-6" data-aos="fade-right" data-aos-duration="2000">
             <a href="{{ route('room', [isset($hotel) ? $hotel->code : $room->hotel->code, $room->code])}}">
@@ -35,7 +32,7 @@
                     $ {{ $room->price }}
                 </td>
             </div>
-            <div class="breakfast">{{ $plan->food->title }}</div>
+{{--            <div class="breakfast">{{ $plan->food->title }}</div>--}}
             @if($room->hotel->early_in ?? '')
                 <div class="early">@lang('main.early')</div>
             @endif
@@ -60,4 +57,3 @@
             @endif
         </div>
     </div>
-@endforeach

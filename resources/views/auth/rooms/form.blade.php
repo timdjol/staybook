@@ -79,24 +79,24 @@
                                     console.error(error);
                                 });
                         </script>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    @include('auth.layouts.error', ['fieldname' => 'price'])
-                                    <div class="form-group">
-                                        <label for="">Стоимость($) за 1</label>
-                                        <input type="number" name="price" value="{{ old('price', isset($room) ?
+                        <div class="row">
+                            <div class="col-md-6">
+                                @include('auth.layouts.error', ['fieldname' => 'price'])
+                                <div class="form-group">
+                                    <label for="">Стоимость($) за 1</label>
+                                    <input type="number" name="price" value="{{ old('price', isset($room) ?
                                 $room->price : null) }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    @include('auth.layouts.error', ['fieldname' => 'price2'])
-                                    <div class="form-group">
-                                        <label for="">Стоимость($) за 2</label>
-                                        <input type="number" name="price2" value="{{ old('price2', isset($room) ?
-                                $room->price : null) }}">
-                                    </div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                @include('auth.layouts.error', ['fieldname' => 'price2'])
+                                <div class="form-group">
+                                    <label for="">Стоимость($) за 2</label>
+                                    <input type="number" name="price2" value="{{ old('price2', isset($room) ?
+                                $room->price : null) }}">
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-6">
                                 @include('auth.layouts.error', ['fieldname' => 'area'])
@@ -131,6 +131,8 @@
                                         <option value="Single">Single</option>
                                         <option value="Double">Double</option>
                                         <option value="Twin">Twin</option>
+                                        <option value="Triple">Triple</option>
+                                        <option value="Quadruple">Quadruple</option>
                                         <option value="King Size">King Size</option>
                                     </select>
                                 </div>
@@ -1015,12 +1017,7 @@
                             <input type="file" name="image">
                         </div>
                         <div class="form-group">
-                            <label for="">@lang('admin.all_images')</label>
-                            @isset($images)
-                                @foreach($images as $image)
-                                    <img src="{{ Storage::url($image->image) }}" alt="">
-                                @endforeach
-                            @endisset
+                            <label for="">Загрузить изображения</label>
                             <input type="file" name="images[]" multiple="true">
                         </div>
                         <div class="form-group">
@@ -1044,6 +1041,30 @@
                         <button class="more">@lang('admin.send')</button>
                         <a href="{{url()->previous()}}" class="btn delete cancel">@lang('admin.cancel')</a>
                     </form>
+
+                    <div class="img-wrap">
+                        <div class="row">
+                            <label for="">Все изображения</label>
+                            @isset($images)
+                                @foreach($images as $image)
+                                    <div class="col-md-2">
+                                        <div class="img-item">
+                                            <img src="{{ Storage::url($image->image) }}" alt="">
+                                            <form action="{{ route('images.destroy', $image) }}"
+                                                  method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn delete"
+                                                        onclick="return confirm('Do you want to delete this?');"><i
+                                                            class="fa-regular
+                                                    fa-trash"></i></button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endisset
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1052,6 +1073,14 @@
     <style>
         .admin label {
             display: inline-block;
+        }
+
+        .img-wrap {
+            margin-top: 30px;
+        }
+
+        .img-item {
+            position: relative;
         }
     </style>
 

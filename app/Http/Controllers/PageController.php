@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MultiForm\HotelOneRequest;
+use App\Http\Requests\MultiForm\HotelTwoRequest;
 use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Food;
 use App\Models\Image;
 use App\Models\Page;
-use App\Models\Product;
 use App\Models\Room;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
@@ -18,86 +19,29 @@ class PageController extends Controller
     public function index()
     {
         $hotels = Hotel::all();
-        $rooms = Room::where('status', 1)->where('count', '>=', 1)->paginate(20);
+        $rooms = Room::where('status', 1)->orderBy('created_at', 'DESC')->paginate(40);
         $foods = Food::all();
         return view('index', compact('hotels', 'rooms', 'foods'));
     }
 
     public function hotels()
     {
-        $hotels = Hotel::orderBy('top', 'DESC')->get();
+        $hotels = Hotel::orderBy('top', 'DESC')->paginate(30);
         return view('pages.hotels', compact('hotels'));
     }
 
     public function hotel($code)
     {
         $hotel = Hotel::where('code', $code)->first();
-        $rooms = Room::where('hotel_id', $hotel->id)->paginate(10);
+        $rooms = Room::where('hotel_id', $hotel->id)->where('status', 1)->paginate(10);
         return view('pages.hotel', compact('hotel', 'rooms'));
     }
 
 
-    public function allrooms(
-        $hotel = null,
-        $price_from = null,
-        $price_to = null,
-        $count = null,
-        $date_from = null,
-        $date_to = null
-    ) {
-        $min = Category::whereNotNull('price')->min("price");
-        $max = Category::whereNotNull('price')->max("price");
-        $max_per = Room::whereNotNull('count')->max("count");
-
-        $hotels = Hotel::all();
-
-        if ($hotel == 0) {
-            $hotel = null;
-        } else {
-            $hotel = $hotel;
-        }
-
-        if ($count == 0) {
-            $count = null;
-        } else {
-            $count = $count;
-        }
-
-        $rooms = Room::query()->where('status', 1)->where('count', '>=', 1);
-
-        if (isset($hotel) || $price_from !== null || $price_to !== null || isset($count) || $date_from !== null ||
-            $date_to !== null) {
-            $rooms = $rooms->where(function ($query) use ($hotel, $price_from, $price_to, $count, $date_from, $date_to)
-            {
-                if (isset($hotel)) {
-                    $query->where('hotel_id', $hotel)->where('status', 1);
-                } else {
-                    $query->where('status', 1);
-                }
-                if ($price_from !== null) {
-                    $query->where(function ($query) use ($price_from, $price_to)
-                    {
-                        $query->whereBetween('price', [$price_from, $price_to]);
-                    });
-                }
-                if (isset($count)) {
-                    $query->where('count', '>=', $count)->where('status', 1);
-                } else {
-                    $query->where('status', 1);
-                }
-//                if ($date_from !== null) {
-//                    $query->where(function($query) use ($date_from, $date_to) {
-//                        $query->whereBetween('pr ice', [$price_from, $price_to]);
-//                    });
-//                }
-            });
-        }
-
-        $rooms = $rooms->paginate(10);
-
-        return view('pages.rooms', compact('rooms', 'hotels', 'min', 'max', 'max_per'));
+    public function allrooms() {
+        $rooms = Room::where('status', 1)->orderbyDesc('created_at')->paginate(30);
+        return view('pages.rooms', compact('rooms'));
     }
-
 
     public function room($hotel, $roomCode)
     {
@@ -105,30 +49,39 @@ class PageController extends Controller
         $random = random_int(100000, 999999);
         $images = Image::where('room_id', $room->id)->get();
         //$related = Room::where('id', '!=', $room->id)->where('hotel_id', $room->hotel_id)->where('status', 1)->orderBy('price', 'asc')->get();
-        $related = Room::where('id', '!=', $room->id)->where('hotel_id', $room->hotel_id)->where('status', 1)->get();
+        $related = Room::where('id', '!=', $room->id)->where('status', 1)->orderBy('created_at', 'DESC')->get();
         return view('pages.room', compact('room', 'images', 'related', 'random'));
     }
 
     public function search(Request $request)
     {
-        $random = random_int(100000, 999999);
-        $start_d = $request->start_d;
-        $end_d = $request->end_d;
-        $count = $request->count;
-        $countc = $request->countc;
+        $query = Category::with('hotel', 'room', 'food', 'rule');
 
-        $query = Room::with('hotel', 'category');
-
+        //hotel
         if ($request->filled('title')) {
             $title = (array) $request->input('title');
             $query->whereHas('hotel', function ($quer) use ($title) {
-                $quer->where('title', $title);
-                $quer->orWhere('title_en', $title);
-                //$quer->orWhere('address', $title);
-                //$quer->orWhere('address_en', $title);
+                $quer->where('hotel_id', $title);
             });
         }
 
+        //count
+        if ($request->filled('count')) {
+            $count = (array) $request->input('count');
+            $query->whereHas('room', function ($quer) use ($count) {
+                $quer->where('price2', '!=', null);
+            });
+        }
+
+        //child
+//        if ($request->filled('countc')) {
+//            $countc = (array) $request->input('countc');
+//            $query->whereHas('child', function ($quer) use ($countc) {
+//                $quer->where('age1', '!=', 0);
+//            });
+//        }
+
+        //date
 //        if ($request->filled('start_d')) {
 //            $start_d = (array) $request->input('start_d');
 //            $query->whereHas('hotel', function ($quer) use ($start_d) {
@@ -136,8 +89,7 @@ class PageController extends Controller
 //            });
 //        }
 
-
-
+        //rating
         if ($request->filled('rating')) {
             $rating = (array) $request->input('rating');
             $query->whereHas('hotel', function ($quer) use ($rating) {
@@ -145,20 +97,23 @@ class PageController extends Controller
             });
         }
 
-//        if ($request->filled('include')) {
-//            //$query->where('include', $request->include);
-//            $food = (array) $request->input('include');
-//            $query->whereHas('category', function ($quer) use ($food) {
-//                $quer->where('food_id', $food);
-//            });
-//        }
+        //food
+        if ($request->filled('food_id')) {
+            $food = (array) $request->input('food_id');
+            $query->whereHas('food', function ($quer) use ($food) {
+                $quer->where('food_id', $food);
+            });
+        }
 
+        //early
         if ($request->filled('early_in')) {
             $early_in = (array) $request->input('early_in');
             $query->whereHas('hotel', function ($quer) use ($early_in) {
                 $quer->where('early_in', $early_in);
             });
         }
+
+        //late
         if ($request->filled('early_out')) {
             $early_out = (array) $request->input('early_out');
             $query->whereHas('hotel', function ($quer) use ($early_out) {
@@ -166,19 +121,24 @@ class PageController extends Controller
             });
         }
 
-
+        //cancellation
         if ($request->filled('cancelled')) {
-            $query->where('cancelled', '==', 0);
-            $query->orWhere('cancelled', '==', '');
-            $query->orWhere('cancelled', '==', null);
+            $cancel = (array) $request->input('cancelled');
+            $query->whereHas('rule', function ($quer) use ($cancel) {
+                $quer->where('size', 0);
+            });
         }
 
+        //extra
 //        if ($request->filled('extra_place')) {
-//            $query->where('extra_place', '!=', '');
-//            $query->orWhere('extra_place', '!=', null);
-//            $query->orWhere('extra_place', '!=', 0);
+//            $extra_place = (array) $request->input('extra_place');
+//            $query->whereHas('rule', function ($quer) use ($extra_place) {
+//                $quer->where('extra_place', '!=', 0);
+//                $quer->orWhere('extra_place', '!=', null);
+//            });
 //        }
-        $rooms = $query->where('status', 1)->get();
+
+        $categories = $query->get();
 
         $contacts = Contact::get();
 
@@ -188,8 +148,7 @@ class PageController extends Controller
 
         $relrooms = Room::all();
 
-
-        return view('pages.search', compact('rooms', 'contacts','request', 'relrooms', 'random'));
+        return view('pages.search', compact('categories', 'contacts', 'request', 'relrooms'));
     }
 
     public function about()
@@ -207,28 +166,22 @@ class PageController extends Controller
 
     public function createStepOne(Request $request)
     {
-        $product = $request->session()->get('product');
+        $hotel = $request->session()->get('hotelInfo');
 
-        return view('create-step-one',compact('product'));
+        return view('create-step-one',compact('hotel'));
     }
 
 
-    public function postCreateStepOne(Request $request)
+    public function postCreateStepOne(HotelOneRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|unique:products',
-            'amount' => 'required|numeric',
-            'description' => 'required',
-        ]);
-
-        if(empty($request->session()->get('product'))){
-            $product = new Product();
-            $product->fill($validatedData);
-            $request->session()->put('product', $product);
+        if(empty($request->session()->get('hotelInfo'))){
+            $hotel = new Hotel();
+            $hotel->fill($request->all());
+            $request->session()->put('hotelInfo', $hotel);
         }else{
-            $product = $request->session()->get('product');
-            $product->fill($validatedData);
-            $request->session()->put('product', $product);
+            $hotel = $request->session()->get('hotelInfo');
+            $hotel->fill($request->all());
+            $request->session()->put('hotelInfo', $hotel);
         }
 
         return redirect()->route('createStepTwo');
@@ -237,39 +190,39 @@ class PageController extends Controller
 
     public function createStepTwo(Request $request)
     {
-        $product = $request->session()->get('product');
+        $hotel = $request->session()->get('hotelInfo');
 
-        return view('create-step-two',compact('product'));
+        return view('create-step-two',compact('hotel'));
     }
 
 
-    public function postCreateStepTwo(Request $request)
+    public function postCreateStepTwo(HotelTwoRequest $request)
     {
         $validatedData = $request->validate([
-            'stock' => 'required',
-            'status' => 'required',
+            'count' => 'required',
+            'description' => 'required',
         ]);
 
-        $product = $request->session()->get('product');
-        $product->fill($validatedData);
-        $request->session()->put('product', $product);
+        $hotel = $request->session()->get('hotelInfo');
+        $hotel->fill($validatedData);
+        $request->session()->put('hotelInfo', $hotel);
 
         return redirect()->route('createStepThree');
     }
 
     public function createStepThree(Request $request)
     {
-        $product = $request->session()->get('product');
+        $hotel = $request->session()->get('hotelInfo');
+        dd($hotel);
 
-        return view('create-step-three',compact('product'));
+        return view('create-step-three',compact('hotel'));
     }
 
     public function postCreateStepThree(Request $request)
     {
-        $product = $request->session()->get('product');
-        $product->save();
-
-        $request->session()->forget('product');
+        $hotel = $request->session()->get('hotelInfo');
+        $hotel->save();
+        $request->session()->forget('hotelInfo');
 
         return redirect()->route('index');
     }

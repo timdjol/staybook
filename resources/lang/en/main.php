@@ -76,7 +76,7 @@ return [
     'search-late' => 'Late check-out',
     'search-extra' => 'Extra place',
     'all-rooms' => 'Show all rooms',
-    'services' => 'Services',
+    'services' => 'Filters',
     'payments' => 'Payments',
     'list' => 'List',
     'on_map' => 'On the map',

@@ -182,7 +182,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
                     resourceId: '{{ $booking->room_id }}',
                     title: '{{ $booking->quote }}',
                     start: '{{ $booking->start_d }}',
-                    end: '{{ $booking->end_d }}'
+                    end: '{{ $booking->end_d }}',
+                    category_id: '{{ $booking->category_id }}'
                 },
                 @endforeach
             ],
@@ -193,28 +194,32 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
                 },
                 {
                     labelText: 'Тариф',
-                    field: 'title'
+                    field: 'title',
                 },
                 {
                     labelText: '@lang('admin.price')',
                     field: 'price'
                 },
+                {
+                    labelText: 'ID',
+                    field: 'cat'
+                },
 
             ],
             resources: [
-                    @foreach($categories as $room)
+                    @foreach($categories as $category)
                     @php
-                        $r = \App\Models\Room::where('id', $room->room_id)->first();
-                        $f = \App\Models\Category::where('room_id', $room->room_id)->first();
+                        $room = \App\Models\Room::where('id', $category->room_id)->first();
                     @endphp
                 {
-                    id: '{{$r->id}}', building: '{{ $r->title }}', title: '{{$room->title}}', price:
-                        '$ ' + {{ $r->price }}
+                    id: '{{$room->id}}', building: '{{ $room->title }}', title: '{{$category->title}}', price:
+                        '$ ' + {{ $room->price }}, ca: '{{ $category->id }}'
                 },
                 @endforeach
             ],
             dateClick: function (info) {
                 $("#room_id").val(info.resource.id);
+                $("#category_id").val(info.resource.cat);
                 let start_d = info.startStr;
                 let end_d = info.endStr;
                 $("#start_d").val(start_d);
@@ -222,6 +227,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
             },
             select: function (info) {
                 $("#room_id").val(info.resource.id);
+                $("#category_id").val(info.resource.cat);
                 let start_d = info.startStr;
                 let end_d = info.endStr;
                 $("#start_d").val(start_d);

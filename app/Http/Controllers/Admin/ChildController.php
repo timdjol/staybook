@@ -37,11 +37,11 @@ class ChildController extends Controller
     {
         $hotel = $request->session()->get('hotel_id');
         $childs = Child::where('hotel_id', $hotel)->get();
-//        foreach ($childs as $child) {
-//            $data[] = $child->room_id;
-//        }
-        //$rooms = Room::where('hotel_id', $hotel)->whereNotIn('id', $data)->get();
-        $rooms = Room::where('hotel_id', $hotel)->get();
+        foreach ($childs as $child) {
+            $data[] = $child->room_id;
+        }
+        $rooms = Room::where('hotel_id', $hotel)->whereNotIn('id', $data)->get();
+        //$rooms = Room::where('hotel_id', $hotel)->get();
 
         return view('auth.childs.form', compact('rooms', 'hotel'));
     }

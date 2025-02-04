@@ -28,12 +28,12 @@ class Hotel extends Model
         'address_en',
         'lng',
         'lat',
-        'status',
         'early_in',
         'early_out',
         'rating',
         'top',
-        'user_id'
+        'user_id',
+        'status'
     ];
 
     public function rooms()

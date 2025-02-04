@@ -57,14 +57,14 @@
                                 <div class="form-group">
                                     <label for="">Какие номера можно забронировать по этому тарифу?
                                     </label>
-                                    <select name="room_id">
-                                        @isset($category)
-                                            <option value="{{ $category->room_id }}" @if($category->room_id)
-                                                        selected>
-                                                {{ $category->room->__('title') }}</option>
-                                        @else
-                                            <option>@lang('admin.choose')</option>
-                                        @endif
+                                    <select name="room_id[]" multiple style="height: auto">
+                                        @isset($categories)
+                                            @foreach($categories as $cat)
+                                                @php
+                                                    $room = \App\Models\Room::where('id', $cat)->first();
+                                                @endphp
+                                                    <option value="{{ $room->id }}" selected>{{ $room->__('title') }}</option>
+                                            @endforeach
                                         @endisset
                                         @foreach($rooms as $room)
                                             <option value="{{ $room->id }}">{{ $room->__('title') }}</option>
@@ -106,9 +106,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-
                             </div>
-
                         </div>
                         @csrf
                         <button class="more">@lang('admin.send')</button>

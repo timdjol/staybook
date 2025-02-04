@@ -32,7 +32,7 @@
                                 <select name="title" id="hotel">
                                     <option value="">@lang('main.choose')</option>
                                     @foreach($hotels as $hotel)
-                                        <option value="{{ $hotel->__('title') }}" data-address="{{ $hotel->__('address')
+                                        <option value="{{ $hotel->id }}" data-address="{{ $hotel->__('address')
                                     }}">{{ $hotel->title_en }} ({{ $hotel->title}})</option>
                                     @endforeach
                                 </select>
@@ -65,6 +65,7 @@
                                     <option value="3">3</option>
                                 </select>
                                 <select name="age1" id="age1" class="age">
+                                    <option value="0">@lang('main.choose')</option>
                                     <option value="1">1 год</option>
                                     <option value="2">2 года</option>
                                     <option value="3">3 года</option>
@@ -84,6 +85,7 @@
                                     <option value="17">17 лет</option>
                                 </select>
                                 <select name="age2" id="age2" class="age">
+                                    <option value="0">@lang('main.choose')</option>
                                     <option value="1">1 год</option>
                                     <option value="2">2 года</option>
                                     <option value="3">3 года</option>
@@ -103,6 +105,7 @@
                                     <option value="17">17 лет</option>
                                 </select>
                                 <select name="age3" id="age3" class="age">
+                                    <option value="0">@lang('main.choose')</option>
                                     <option value="1">1 год</option>
                                     <option value="2">2 года</option>
                                     <option value="3">3 года</option>
@@ -414,8 +417,8 @@
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="include">@lang('main.search-include')</label>
-                                <select id="include" name="include">
+                                <label for="food">@lang('main.search-include')</label>
+                                <select id="food_id" name="food_id">
                                     <option value="">@lang('main.choose')</option>
                                     @foreach($foods as $food)
                                         <option value="{{ $food->id }}">{{ $food->__('title') }}</option>
@@ -458,7 +461,7 @@
                         </div>
                         <div class="col">
                             <div class="form-group check">
-                                <input type="checkbox" id="cancelled">
+                                <input type="checkbox" id="cancelled" name="cancelled">
                                 <label for="cancelled">@lang('main.cancelled')</label>
                             </div>
                         </div>
@@ -704,7 +707,7 @@
                     @include('layouts.card', compact('room'))
                 @endforeach
                 <div class="row">
-                    <div class="paginate">
+                    <div class="col-md-12">
                         {{ $rooms->links('pagination::bootstrap-4') }}
                     </div>
                 </div>

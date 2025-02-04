@@ -52,7 +52,7 @@
                                 $date = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $now);
                                 $child = \App\Models\Child::where('room_id', $room->id)->first();
                                 $cat = \App\Models\Category::where('room_id', $room->id)->first();
-                                $rule = \App\Models\Rule::where('id', $cat->rule_id)->first();
+                                $rule = \App\Models\Rule::where('id', $cat->rule_id ?? '')->first();
                             @endphp
                             $ {{ $room->price }}
                         </div>
@@ -452,9 +452,12 @@
                             @if($room->bed != '')
                                 <p><i class="fa-light fa-bed"></i> @lang('main.bed'): {{$room->bed}}</p>
                             @endif
-                            @if($plan->food->title != '')
-                                <p><i class="fa-light fa-mug-saucer"></i> {{$plan->food->title}}</p>
-                            @endif
+                                @empty($plan->food->title)
+
+                                @else
+                                    <p><i class="fa-light fa-mug-saucer"></i> {{$plan->food->title}}</p>
+                                @endempty
+
                             @if($room->hotel->early_in != '')
                                 <p><i class="fa-light fa-calendar-days"></i> @lang('main.early')
                                     {{$room->hotel->early_in}}</p>

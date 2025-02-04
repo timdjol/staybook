@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Hotel;
+use App\Models\Book;
 
 
-class HotelController extends Controller
+class BookingController extends Controller
 {
     public function index()
     {
-        return Hotel::all();
+        return Book::all();
     }
 }

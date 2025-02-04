@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Room;
+use App\Models\Rule;
 
 
-class RoomController extends Controller
+class RuleController extends Controller
 {
     public function index()
     {
-        return Room::all();
+        return Rule::all();
     }
 }

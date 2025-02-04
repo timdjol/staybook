@@ -14,7 +14,7 @@ return [
     'early_checkin' => 'Early check-in',
     'late_checkout' => 'Late check-out',
     'rating' => 'Rating',
-    'services' => 'Services',
+    'services' => 'Filters',
     'payment' => 'Payment methods',
     'description' => 'Description',
     'information' => 'Information',

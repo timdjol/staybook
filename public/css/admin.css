@@ -232,3 +232,17 @@ header .logo img{
 .bookings .status i{
     color: #74bb39;
 }
+.img-wrap{
+    margin-top: 30px;
+}
+.img-item{
+    position: relative;
+}
+.admin .img-item form .delete{
+    position: absolute;
+    right: 12px;
+    top: 5px;
+    padding: 2px 5px;
+    font-size: 12px;
+}
+

@@ -3,17 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 
 class Product extends Model
 {
     protected $fillable = [
-        'code',
-        'name',
-        'amount',
-        'description',
-        'status',
-        'stock'
+        //'code',
+        'title',
+        'type',
+        'city',
+        'address',
+        'count',
+        'status'
     ];
 }

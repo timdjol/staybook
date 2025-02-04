@@ -18,23 +18,26 @@
                 <div class="col-md-3">
                     <div class="add">
                         <a href="{{ route('hotels.create') }}" class="more"><i class="fa-regular fa-plus"></i>
-                            @lang('admin.add_property')</a>
+                            @lang('admin.add_hotel')</a>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div id="search_list"></div>
+                    @admin
+                        Кол-во отелей: {{ $chotel->count() }}
+                    @endadmin
                     <table>
                         <tr>
-                            <th>#</th>
+                            <th>ID</th>
                             <th>@lang('admin.title')</th>
                             <th>@lang('admin.address')</th>
                             <th>@lang('admin.action')</th>
                         </tr>
                         @foreach($hotels as $hotel)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $hotel->id }}</td>
                                 <td>{{ $hotel->__('title') }}</td>
                                 <td>{{ $hotel->__('address') }}</td>
                                 <td>

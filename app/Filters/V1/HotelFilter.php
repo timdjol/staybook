@@ -2,9 +2,10 @@
 
 namespace App\Filters\V1;
 
+use App\Filters\ApiFilter;
 use Illuminate\Http\Request;
 
-class HotelQuery
+class HotelFilter extends ApiFilter
 {
     protected $safeParams = [
         'title' => 'eq',
@@ -20,7 +21,6 @@ class HotelQuery
         'early_out' => 'eq',
         'type' => 'eq'
     ];
-
 
     protected $columnMap = [
         'rating' => 'rating',
@@ -56,7 +56,6 @@ class HotelQuery
         }
         return $elQuery;
     }
-
 
 }
 

@@ -13,12 +13,12 @@
                         <div class="col-md-7">
                             <h1>@lang('admin.foods')</h1>
                         </div>
-                        <div class="col-md-5">
-                            <div class="btn-wrap">
-                                <a class="btn add" href="{{ route('foods.create') }}"><i class="fa-solid
-                                fa-plus"></i> @lang('admin.add')</a>
-                            </div>
-                        </div>
+{{--                        <div class="col-md-5">--}}
+{{--                            <div class="btn-wrap">--}}
+{{--                                <a class="btn add" href="{{ route('foods.create') }}"><i class="fa-solid--}}
+{{--                                fa-plus"></i> @lang('admin.add')</a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
 
                     @if($foods->isNotEmpty())
@@ -28,7 +28,7 @@
                                 <th>#</th>
                                 <th>@lang('admin.title')</th>
                                 <th>EN</th>
-                                <th>@lang('admin.action')</th>
+{{--                                <th>@lang('admin.action')</th>--}}
                             </tr>
                             </thead>
                             <tbody>
@@ -37,18 +37,18 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $food->title }}</td>
                                     <td>{{ $food->title_en }}</td>
-                                    <td>
-                                        <form action="{{ route('foods.destroy', $food) }}" method="post">
-                                            <ul>
-                                                <li><a class="btn edit" href="{{ route('foods.edit', $food)
-                                            }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
-                                                @csrf
-                                                @method('DELETE')
-                                                <button onclick="return confirm('Do you want to delete this?');"
-                                                        class="btn delete"><i class="fa-regular fa-trash"></i></button>
-                                            </ul>
-                                        </form>
-                                    </td>
+{{--                                    <td>--}}
+{{--                                        <form action="{{ route('foods.destroy', $food) }}" method="post">--}}
+{{--                                            <ul>--}}
+{{--                                                <li><a class="btn edit" href="{{ route('foods.edit', $food)--}}
+{{--                                            }}"><i class="fa-regular fa-pen-to-square"></i></a></li>--}}
+{{--                                                @csrf--}}
+{{--                                                @method('DELETE')--}}
+{{--                                                <button onclick="return confirm('Do you want to delete this?');"--}}
+{{--                                                        class="btn delete"><i class="fa-regular fa-trash"></i></button>--}}
+{{--                                            </ul>--}}
+{{--                                        </form>--}}
+{{--                                    </td>--}}
                                 </tr>
                             @endforeach
                             </tbody>

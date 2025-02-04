@@ -68,7 +68,15 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $category->__('title') }}</td>
-                                    <td>{{ $category->room->__('title') }}</td>
+                                    <td>
+                                        @php
+                                            $cats = explode(', ', $category->room_id);
+                                            $rooms = \App\Models\Room::where('hotel_id', $hotel)->wherein('id', $cats)->get();
+                                        @endphp
+                                        @foreach($rooms as $room)
+                                            {{ $room->__('title') }},
+                                        @endforeach
+                                    </td>
                                     <td>
                                         @isset($category->food)
                                             {{ $category->food->__('title') }}
@@ -96,7 +104,6 @@
                             </tbody>
                         </table>
                         {{ $categories->links('pagination::bootstrap-4') }}
-
                     @else
                         <h2 style="text-align: center">@lang('admin.categories_not_found')</h2>
                     @endif

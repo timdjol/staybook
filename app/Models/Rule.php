@@ -17,7 +17,9 @@ class Rule extends Model
         'title_en',
         'size',
         'percent_day',
-        'percent_book'
+        'percent_book',
+        'date_day',
+        'date_book'
     ];
 
     public function room()

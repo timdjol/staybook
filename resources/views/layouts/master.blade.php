@@ -115,13 +115,13 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="footer-item">
-                        <h4>@lang('main.hotels')</h4>
-                        <ul>
-                            @foreach($hotels as $hotel)
-                                <li><a href="{{ route('hotel', $hotel->code) }}">{{ $hotel->__('title')
-                                }}</a></li>
-                            @endforeach
-                        </ul>
+{{--                        <h4>@lang('main.hotels')</h4>--}}
+{{--                        <ul>--}}
+{{--                            @foreach($hotels as $hotel)--}}
+{{--                                <li><a href="{{ route('hotel', $hotel->code) }}">{{ $hotel->__('title')--}}
+{{--                                }}</a></li>--}}
+{{--                            @endforeach--}}
+{{--                        </ul>--}}
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">

@@ -30,7 +30,6 @@ class CategoryRoomController extends Controller
         $hotel = $request->session()->get('hotel_id');
         $rules = Rule::where('hotel_id', $hotel)->paginate(10);
         $categories = Category::where('hotel_id', $hotel)->paginate(10);
-
         return view('auth.categories.index', compact('hotel', 'categories', 'rules'));
     }
 
@@ -41,6 +40,9 @@ class CategoryRoomController extends Controller
     {
         $hotel = $request->session()->get('hotel_id');
         $rooms = Room::where('hotel_id', $hotel)->get();
+        foreach ($rooms as $plan) {
+            $data[] = $plan->room_id;
+        }
         $foods = Food::all();
         $rules = Rule::where('hotel_id', $hotel)->get();
         return view('auth.categories.form', compact('rooms', 'hotel', 'foods', 'rules'));
@@ -51,8 +53,14 @@ class CategoryRoomController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        $request['code'] = Str::slug($request->title);
-        $params = $request->all();
+        $params = [
+            'title' => $request->title,
+            'title_en' => $request->title_en,
+            'hotel_id' => $request->hotel_id,
+            'room_id' => implode(', ', $request->room_id),
+            'food_id' => $request->food_id,
+            'rule_id' => $request->rule_id,
+        ];
         Category::create($params);
         //Mail::to('info@timmedia.store')->send(new RoomCreateMail($request));
 
@@ -67,11 +75,12 @@ class CategoryRoomController extends Controller
     public function edit(Request $request, Category $category)
     {
         $hotel = $request->session()->get('hotel_id');
-        $rooms = Room::where('hotel_id', $hotel)->get();
         $foods = Food::all();
+        $categories = explode(', ', $category->room_id);
+        $rooms = Room::where('hotel_id', $hotel)->whereNotin('id', $categories)->get();
         $rules = Rule::where('hotel_id', $hotel)->where('id', '!=', $category->rule_id)->get();
         $select_rule = Rule::where('hotel_id', $hotel)->where('id', $category->rule_id)->first();
-        return view('auth.categories.form', compact('category', 'hotel', 'rooms', 'foods', 'rules', 'select_rule'));
+        return view('auth.categories.form', compact('category', 'hotel', 'foods', 'rules', 'select_rule', 'categories', 'rooms'));
     }
 
     /**
@@ -80,7 +89,14 @@ class CategoryRoomController extends Controller
     public function update(CategoryRequest $request, Category $category)
     {
         $request['code'] = Str::slug($request->title);
-        $params = $request->all();
+        $params = [
+            'title' => $request->title,
+            'title_en' => $request->title_en,
+            'hotel_id' => $request->hotel_id,
+            'room_id' => implode(', ', $request->room_id),
+            'food_id' => $request->food_id,
+            'rule_id' => $request->rule_id,
+        ];
         $category->update($params);
         //Mail::to('info@timmedia.store')->send(new RoomUpdateMail($request));
         session()->flash('success', 'CategoryRoom ' . $request->title . ' updated');

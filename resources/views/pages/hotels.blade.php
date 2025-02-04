@@ -38,6 +38,11 @@
                     </div>
                 @endforeach
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    {{ $hotels->links('pagination::bootstrap-4') }}
+                </div>
+            </div>
         </div>
     </div>
 

@@ -13,7 +13,6 @@ class Book extends Model
     use Translatable;
 
     protected $fillable = [
-        'book_id',
         'hotel_id',
         'room_id',
         'title',

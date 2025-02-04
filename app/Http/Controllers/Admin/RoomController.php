@@ -7,6 +7,8 @@ use App\Http\Requests\RoomRequest;
 use App\Mail\RoomCreateMail;
 use App\Mail\RoomDeleteMail;
 use App\Mail\RoomUpdateMail;
+use App\Models\Category;
+use App\Models\Child;
 use App\Models\Hotel;
 use App\Models\Image;
 use App\Models\Room;
@@ -121,7 +123,7 @@ class RoomController extends Controller
             endforeach;
         endif;
 
-        //Mail::to('info@timmedia.store')->send(new RoomCreateMail($request));
+        Mail::to('info@timmedia.store')->send(new RoomCreateMail($request));
         session()->flash('success', 'Room ' . $request->title . ' created');
         return redirect()->route('rooms.index');
     }
@@ -178,13 +180,13 @@ class RoomController extends Controller
         unset($params['images']);
         $images = $request->file('images');
         if ($request->hasFile('images')) {
-            $dimages = Image::where('room_id', $room->id)->get();
-            if ($dimages != null) {
-                foreach ($dimages as $image){
-                    Storage::delete($image->image);
-                }
-                DB::table('images')->where('room_id', $room->id)->delete();
-            }
+//            $dimages = Image::where('room_id', $room->id)->get();
+//            if ($dimages != null) {
+//                foreach ($dimages as $image){
+//                    Storage::delete($image->image);
+//                }
+//                DB::table('images')->where('room_id', $room->id)->delete();
+//            }
             foreach ($images as $image):
                 $image = $image->store('rooms');
                 DB::table('images')
@@ -194,7 +196,7 @@ class RoomController extends Controller
         }
 
         $room->update($params);
-        //Mail::to('info@timmedia.store')->send(new RoomUpdateMail($request));
+        Mail::to('info@timmedia.store')->send(new RoomUpdateMail($request));
         session()->flash('success', 'Room ' . $request->title . ' updated');
         return redirect()->route('rooms.index');
     }
@@ -206,12 +208,14 @@ class RoomController extends Controller
     {
         $room->delete();
         Storage::delete($room->image);
+        Category::where('room_id', $room->id)->get();
+        Child::where('room_id', $room->id)->get();
         $images = Image::where('room_id', $room->id)->get();
         foreach ($images as $image){
             Storage::delete($image->image);
         }
         DB::table('images')->where('room_id', $room->id)->delete();
-        //Mail::to('info@timmedia.store')->send(new RoomDeleteMail($room));
+        Mail::to('info@timmedia.store')->send(new RoomDeleteMail($room));
 
         session()->flash('success', 'Room ' . $room->title . ' deleted');
         return redirect()->route('rooms.index');

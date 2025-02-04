@@ -91,15 +91,30 @@
                                 <div class="form-group">
                                     <div id="block1" @isset($rule)style="@if($rule->size == 1) display: block
                                     @endif"@endisset>
-                                        <label for="">Процент от первых суток</label>
-                                        <input type="number" name="percent_day" value="{{ old('title', isset($rule) ?
+                                        <div class="form-group">
+                                            <label for="">Процент от первых суток</label>
+                                            <input type="number" name="percent_day" value="{{ old('percent_day', isset
+                                            ($rule) ?
                                     $rule->percent_day :  null) }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">За сколько дней</label>
+                                            <input type="number" name="date_day" value="{{ old('date_day', isset
+                                            ($rule) ? $rule->date_day :  null) }}">
+                                        </div>
                                     </div>
                                     <div id="block2" @isset($rule) style="@if($rule->size == 2) display: block @endif"
                                          @endisset>
-                                        <label for="">Процент от всей суммы бронирования</label>
-                                        <input type="number" name="percent_book" value="{{ old('title', isset($rule) ?
-                                    $rule->percent_book :  null) }}">
+                                        <div class="form-group">
+                                            <label for="">Процент от всей суммы бронирования</label>
+                                            <input type="number" name="percent_book" value="{{ old('percent_book', isset
+                                            ($rule) ? $rule->percent_book :  null) }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">За сколько дней</label>
+                                            <input type="number" name="date_book" value="{{ old('date_book', isset
+                                            ($rule) ? $rule->date_book :  null) }}">
+                                        </div>
                                     </div>
                                 </div>
                             </div>

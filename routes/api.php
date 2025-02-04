@@ -17,3 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\API\V1'], function () {
+    Route::apiResource('books', BookingController::class);
+    Route::apiResource('rooms', RoomController::class);
+    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('hotels', HotelController::class);
+    Route::apiResource('childs', ChildController::class);
+    Route::apiResource('rules', RuleController::class);
+});

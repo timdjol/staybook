@@ -46,9 +46,8 @@
                                                     <div class="form-group">
                                                         <input type="hidden" name="hotel_id"
                                                                value="{{$rooms->firstOrFail()->hotel_id}}">
-                                                    </div>
-                                                    <div class="form-group">
                                                         <input type="hidden" name="room_id" id="room_id">
+                                                        <input type="hidden" name="category_id" id="category_id">
                                                         <input type="hidden" class="form-control" name="title"
                                                                id="title" value="{{ Auth::user()->name }}"/>
                                                         <input type="hidden" class="form-control" name="email"
@@ -80,7 +79,6 @@
                                                         <input type="hidden" id="end_d" name="end_d">
                                                     </div>
                                                     <button class="more" id="saveBtn">@lang('admin.book')</button>
-
                                                 </form>
                                             </div>
                                         </div>
