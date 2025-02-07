@@ -30,8 +30,16 @@
                                         <td>{{$hotel->address}}</td>
                                     </tr>
                                     <tr>
+                                        <td>Адрес EN</td>
+                                        <td>{{$hotel->address_en}}</td>
+                                    </tr>
+                                    <tr>
                                         <td>Описание</td>
                                         <td>{!! $hotel->description !!}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Описание EN</td>
+                                        <td>{!! $hotel->description_en !!}</td>
                                     </tr>
                                     <tr>
                                         <td>Кол-во комнат</td>
@@ -64,7 +72,13 @@
                                     </tr>
                                     <tr>
                                         <td>Статус</td>
-                                        <td><strong>{{$hotel->status}}</strong></td>
+                                        <td>
+                                            @if($hotel->status == 1)
+                                                Включен
+                                            @else
+                                                Отключен
+                                            @endif
+                                        </td>
                                     </tr>
                                 </table>
                             </div>

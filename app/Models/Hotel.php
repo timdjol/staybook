@@ -26,6 +26,7 @@ class Hotel extends Model
         'type',
         'address',
         'address_en',
+        'city',
         'lng',
         'lat',
         'early_in',

@@ -12,6 +12,8 @@ use App\Models\Page;
 use App\Models\Room;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 
 class PageController extends Controller
@@ -38,7 +40,8 @@ class PageController extends Controller
     }
 
 
-    public function allrooms() {
+    public function allrooms()
+    {
         $rooms = Room::where('status', 1)->orderbyDesc('created_at')->paginate(30);
         return view('pages.rooms', compact('rooms'));
     }
@@ -59,7 +62,7 @@ class PageController extends Controller
 
         //hotel
         if ($request->filled('title')) {
-            $title = (array) $request->input('title');
+            $title = (array)$request->input('title');
             $query->whereHas('hotel', function ($quer) use ($title) {
                 $quer->where('hotel_id', $title);
             });
@@ -67,7 +70,7 @@ class PageController extends Controller
 
         //count
         if ($request->filled('count')) {
-            $count = (array) $request->input('count');
+            $count = (array)$request->input('count');
             $query->whereHas('room', function ($quer) use ($count) {
                 $quer->where('price2', '!=', null);
             });
@@ -91,7 +94,7 @@ class PageController extends Controller
 
         //rating
         if ($request->filled('rating')) {
-            $rating = (array) $request->input('rating');
+            $rating = (array)$request->input('rating');
             $query->whereHas('hotel', function ($quer) use ($rating) {
                 $quer->where('rating', $rating);
             });
@@ -99,7 +102,7 @@ class PageController extends Controller
 
         //food
         if ($request->filled('food_id')) {
-            $food = (array) $request->input('food_id');
+            $food = (array)$request->input('food_id');
             $query->whereHas('food', function ($quer) use ($food) {
                 $quer->where('food_id', $food);
             });
@@ -107,7 +110,7 @@ class PageController extends Controller
 
         //early
         if ($request->filled('early_in')) {
-            $early_in = (array) $request->input('early_in');
+            $early_in = (array)$request->input('early_in');
             $query->whereHas('hotel', function ($quer) use ($early_in) {
                 $quer->where('early_in', $early_in);
             });
@@ -115,7 +118,7 @@ class PageController extends Controller
 
         //late
         if ($request->filled('early_out')) {
-            $early_out = (array) $request->input('early_out');
+            $early_out = (array)$request->input('early_out');
             $query->whereHas('hotel', function ($quer) use ($early_out) {
                 $quer->where('early_out', $early_out);
             });
@@ -123,7 +126,7 @@ class PageController extends Controller
 
         //cancellation
         if ($request->filled('cancelled')) {
-            $cancel = (array) $request->input('cancelled');
+            $cancel = (array)$request->input('cancelled');
             $query->whereHas('rule', function ($quer) use ($cancel) {
                 $quer->where('size', 0);
             });
@@ -168,17 +171,20 @@ class PageController extends Controller
     {
         $hotel = $request->session()->get('hotelInfo');
 
-        return view('create-step-one',compact('hotel'));
+        return view('create-step-one', compact('hotel'));
     }
 
 
+    //multiform
+
     public function postCreateStepOne(HotelOneRequest $request)
     {
-        if(empty($request->session()->get('hotelInfo'))){
+
+        if (empty($request->session()->get('hotelInfo'))) {
             $hotel = new Hotel();
             $hotel->fill($request->all());
             $request->session()->put('hotelInfo', $hotel);
-        }else{
+        } else {
             $hotel = $request->session()->get('hotelInfo');
             $hotel->fill($request->all());
             $request->session()->put('hotelInfo', $hotel);
@@ -190,21 +196,23 @@ class PageController extends Controller
 
     public function createStepTwo(Request $request)
     {
+        $request['code'] = Str::slug($request->title);
         $hotel = $request->session()->get('hotelInfo');
+        dd($request->title);
 
-        return view('create-step-two',compact('hotel'));
+        return view('create-step-two', compact('hotel'));
     }
 
 
     public function postCreateStepTwo(HotelTwoRequest $request)
     {
-        $validatedData = $request->validate([
-            'count' => 'required',
-            'description' => 'required',
-        ]);
+//        $validatedData = $request->validate([
+//            'count' => 'required',
+//            'description' => 'required',
+//        ]);
 
         $hotel = $request->session()->get('hotelInfo');
-        $hotel->fill($validatedData);
+        $hotel->fill($request->all());
         $request->session()->put('hotelInfo', $hotel);
 
         return redirect()->route('createStepThree');
@@ -213,9 +221,9 @@ class PageController extends Controller
     public function createStepThree(Request $request)
     {
         $hotel = $request->session()->get('hotelInfo');
-        dd($hotel);
+        //dd($hotel);
 
-        return view('create-step-three',compact('hotel'));
+        return view('create-step-three', compact('hotel'));
     }
 
     public function postCreateStepThree(Request $request)
@@ -225,6 +233,83 @@ class PageController extends Controller
         $request->session()->forget('hotelInfo');
 
         return redirect()->route('index');
+    }
+
+
+    //exely api
+    public function properties()
+    {
+        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties?count=20&include=All');
+        $properties = $response->object()->properties;
+
+        return view('pages.exely.properties', compact('properties'));
+    }
+
+    public function property($property)
+    {
+
+        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties/' . $property);
+        $property = $response->object();
+
+        return view('pages.exely.property', compact('property'));
+    }
+
+    public function meals()
+    {
+        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/meal-plans');
+        $meals = $response->object();
+
+        return view('pages.exely.meals', compact('meals'));
+    }
+
+    public function roomtypes()
+    {
+        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/room-type-categories');
+        $types = $response->object();
+
+        return view('pages.exely.roomtypes', compact('types'));
+    }
+
+    public function amenities()
+    {
+        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/room-amenity-categories');
+        $amenities = $response->object();
+
+        return view('pages.exely.amentities', compact('amenities'));
+    }
+
+    public function extrarules()
+    {
+        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties/500803/extra-stay-rules');
+        $rules = $response->object()->extraStayRules;
+        //dd($rules);
+
+        return view('pages.exely.extrarules', compact('rules'));
+    }
+
+    public function searchProperty(Request $request)
+    {
+        $response = Http::accept('application/json')->withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4'])->post('https://connect.test.hopenapi.com/api/search/v1/properties/500803/services', [
+            'arrivalDateTime' => '2025-03-07T14:00',
+            'departureDateTime' => '2025-03-08T12:00',
+            'roomType' => [
+                'id' => '82751',
+                'placements' => [
+                    'code' => 'AdultBed-2'
+                ],
+            ],
+            'ratePlan' => [
+                'id' => '987657',
+            ],
+            'guestCount' => [
+                'adultCount' => 1,
+                'childAges' => 5
+            ],
+        ]);
+        $rules = $response->json();
+        dd($rules);
+        return view('pages.exely.search', compact('rules'));
+
     }
 
 }

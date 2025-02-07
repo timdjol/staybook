@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\HotelController;
 use App\Http\Controllers\Admin\ListbookController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PageController;
@@ -68,6 +69,37 @@ Route::middleware('set_locale')->group(function ()
             //Route::delete('/books/destroy/{id}', [BookingController::class, 'destroy'])->name('listbooks
             //.destroy');
 
+
+
+            Route::get('/setup', function () {
+                $credentials = [
+                    'email' => 'admin@silkwaytravel.kg',
+                    'password' => 'silkway123',
+                ];
+
+                if (Auth::attempt($credentials)) {
+                    $user = Auth::user();
+                    $user->name = 'Администрация';
+                    $user->email = 'admin@silkwaytravel.kg';
+                    $user->password = Hash::make($credentials['password']);
+                    $user->save();
+
+                    if(Auth::attempt($credentials)) {
+                        $user = Auth::user();
+                        $adminToken = $user->createToken('adminToken', ['create', 'update', 'delete']);
+                        $updateToken = $user->createToken('updateToken', ['update', 'delete']);
+                        $basicToken = $user->createToken('basicToken');
+
+                        return [
+                            'admin' => $adminToken->plainTextToken,
+                            'update' => $updateToken->plainTextToken,
+                            'basic' => $basicToken->plainTextToken,
+                        ];
+                    }
+                }
+            });
+
+
         });
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -88,6 +120,16 @@ Route::middleware('set_locale')->group(function ()
     Route::get('/products/create-step-three', [PageController::class, 'createStepThree'])->name('createStepThree');
     Route::post('/products/create-step-three', [PageController::class, 'postCreateStepThree'])->name('postCreateStepThree');
 
+    //exely API
+    Route::get('/properties', [PageController::class, 'properties'])->name('properties');
+    Route::get('/properties/{property}', [PageController::class, 'property'])->name('property');
+    Route::get('/meals', [PageController::class, 'meals'])->name('meals');
+    Route::get('/roomtypes', [PageController::class, 'roomtypes'])->name('roomtypes');
+    Route::get('/amenities', [PageController::class, 'amenities'])->name('amenities');
+    Route::get('/extrarules', [PageController::class, 'extrarules'])->name('extrarules');
+    Route::get('/searchProperty', [PageController::class, 'searchProperty'])->name('searchProperty');
+
+
     Route::get('/allhotels', [PageController::class, 'hotels'])->name('hotels');
     Route::get('/about', [PageController::class, 'about'])->name('about');
     Route::get('/contactspage', [PageController::class, 'contactspage'])->name('contactspage');
@@ -98,6 +140,7 @@ Route::middleware('set_locale')->group(function ()
     //email
     Route::post('contact_mail', [MainController::class, 'contact_mail'])->name('contact_mail');
     Route::post('book_mail', [MainController::class, 'book_mail'])->name('book_mail');
+
 
 });
 

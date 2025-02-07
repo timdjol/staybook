@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Filters\V1\HotelFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\V1\StoreHotelRequest;
 use App\Http\Resources\V1\HotelCollection;
 use App\Http\Resources\V1\HotelResource;
 use App\Models\Hotel;
@@ -31,7 +32,7 @@ class HotelController extends Controller
         return new HotelResource($hotel);
     }
 
-    public function store(Request $request)
+    public function store(StoreHotelRequest $request)
     {
         return new HotelResource(Hotel::create($request->all()));
     }
