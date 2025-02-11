@@ -4,6 +4,7 @@
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\HotelController;
 use App\Http\Controllers\Admin\ListbookController;
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
@@ -120,14 +121,29 @@ Route::middleware('set_locale')->group(function ()
     Route::get('/products/create-step-three', [PageController::class, 'createStepThree'])->name('createStepThree');
     Route::post('/products/create-step-three', [PageController::class, 'postCreateStepThree'])->name('postCreateStepThree');
 
-    //exely API
-    Route::get('/properties', [PageController::class, 'properties'])->name('properties');
-    Route::get('/properties/{property}', [PageController::class, 'property'])->name('property');
-    Route::get('/meals', [PageController::class, 'meals'])->name('meals');
-    Route::get('/roomtypes', [PageController::class, 'roomtypes'])->name('roomtypes');
-    Route::get('/amenities', [PageController::class, 'amenities'])->name('amenities');
-    Route::get('/extrarules', [PageController::class, 'extrarules'])->name('extrarules');
-    Route::get('/searchProperty', [PageController::class, 'searchProperty'])->name('searchProperty');
+    //Exely API
+    //Content
+    Route::get('/v1/properties', [ApiController::class, 'properties'])->name('properties');
+    Route::get('/v1/properties/{property}', [ApiController::class, 'property'])->name('property');
+    Route::get('/v1/meals', [ApiController::class, 'meals'])->name('meals');
+    Route::get('/v1/roomtypes', [ApiController::class, 'roomtypes'])->name('roomtypes');
+    Route::get('/v1/amenities', [ApiController::class, 'amenities'])->name('amenities');
+    Route::get('/v1/extrarules', [ApiController::class, 'extrarules'])->name('extrarules');
+
+    //Search API
+    Route::get('/v1/search_property', [ApiController::class, 'search_property'])->name('search_property');
+    Route::get('/v1/search_roomstays', [ApiController::class, 'search_roomstays'])->name('search_roomstays');
+    Route::get('/v1/search_services', [ApiController::class, 'search_services'])->name('search_services');
+    Route::get('/v1/search_extrastays', [ApiController::class, 'search_extrastays'])->name('search_extrastays');
+
+    //Reservation API
+    Route::get('/v1/bookings', [ApiController::class, 'res_bookings'])->name('res_bookings');
+    Route::get('/v1/booking', [ApiController::class, 'res_booking'])->name('res_booking');
+    Route::get('/v1/booking/modify', [ApiController::class, 'res_modify'])->name('res_modify');
+    Route::get('/v1/booking/verify', [ApiController::class, 'res_verify'])->name('res_verify');
+    Route::get('/v1/booking/cancel', [ApiController::class, 'res_cancel'])->name('res_cancel');
+    Route::get('/v1/booking/calculate', [ApiController::class, 'res_calculate'])->name('res_calculate');
+    Route::get('/v1/bookings/verify', [ApiController::class, 'res_verify_bookings'])->name('res_bookings_verify');
 
 
     Route::get('/allhotels', [PageController::class, 'hotels'])->name('hotels');
