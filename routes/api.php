@@ -26,5 +26,4 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\API\V1'], f
     Route::apiResource('meals', MealController::class);
     Route::apiResource('childs', ChildController::class);
     Route::apiResource('books', BookingController::class);
-
 });
