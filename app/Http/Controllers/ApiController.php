@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -12,6 +13,7 @@ class ApiController extends Controller
     {
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties?count=20&include=All');
         $properties = $response->object()->properties;
+        dd($properties);
 
         return view('pages.exely.properties', compact('properties'));
     }
@@ -21,6 +23,8 @@ class ApiController extends Controller
 
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties/' . $property);
         $property = $response->object();
+
+        dd($property);
 
         return view('pages.exely.property', compact('property'));
     }
@@ -53,6 +57,7 @@ class ApiController extends Controller
     {
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties/500803/extra-stay-rules');
         $rules = $response->object()->extraStayRules;
+        dd($rules);
 
         return view('pages.exely.extrarules', compact('rules'));
     }
@@ -61,26 +66,28 @@ class ApiController extends Controller
     public function search_property(Request $request)
     {
         $response = Http::accept('application/json')->withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4'])->post('https://connect.test.hopenapi.com/api/search/v1/properties/room-stays/search', [
-            "propertyIds" => ["500803", "500804"],
-            "adults" => 1,
-            //"childAges" => [1],
+            "propertyIds" => ["1024"],
+            "adults" => $request->adults,
+            "childAges" => [$request->childAges],
             "include" => "",
-            "arrivalDate" => "2025-03-01",
-            "departureDate" => "2025-05-30",
+            "arrivalDate" => $request->arrivalDate,
+            "departureDate" => $request->departureDate,
             "mealPreference" => [
                 "mealType" => "MealOnly",
                 "mealsIncluded" => ["mealPlanCodes" => ["BreakFast"]],
             ],
             "pricePreference" => [
-                "currencyCode" => "GBP",
-                "minPrice" => 50,
-                "maxPrice" => 100000,
+                "currencyCode" => "USD",
+                "minPrice" => 0,
+                "maxPrice" => 10000,
             ],
             //"corporateCodes" => ["string"],
         ]);
-        $rules = $response->json();
-        dd($rules);
-        return view('pages.exely.search', compact('rules'));
+        $errors = $response->object();
+        dd($errors);
+        //dd($response);
+        $errors = $response->object()->errors[0];
+        return view('pages.exely.search', compact('errors'));
     }
 
     public function search_roomstays()
@@ -133,14 +140,14 @@ class ApiController extends Controller
     //Reservation API
     public function res_bookings()
     {
-        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->post('https://connect.test.hopenapi.com/api/search/v1/bookings', [
+        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->post('https://connect.test.hopenapi.com/api/reservation/v1/bookings', [
             "booking" => [
                 "propertyId" => "500803",
                 "roomStays" => [
                     [
                         "stayDates" => [
-                            "arrivalDateTime" => "2025-03-11T14:00",
-                            "departureDateTime" => "2025-03-12T12:00",
+                            "arrivalDateTime" => "2025-03-18T14:00",
+                            "departureDateTime" => "2025-03-19T12:00",
                         ],
                         "ratePlan" => ["id" => "133528"],
                         "roomType" => [
@@ -204,14 +211,14 @@ class ApiController extends Controller
 
     public function res_booking()
     {
-        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->post('https://connect.test.hopenapi.com/api/reservation/v1/bookings/20191001-1024-45675262');
-        $booking = $response->json();
-        //dd($booking);
+        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/reservation/v1/bookings/20191001-1024-45675262');
+        $booking = $response->object()->errors[0];
+        dd($booking);
     }
 
     public function res_modify()
     {
-        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/reservation/v1/bookings/20191001-1024-45675262/modify', [
+        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->post('https://connect.test.hopenapi.com/api/reservation/v1/bookings/20191001-1024-45675262/modify', [
             "booking" => [
                 "propertyId" => "1024",
                 "roomStays" => [
@@ -275,7 +282,7 @@ class ApiController extends Controller
                 "version" => "MjAyMzA1MTktNzI5Mi0xMTc1MzI1Mi0y",
             ],
         ]);
-        $booking = $response->object();
+        $booking = $response->object()->errors[0];
         dd($booking);
     }
 
@@ -346,7 +353,7 @@ class ApiController extends Controller
                 "version" => "MjAyMzA1MTktNzI5Mi0xMTc1MzI1Mi0y",
             ],
         ]);
-        $booking = $response->object();
+        $booking = $response->object()->errors[0];
         dd($booking);
 
 
@@ -358,7 +365,7 @@ class ApiController extends Controller
             "reason" => "Booking cancellation",
             "expectedPenaltyAmount" => 0
         ]);
-        $rules = $response->object();
+        $rules = $response->object()->errors[0];
         dd($rules);
 
         return view('pages.exely.extrarules', compact('rules'));
@@ -367,21 +374,21 @@ class ApiController extends Controller
     public function res_calculate()
     {
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/reservation/v1/bookings/20191001-1024-45675262/calculate-cancellation-penalty?cancellationDateTimeUtc=2025-02-11T14%3A00%3A00Z');
-        $calc = $response->object();
+        $calc = $response->object()->errors[0];
 
         dd($calc);
     }
 
-    public function res_verify_bookings()
+    public function res_verify_bookings(Request $request)
     {
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->post('https://connect.test.hopenapi.com/api/reservation/v1/bookings/verify', [
             "booking" => [
-                "propertyId" => "1024",
+                "propertyId" => "500803",
                 "roomStays" => [
                     [
                         "stayDates" => [
-                            "arrivalDateTime" => "2025-03-11T14:00",
-                            "departureDateTime" => "2025-03-12T12:00",
+                            "arrivalDateTime" => $request->get("arrivalDate"),
+                            "departureDateTime" => $request->get("departureDate"),
                         ],
                         "ratePlan" => ["id" => "133528"],
                         "roomType" => [
@@ -390,42 +397,42 @@ class ApiController extends Controller
                         ],
                         "guests" => [
                             [
-                                "firstName" => "John",
-                                "lastName" => "Doe",
-                                "middleName" => "Smith",
+                                "firstName" => $request->get("title"),
+                                "lastName" => $request->get("title"),
+                                "middleName" => $request->get("title"),
                                 "citizenship" => "GBR",
                                 "sex" => "Male",
                             ],
                         ],
-                        "guestCount" => ["adultCount" => 1, "childAges" => [5]],
+                        "guestCount" => ["adultCount" => $request->get("count"), "childAges" => [5]],
                         "checksum" =>
                             "eyJDaGVja3N1bVdpdGhPdXRFeHRyYXMiOnsiVG90YWxBbW91bnRBZnRlclRheCI6IjU1LjUwIiwiQ3VycmVuY3lDb2RlIjoiR0JQIiwiU3RhcnRQZW5hbHR5QW1vdW50IjoiOS43MiJ9LCJDaGVja3N1bVdpdGhFeHRyYXMiOnsiVG90YWxBbW91bnRBZnRlclRheCI6IjU1LjUwIiwiQ3VycmVuY3lDb2RlIjoiR0JQIiwiU3RhcnRQZW5hbHR5QW1vdW50IjoiOS43MiJ9fQ==",
                         "services" => [
                             [
-                                "id" => "42965",
-                                "quantity" => 3,
+                                "id" => "5001625",
+                                "quantity" => 2,
                                 "quantityByGuests" => null,
                             ],
                         ],
                         "extraStay" => [
                             "earlyArrival" => [
-                                "overriddenDateTime" => "2025-03-11T14:00",
+                                "overriddenDateTime" => "2025-03-20T14:00",
                             ],
                             "lateDeparture" => [
-                                "overriddenDateTime" => "2025-03-11T14:00",
+                                "overriddenDateTime" => "2025-03-20T14:00",
                             ],
                         ],
                     ],
                 ],
                 "services" => [["id" => "7898"]],
                 "customer" => [
-                    "firstName" => "John",
-                    "lastName" => "Doe",
-                    "middleName" => "Smith",
-                    "citizenship" => "GBR",
+                    "firstName" => $request->get("title"),
+                    "lastName" => $request->get("title"),
+                    //"middleName" => $request->get("title"),
+                    //"citizenship" => "GBR",
                     "contacts" => [
-                        "phones" => [["phoneNumber" => "+442012345678"]],
-                        "emails" => [["emailAddress" => "email@example.com"]],
+                        "phones" => [["phoneNumber" => $request->get("phone"),]],
+                        "emails" => [["emailAddress" => $request->get("email"),]],
                     ],
                     "comment" => "Preferably a room with a sea view",
                 ],
@@ -435,11 +442,13 @@ class ApiController extends Controller
                     "prepaidSum" => 0,
                 ],
                 "bookingComments" => ["Preferably a room with a sea view"],
-            ],
-        ]);
-
+            ]]);
         $calc = $response->object();
-
         dd($calc);
+    }
+
+    public function orderexely(Request $request)
+    {
+        return view('pages.exely.orderexely', compact('request'));
     }
 }

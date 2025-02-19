@@ -65,21 +65,17 @@
                         </div>
                         <div class="col-md-4">
                             <div class="dashboard-item">
-                                @php
-                                    $category = \App\Models\Category::where('room_id', $book->room_id)->firstOrFail();
-                                    $room = \App\Models\Room::where('id', $book->room_id)->first();
-                                @endphp
-                                <div class="img"><img src="{{ Storage::url($room->image) }}"></div>
+                                <div class="img"><img src="{{ $property->images[0]->url }}"></div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="dashboard-item">
                                 <div class="name">@lang('admin.hotel')</div>
                                 <div class="wrap">
-                                    {{ $room->hotel->title }}
+                                    {{ $property->name }}
                                     <div class="name" style="margin-top: 20px">@lang('admin.room')</div>
-                                    {{ $room->title }} <br>
-                                    <div class="name">Тариф:</div> {{ $category->title }}
+                                    {{ $property->roomTypes[0]->name }} <br>
+                                    <div class="name">Тариф:</div> {{ $property->ratePlans[0]->name }}
                                 </div>
                             </div>
                         </div>
@@ -114,14 +110,14 @@
                             <script>
                                 DG.then(function () {
                                     var map = DG.map('map', {
-                                        center: [{{$room->hotel->lat}}, {{$room->hotel->lng}}],
+                                        center: [{{$property->contactInfo->address->latitude}}, {{$property->contactInfo->address->longitude}}],
                                         zoom: 14
                                     });
 
-                                    DG.marker([{{$room->hotel->lat}}, {{$room->hotel->lng}}], {scrollWheelZoom:
+                                    DG.marker([{{$property->contactInfo->address->latitude}}, {{$property->contactInfo->address->longitude}}], {scrollWheelZoom:
                                             false})
                                         .addTo(map)
-                                        .bindLabel('{{$room->hotel->__('title')}}', {
+                                        .bindLabel('{{ $property->name }}', {
                                             static: true
                                         });
                                 });

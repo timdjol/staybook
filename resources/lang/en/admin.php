@@ -146,5 +146,7 @@ return [
     'rules_not_found' => 'Rules not found',
     'categories_not_found' => 'Tariffs not found',
     'foods_not_found' => 'No food types found',
-    'childs_not_found' => 'Accommodations with children not found'
+    'childs_not_found' => 'Accommodations with children not found',
+    'cats_not_found' => 'Categories room not found',
+    'cats' => 'Categories room',
 ];

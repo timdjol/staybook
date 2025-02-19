@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\BookingDeleteMail;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 class ListbookController extends Controller
@@ -22,13 +23,24 @@ class ListbookController extends Controller
     {
         $hotel = $request->session()->get('hotel_id');
         $books = Book::where('hotel_id', $hotel)->paginate(40);
-        return view('auth.listbooks.index', compact('books'));
+        $listbooks = Book::where('tag', 'exely')->get();
+
+        return view('auth.listbooks.index', compact('books', 'listbooks'));
     }
 
     public function show($id)
     {
         $book = Book::where('id', $id)->firstOrFail();
         return view('auth.listbooks.show', compact('book'));
+    }
+
+    public function exelyshow($id)
+    {
+        $book = Book::where('id', $id)->firstOrFail();
+        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties/' . $book->hotel_id);
+        $property = $response->object();
+        //dd($property);
+        return view('auth.listbooks.exelyshow', compact('book', 'property'));
     }
 
     public function destroy($id)

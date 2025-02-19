@@ -7,6 +7,7 @@ use App\Http\Requests\RoomRequest;
 use App\Mail\RoomCreateMail;
 use App\Mail\RoomDeleteMail;
 use App\Mail\RoomUpdateMail;
+use App\Models\Cat;
 use App\Models\Category;
 use App\Models\Child;
 use App\Models\Hotel;
@@ -144,9 +145,10 @@ class RoomController extends Controller
     {
         $hotel = $request->session()->get('hotel_id');
         $hotels = Hotel::all();
+        $cats = Cat::all();
         $services = explode(', ', $room->services);
         $images = Image::where('room_id', $room->id)->get();
-        return view('auth.rooms.form', compact('room', 'hotels', 'images', 'hotel', 'services'));
+        return view('auth.rooms.form', compact('room', 'hotels', 'images', 'hotel', 'services', 'cats'));
     }
 
     /**
@@ -158,10 +160,10 @@ class RoomController extends Controller
         $params = $request->all();
 
         // bed
-        unset($params['bed']);
-        if($request->has('bed')){
-            $params['bed'] = implode(', ', $request->bed);
-        }
+//        unset($params['bed']);
+//        if($request->has('bed')){
+//            $params['bed'] = implode(', ', $request->bed);
+//        }
 
         // services
         unset($params['services']);
@@ -196,7 +198,7 @@ class RoomController extends Controller
         }
 
         $room->update($params);
-        Mail::to('info@timmedia.store')->send(new RoomUpdateMail($request));
+        //Mail::to('info@timmedia.store')->send(new RoomUpdateMail($request));
         session()->flash('success', 'Room ' . $request->title . ' updated');
         return redirect()->route('rooms.index');
     }
@@ -215,7 +217,7 @@ class RoomController extends Controller
             Storage::delete($image->image);
         }
         DB::table('images')->where('room_id', $room->id)->delete();
-        Mail::to('info@timmedia.store')->send(new RoomDeleteMail($room));
+        //Mail::to('info@timmedia.store')->send(new RoomDeleteMail($room));
 
         session()->flash('success', 'Room ' . $room->title . ' deleted');
         return redirect()->route('rooms.index');

@@ -39,6 +39,7 @@ Route::middleware('set_locale')->group(function ()
             Route::resource("bookings", "App\Http\Controllers\Admin\BookingController");
             Route::resource("prices", "App\Http\Controllers\Admin\PriceController");
             Route::resource("rooms", "App\Http\Controllers\Admin\RoomController");
+            Route::resource("cats", "App\Http\Controllers\Admin\CatController");
             Route::resource("categories", "App\Http\Controllers\Admin\CategoryRoomController");
             Route::resource("foods",    "App\Http\Controllers\Admin\FoodController");
             Route::resource("rules", "App\Http\Controllers\Admin\RuleController");
@@ -53,6 +54,7 @@ Route::middleware('set_locale')->group(function ()
 
             Route::get("search",[HotelController::class,'search']);
             Route::get("searchbook",[ListBookController::class,'searchbook']);
+            Route::get("/book/exelyshow/{book}",[ListBookController::class, 'exelyshow'])->name('book.exelyshow');
 
 
 //                Route::get('/hotels/{status?}/{show_result?}/{s_query?}', [HHotelController::class, 'index'])->name
@@ -112,8 +114,11 @@ Route::middleware('set_locale')->group(function ()
 
 
     Route::get('/', [PageController::class, 'index'])->name('index');
-    Route::get('/allrooms', [PageController::class,'allrooms'])->name('allrooms');
 
+    Route::get('/testpage', [PageController::class, 'testpage'])->name('testpage');
+    Route::get("/searchtest", [PageController::class,'searchtest'])->name('searchtest');
+
+    Route::get('/allrooms', [PageController::class,'allrooms'])->name('allrooms');
     Route::get('/products/create-step-one', [PageController::class, 'createStepOne'])->name('createStepOne');
     Route::post('/products/create-step-one', [PageController::class, 'postCreateStepOne'])->name('postCreateStepOne');
     Route::get('/products/create-step-two', [PageController::class, 'createStepTwo'])->name('createStepTwo');
@@ -145,18 +150,19 @@ Route::middleware('set_locale')->group(function ()
     Route::get('/v1/booking/calculate', [ApiController::class, 'res_calculate'])->name('res_calculate');
     Route::get('/v1/bookings/verify', [ApiController::class, 'res_verify_bookings'])->name('res_bookings_verify');
 
-
     Route::get('/allhotels', [PageController::class, 'hotels'])->name('hotels');
+    Route::get('/order/{order}', [PageController::class, 'order'])->name('order');
+    Route::get('/orderexely/{order}', [ApiController::class, 'orderexely'])->name('orderexely');
     Route::get('/about', [PageController::class, 'about'])->name('about');
     Route::get('/contactspage', [PageController::class, 'contactspage'])->name('contactspage');
     Route::get('/search', [PageController::class, 'search'])->name('search');
     Route::get('/{hotel}', [PageController::class, 'hotel'])->name('hotel');
     Route::get('/{hotel}/{rooms}', [PageController::class, 'room'])->name('room');
 
+
     //email
     Route::post('contact_mail', [MainController::class, 'contact_mail'])->name('contact_mail');
     Route::post('book_mail', [MainController::class, 'book_mail'])->name('book_mail');
-
 
 });
 

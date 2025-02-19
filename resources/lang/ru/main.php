@@ -77,6 +77,7 @@ return [
     'search-include' => 'Питание',
     'all-rooms' => 'Показать все номера',
     'services' => 'Услуги',
+    'amenities' => 'Удобства',
     'payments' => 'Способы оплаты',
     'list' => 'Списком',
     'on_map' => 'На карте',

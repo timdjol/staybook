@@ -78,8 +78,8 @@
                                         @endforeach
                                     </td>
                                     <td>
-                                        @isset($category->food)
-                                            {{ $category->food->__('title') }}
+                                        @isset($category->food_id)
+                                            {{ $category->food_id }}
                                         @endisset
                                     </td>
                                     <td>

@@ -25,7 +25,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-5">
-                    <img src="{{ $property->images[0]->url }}" alt="">
+                    <div class="main">
+                        <img src="{{ $property->images[0]->url }}" alt="">
+                    </div>
                     <script src="https://maps.api.2gis.ru/2.0/loader.js"></script>
                     <div id="map" style="width: 100%; height: 500px; margin-top: 20px"></div>
                     <script>
@@ -44,14 +46,14 @@
                         });
                     </script>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-7 summary">
                     <h1>{{ $property->name }}</h1>
                     <p>{{ $property->description }}</p>
                     <div class="rating">Rating: {{ $property->stars }}</div>
                     <div class="address">Address: {{ $property->contactInfo->address->addressLine }}</div>
                     <div class="phone">
                         Phone: <a
-                            href="tel:{{$property->contactInfo->phones[0]->phoneNumber}}">{{ $property->contactInfo->phones[0]->phoneNumber }}</a>
+                            href="tel:{{$property->contactInfo->phones[0]->phoneNumber ?? ''}}">{{ $property->contactInfo->phones[0]->phoneNumber ?? '' }}</a>
                     </div>
                     <div class="email">
                         Email: <a
@@ -107,6 +109,23 @@
                                         </div>
                                     @endforeach
                                 </div>
+                            <div class="btn-wrap">
+                                <form action="{{ route('orderexely', $room->id) }}">
+                                    <input type="hidden" name="hotel" value="{{ $property->name }}">
+                                    <input type="hidden" name="hotel_id" value="{{ $property->id }}">
+                                    <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                    <input type="hidden" name="title" value="{{ $room->name}}">
+                                    <input type="hidden" name="lng" value="{{ $property->contactInfo->address->longitude }}">
+                                    <input type="hidden" name="lat" value="{{ $property->contactInfo->address->latitude }}">
+                                    <input type="hidden" name="food" value="not_found">
+                                    <input type="hidden" name="cancel" value="not_found">
+                                    <input type="hidden" name="price" value="1">
+                                    <input type="hidden" name="image" value="{{ $property->images[0]->url }}">
+                                    <input type="hidden" name="bed" value="{{ $room->occupancy->adultBed }}">
+
+                                    <button class="more">Забронировать</button>
+                                </form>
+                            </div>
                         </div>
                     @endforeach
 
@@ -114,5 +133,15 @@
             </div>
         </div>
     </div>
+
+    <style>
+        .single .main img{
+            height: auto;
+        }
+        .single .summary img{
+            height: 110px;
+            object-fit: cover;
+        }
+    </style>
 
 @endsection

@@ -4,23 +4,42 @@
 
 @section('content')
     @auth
-        <div class="page welcome">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h1>Добро пожаловать в StayBook, бронируйте по лучшей цене
-                        </h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
                 integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk="
                 crossorigin="anonymous"></script>
         <link rel="stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
               integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous"/>
+
+        <div class="page">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                         @php
+                            $hotel = \App\Models\Hotel::where('id', 14)->first();
+                            $service = \App\Models\Service::where('hotel_id', 14)->first();
+                            $rooms = \App\Models\Room::where('hotel_id', 14)->get();
+                         @endphp
+                        <h3>{{ $hotel->title }}</h3>
+                        <div class="address">Address: {{ $hotel->address }}</div>
+                        <div class="amenities">Services: {{ $service->services }}</div>
+                        <div class="rooms">
+                            <div class="row">
+                                @foreach($hotels as $hotel)
+                                    <div class="col-md-3">
+                                        <div class="room-item">
+                                            <h5>{{ $hotel->title }}</h5>
+{{--                                            <div class="food">{{ $room->food->title }}</div>--}}
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="search homesearch d-xl-block d-lg-block d-none">
 
             <div class="container">
@@ -34,9 +53,6 @@
                                     @foreach($hotels as $hotel)
                                         <option value="{{ $hotel->id }}" data-address="{{ $hotel->__('address')
                                     }}">{{ $hotel->title_en }} ({{ $hotel->title}})</option>
-                                    @endforeach
-                                    @foreach($properties as $property)
-                                        <option value="{{ $property->id }}" data-address="{{ $property->contactInfo->address->addressLine }}">{{ $property->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -480,66 +496,6 @@
             </div>
         </div>
 
-        <div class="form">
-            <div class="container">
-                <form action="{{ route('search_property') }}">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="">Title</label>
-                                <input type="text" name="title">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="">Adult</label>
-                                <input type="number" name="adults">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="">Child</label>
-                                <input type="number" name="childAges">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="">Arrival date</label>
-                                <input type="date" name="arrivalDate">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="">Departure</label>
-                                <input type="date" name="departureDate">
-                            </div>
-                        </div>
-                        <button class="more" id="send">Отправить</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-
-
-
-        <div class="rooms home-rooms">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h2 data-aos="fade-up" data-aos-duration="2000">@lang('main.rooms')</h2>
-                    </div>
-                </div>
-                @foreach($rooms as $room)
-                    @include('layouts.card', compact('room'))
-                @endforeach
-                <div class="row">
-                    <div class="col-md-12">
-                        {{ $rooms->links('pagination::bootstrap-4') }}
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <style>
             .check {
@@ -590,4 +546,5 @@
             </div>
         </div>
     @endauth
+
 @endsection

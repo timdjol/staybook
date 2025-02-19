@@ -98,6 +98,7 @@
                                 <th>#</th>
                                 <th>@lang('admin.image')</th>
                                 <th>@lang('admin.title')</th>
+                                <th>@lang('admin.cats')</th>
                                 <th>@lang('admin.plans')</th>
                                 <th>@lang('admin.price')</th>
 {{--                                <th>@lang('admin.nutrition')</th>--}}
@@ -110,6 +111,11 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td><img src="{{ Storage::url($room->image) }}" alt="" width="100px"></td>
                                     <td>{{ $room->__('title') }}</td>
+                                    <td>
+                                        @isset($room->cat)
+                                            {{ $room->cat->__('title') }}
+                                        @endif
+                                    </td>
                                     <td>
                                         @php
                                             $plan = \App\Models\Category::where('room_id', $room->id)->first();

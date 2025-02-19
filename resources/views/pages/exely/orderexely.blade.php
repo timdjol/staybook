@@ -1,97 +1,107 @@
 @extends('layouts.master')
 
-@section('title', $room->__('title'))
+@section('title', 'Забронировать')
 
 @section('content')
 
-    @auth
-        <div class="page rooms single">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="fotorama" data-allowfullscreen="true" data-nav="thumbs" data-loop="true"
-                             data-autoplay="3000">
-                            <img loading="lazy" src="{{ Storage::url($room->image) }}" alt="">
-                            @foreach($images as $image)
-                                <img loading="lazy" src="{{ Storage::url($image->image) }}" alt="">
-                            @endforeach
+    <div class="pagetitle">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 data-aos="fade-up" data-aos-duration="2000">Забронировать</h1>
+                    <ul class="breadcrumbs">
+                        <li><a href="{{route('index')}}">@lang('main.home')</a></li>
+                        <li>></li>
+                        <li>Забронировать</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    @php
+                        $now = \Carbon\Carbon::now();
+                                $date = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $now);
+                    @endphp
+                    <div class="row">
+                        <div class="col-md-8">
+                            <img src="{{ $request->image }}" alt="">
                         </div>
-                        <div class="cont">
+                        <div class="col-md-4">
+                            <h3>{{ $request->hotel }}</h3>
+                            <h5>{{ $request->title }}</h5>
+                            <div class="bed"><i class="fa-light fa-bed"></i> {{ $request->bed }}</div>
+                            <div class="food"><i class="fa-solid fa-utensils"></i> {{ $request->food }}</div>
+                            <div class="cancel"><i class="fa-solid fa-rotate-left"></i> {{ $request->cancel }}</div>
                             <script src="https://maps.api.2gis.ru/2.0/loader.js"></script>
                             <div id="map" style="width: 100%; height: 300px;"></div>
                             <script>
                                 DG.then(function () {
                                     var map = DG.map('map', {
-                                        center: [{{$room->hotel->lat}}, {{$room->hotel->lng}}],
-                                        zoom: 14
+                                        center: [42.855608, 74.618626],
+                                        zoom: 12
                                     });
 
-                                    DG.marker([{{$room->hotel->lat}}, {{$room->hotel->lng}}], {scrollWheelZoom: false})
+                                    DG.marker([{{ $request->lat }}, {{ $request->lng }}], {scrollWheelZoom: false})
                                         .addTo(map)
-                                        .bindLabel('{{$room->hotel->__('title')}}', {
+                                        .bindLabel('{{ $request->hotel }}', {
                                             static: true
                                         });
+
                                 });
                             </script>
-                            <div class="phone"><span>@lang('main.hphone')</span> <a
-                                        href="tel:{{ $room->hotel->phone }}">{{
-                $room->hotel->phone
-                }}</a></div>
-                            <div class="address"><span>@lang('main.address')</span> {{ $room->hotel->__('address') }}
-                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6" data-aos="fade-left" data-aos-duration="2000">
-                        <h1>{{ $room->__('title') }}</h1>
-                        <h5>{{ $room->hotel->__('title') }}</h5>
-                        <div class="price">@lang('main.price')
-                            @php
-                                //$comission = \Illuminate\Support\Facades\Auth::user()->comission;
-                                $plan = \App\Models\Category::where('room_id', $room->id)->first();
-                                $now = \Carbon\Carbon::now();
-                                $date = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $now);
-                                $child = \App\Models\Child::where('room_id', $room->id)->first();
-                                $cat = \App\Models\Category::where('room_id', $room->id)->first();
-                                $rule = \App\Models\Rule::where('id', $cat->rule_id ?? '')->first();
-                            @endphp
-                            $ {{ $room->price }}
-                        </div>
-                        <div class="btn-wrap">
-                            <a href="#callback" class="more">@lang('main.book')</a>
-                            <div class="hidden">
+                    <div class="row">
+                        <div class="col-lg-8 offset-lg-2">
+                            <form action="{{ route('res_bookings_verify') }}">
+                                <input type="hidden" name="room_id" value="{{ $request->room_id}}">
+                                <input type="hidden" name="hotel_id" value="{{$request->hotel_id}}">
+                                <input type="hidden" name="count" value="1">
+                                <input type="hidden" name="tag" value="exely">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-xs-4" for="end_d">@lang('main.date')</label>
+                                            <input type="text" id="date" class="date">
+                                            <input type="hidden" id="start_d" name="start_d"
+                                                   value="{{ date('Y-m-d H:s:i') }}">
+                                            <input type="hidden" id="end_d" name="end_d"
+                                                   value="{{ $date->addDays(1) }}">
 
-                                <form action="{{ route('book_mail') }}" method="post" id="callback"
-                                      class="form-callback">
-                                    <h3>@lang('main.book') {{ $room->__('title') }} <br> {{ $room->hotel->__('title')
-                                }}</h3>
-                                    <input type="hidden" name="room_id" value="{{ $room->id}}">
-                                    <input type="hidden" name="hotel_id" value="{{$room->hotel->id}}">
-                                    <div class="form-group">
-                                        <label class="col-xs-4" for="end_d">@lang('main.date')</label>
-                                        <input type="text" id="date" class="date">
-                                        <input type="hidden" id="start_d" name="start_d"
-                                               value="{{ date('Y-m-d H:s:i') }}">
-                                        <input type="hidden" id="end_d" name="end_d" value="{{ $date->addDays(1) }}">
-
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        @include('auth.layouts.error', ['fieldname' => 'count'])
-                                        <label class="col-xs-4" for="count">@lang('main.search-count')</label>
-                                        <select name="count" id="count" onchange="countCheck(this);" required>
-                                            <option value="">@lang('main.choose')</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                        </select>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-xs-4" for="title">ФИО</label>
+                                            <input type="text" class="form-control" name="title" required/>
+                                        </div>
                                     </div>
 
-                                    <div class="form-group" id="title">
-                                        <label class="col-xs-4" for="title">@lang('main.adult_name1')</label>
-                                        <input type="text" class="form-control" name="title" required/>
-                                    </div>
-                                    <div class="form-group" id="title2">
-                                        <label class="col-xs-4" for="title2">@lang('main.adult_name2')</label>
-                                        <input type="text" class="form-control" name="title2"/>
-                                    </div>
+                                    {{--                                    <div class="col-md-6">--}}
+                                    {{--                                        <div class="form-group">--}}
+                                    {{--                                            @include('auth.layouts.error', ['fieldname' => 'count'])--}}
+                                    {{--                                            <label class="col-xs-4" for="count">@lang('main.search-count')</label>--}}
+                                    {{--                                            <select name="count" id="count" onchange="countCheck(this);" required>--}}
+                                    {{--                                                <option value="">@lang('main.choose')</option>--}}
+                                    {{--                                                <option value="1">1</option>--}}
+                                    {{--                                                <option value="2">2</option>--}}
+                                    {{--                                            </select>--}}
+                                    {{--                                        </div>--}}
+                                    {{--                                    </div>--}}
+
+                                    {{--                                    <div class="form-group" id="title">--}}
+                                    {{--                                        <label class="col-xs-4" for="title">@lang('main.adult_name1')</label>--}}
+                                    {{--                                        <input type="text" class="form-control" name="title" required/>--}}
+                                    {{--                                    </div>--}}
+                                    {{--                                    <div class="form-group" id="title2">--}}
+                                    {{--                                        <label class="col-xs-4" for="title2">@lang('main.adult_name2')</label>--}}
+                                    {{--                                        <input type="text" class="form-control" name="title2"/>--}}
+                                    {{--                                    </div>--}}
 
                                     @isset($child)
                                         <div class="form-group">
@@ -327,21 +337,22 @@
                                             }
                                         }
                                     </script>
-
-                                    <div class="form-group">
-                                        @include('auth.layouts.error', ['fieldname' => 'phone'])
-                                        <label class="col-xs-4" for="phone">@lang('main.phone')</label>
-                                        <input type="text" class="form-control" name="phone" id="phone"
-                                               required>
-                                        <div id="output" class="output"></div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">Номер телефона</label>
+                                            <input type="text" name="phone" id="phone">
+                                            <div id="output"></div>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        @include('auth.layouts.error', ['fieldname' => 'email'])
-                                        <label class="col-xs-4" for="email">Email</label>
-                                        <input type="email" class="form-control" name="email" id="email"/>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @include('auth.layouts.error', ['fieldname' => 'email'])
+                                            <label class="col-xs-4" for="email">Email</label>
+                                            <input type="email" class="form-control" name="email" id="email"/>
+                                        </div>
                                     </div>
-                                    <input type="hidden" id="price" value="{{ $room->price }}">
-                                    <input type="hidden" id="price2" value="{{ $room->price2 }}">
+                                    {{--                            <input type="hidden" id="price" value="{{ $room->price }}">--}}
+                                    {{--                            <input type="hidden" id="price2" value="{{ $room->price2 }}">--}}
                                     @isset($child)
                                         <input type="hidden" id="pricec" class="pricec"
                                                value="{{$child->price_extra }}">
@@ -351,82 +362,85 @@
                                                value="{{$child->price_extra3 }}">
                                     @endisset
 
-                                    <div class="form-group">
-                                        <label for="">@lang('main.sum')</label>
-                                        <input type="text" id="sum" name="sum" readonly>
-                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="">@lang('main.sum') $</label>
+                                            <input type="text" id="sum" name="sum" value="{{ $request->price }}"
+                                                   readonly>
+                                        </div>
 
-                                    <input type="hidden" name="book_id" value="{{ $random }}">
+                                    </div>
+                                    {{--                            <input type="hidden" name="book_id" value="{{ $random }}">--}}
                                     <input type="hidden" name="status" value="@lang('main.paid')">
 
-                                    <script>
-                                        $("#count, #countc, #date, #age1, #age2, #age3").change(function () {
-                                            let price = $('#price').val();
-                                            let price2 = $('#price2').val();
-                                            let pricec = $('#pricec').val();
-                                            let pricec2 = $('#pricec2').val();
-                                            let pricec3 = $('#pricec3').val();
+                                    {{--                                    <script>--}}
+                                    {{--                                        $("#count, #countc, #date, #age1, #age2, #age3").change(function () {--}}
+                                    {{--                                            let price = $('#price').val();--}}
+                                    {{--                                            let price2 = $('#price2').val();--}}
+                                    {{--                                            let pricec = $('#pricec').val();--}}
+                                    {{--                                            let pricec2 = $('#pricec2').val();--}}
+                                    {{--                                            let pricec3 = $('#pricec3').val();--}}
 
-                                            let age1 = $('#age1').val();
-                                            let age2 = $('#age2').val();
-                                            let age3 = $('#age3').val();
+                                    {{--                                            let age1 = $('#age1').val();--}}
+                                    {{--                                            let age2 = $('#age2').val();--}}
+                                    {{--                                            let age3 = $('#age3').val();--}}
 
 
-                                            @isset($child)
-                                            //age1
-                                            if (age1 >= {{ $child->age_from }} && age1 <= {{ $child->age_to }}) {
-                                                pricec = pricec;
-                                            }
-                                            if (age1 >= {{ $child->age_from2 }} && age1 <= {{ $child->age_to2 }}) {
-                                                pricec = pricec2;
-                                            }
-                                            if (age1 >= {{ $child->age_from3 }} && age1 <= {{ $child->age_to3 }}) {
-                                                pricec = pricec3;
-                                            }
+                                    {{--                                            @isset($child)--}}
+                                    {{--                                            //age1--}}
+                                    {{--                                            if (age1 >= {{ $child->age_from }} && age1 <= {{ $child->age_to }}) {--}}
+                                    {{--                                                pricec = pricec;--}}
+                                    {{--                                            }--}}
+                                    {{--                                            if (age1 >= {{ $child->age_from2 }} && age1 <= {{ $child->age_to2 }}) {--}}
+                                    {{--                                                pricec = pricec2;--}}
+                                    {{--                                            }--}}
+                                    {{--                                            if (age1 >= {{ $child->age_from3 }} && age1 <= {{ $child->age_to3 }}) {--}}
+                                    {{--                                                pricec = pricec3;--}}
+                                    {{--                                            }--}}
 
-                                            //age2
-                                            if (age2 >= {{ $child->age_from }} && age3 <= {{ $child->age_to }}) {
-                                                pricec = pricec;
-                                            }
-                                            if (age2 >= {{ $child->age_from2 }} && age3 <= {{ $child->age_to2 }}) {
-                                                pricec = pricec2;
-                                            }
-                                            if (age2 >= {{ $child->age_from3 }} && age3 <= {{ $child->age_to3 }}) {
-                                                pricec = pricec3;
-                                            }
+                                    {{--                                            //age2--}}
+                                    {{--                                            if (age2 >= {{ $child->age_from }} && age3 <= {{ $child->age_to }}) {--}}
+                                    {{--                                                pricec = pricec;--}}
+                                    {{--                                            }--}}
+                                    {{--                                            if (age2 >= {{ $child->age_from2 }} && age3 <= {{ $child->age_to2 }}) {--}}
+                                    {{--                                                pricec = pricec2;--}}
+                                    {{--                                            }--}}
+                                    {{--                                            if (age2 >= {{ $child->age_from3 }} && age3 <= {{ $child->age_to3 }}) {--}}
+                                    {{--                                                pricec = pricec3;--}}
+                                    {{--                                            }--}}
 
-                                            //age3
-                                            if (age3 >= {{ $child->age_from }} && age3 <= {{ $child->age_to }}) {
-                                                pricec = pricec;
-                                            }
-                                            if (age3 >= {{ $child->age_from2 }} && age3 <= {{ $child->age_to2 }}) {
-                                                pricec = pricec2;
-                                            }
-                                            if (age3 >= {{ $child->age_from3 }} && age3 <= {{ $child->age_to3 }}) {
-                                                pricec = pricec3;
-                                            }
-                                            var countc = $('#countc').val();
-                                            @else
-                                            var countc = 1;
-                                            pricec = 0;
-                                            @endisset
+                                    {{--                                            //age3--}}
+                                    {{--                                            if (age3 >= {{ $child->age_from }} && age3 <= {{ $child->age_to }}) {--}}
+                                    {{--                                                pricec = pricec;--}}
+                                    {{--                                            }--}}
+                                    {{--                                            if (age3 >= {{ $child->age_from2 }} && age3 <= {{ $child->age_to2 }}) {--}}
+                                    {{--                                                pricec = pricec2;--}}
+                                    {{--                                            }--}}
+                                    {{--                                            if (age3 >= {{ $child->age_from3 }} && age3 <= {{ $child->age_to3 }}) {--}}
+                                    {{--                                                pricec = pricec3;--}}
+                                    {{--                                            }--}}
+                                    {{--                                            var countc = $('#countc').val();--}}
+                                    {{--                                            @else--}}
+                                    {{--                                            var countc = 1;--}}
+                                    {{--                                            pricec = 0;--}}
+                                    {{--                                            @endisset--}}
 
-                                            let count = $('#count').val();
-                                            let start_d = $('#start_d').val();
-                                            let end_d = $('#end_d').val();
-                                            let date1 = new Date(start_d);
-                                            let date2 = new Date(end_d);
-                                            let days = (date2 - date1) / (1000 * 60 * 60 * 24);
-                                            let sum = (price * days) + (pricec * countc * days);
-                                            let sum2 = (price2 * days) + (pricec * countc * days);
-                                            if (count == 2) {
-                                                $('#sum').val('$ ' + sum2);
-                                            } else {
-                                                $('#sum').val('$ ' + sum);
-                                            }
-                                        });
+                                    {{--                                            let count = $('#count').val();--}}
+                                    {{--                                            let start_d = $('#start_d').val();--}}
+                                    {{--                                            let end_d = $('#end_d').val();--}}
+                                    {{--                                            let date1 = new Date(start_d);--}}
+                                    {{--                                            let date2 = new Date(end_d);--}}
+                                    {{--                                            let days = (date2 - date1) / (1000 * 60 * 60 * 24);--}}
+                                    {{--                                            let sum = (price * days) + (pricec * countc * days);--}}
+                                    {{--                                            let sum2 = (price2 * days) + (pricec * countc * days);--}}
+                                    {{--                                            if (count == 2) {--}}
+                                    {{--                                                $('#sum').val('$ ' + sum2);--}}
+                                    {{--                                            } else {--}}
+                                    {{--                                                $('#sum').val('$ ' + sum);--}}
+                                    {{--                                            }--}}
+                                    {{--                                        });--}}
 
-                                    </script>
+                                    {{--                                    </script>--}}
 
                                     <div class="form-group">
                                         @include('auth.layouts.error', ['fieldname' => 'comment'])
@@ -435,101 +449,34 @@
                                     </div>
                                     @csrf
                                     <button class="more" id="saveBtn">@lang('main.book')</button>
-                                </form>
-                            </div>
-                        </div>
-                        {!! $room->__('description') !!}
-                        <div class="list">
-                            @if($room->bed != '')
-                                <p><i class="fa-light fa-bed"></i> @lang('main.bed'): {{$room->bed}}</p>
-                            @endif
-                                @empty($plan->food->title)
-
-                                @else
-                                    <p><i class="fa-light fa-mug-saucer"></i> {{$plan->food->title}}</p>
-                                @endempty
-
-                            @if($room->hotel->early_in != '')
-                                <p><i class="fa-light fa-calendar-days"></i> @lang('main.early')
-                                    {{$room->hotel->early_in}}</p>
-                            @endif
-                            @if($room->hotel->early_out != '')
-                                <p><i class="fa-light fa-calendar-days"></i> @lang('main.late')
-                                    {{$room->hotel->early_out}}</p>
-                            @endif
-
-                            @isset($rule)
-                                <p><i class="fa-regular fa-money-bill"></i> {{ $rule->title }}</p>
-                            @endisset
-
-                        </div>
-                        <div class="servlisting">
-                            <h5>@lang('main.services'):</h5>
-                            <div class="row">
-                                @php
-                                    $services = explode(', ', $room->hotel->service->services);
-                                @endphp
-                                @foreach($services as $service)
-                                    <div class="col-md-4">
-                                        <div class="item">
-                                            <i class="fa-regular fa-check"></i> {{ $service }}
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="servlisting">
-                            <h5>@lang('main.payments'):</h5>
-                            <div class="row">
-                                @php
-                                    $pays = explode(', ', $room->hotel->payment->payments);
-                                @endphp
-                                @foreach($pays as $pay)
-                                    <div class="col-md-3">
-                                        <div class="item">
-                                            <i class="fa-light fa-credit-card"></i> {{ $pay }}
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="share">
-                            <div class="descr">@lang('main.share')</div>
-                            <script src="https://yastatic.net/share2/share.js"></script>
-                            <div class="ya-share2" data-curtain data-shape="round"
-                                 data-services="vkontakte,odnoklassniki,telegram,twitter,whatsapp,linkedin"></div>
+                                </div>
+                            </form>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
+    </div>
 
-        @if($related->isNotEmpty())
-            <div class="page rooms related">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2>@lang('main.related')</h2>
-                        </div>
-                    </div>
-                    @foreach($related as $room)
-                        @include('layouts.card', compact('room'))
-                    @endforeach
-                </div>
-            </div>
-        @endif
-    @else
-        <div class="page">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="alert alert-danger">
-                            <div class="descr">Необходимо пройти <a href="{{ route('login') }}">авторизацию</a></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endauth
+    <style>
+        .page #map {
+            margin-top: 20px;
+        }
+
+        .page i {
+            color: darkblue;
+        }
+
+        .page form {
+            margin-top: 50px;
+        }
+
+        .page form button {
+            width: auto;
+            padding: 10px 30px;
+            margin-left: 10px;
+        }
+    </style>
 
 @endsection

@@ -39,7 +39,7 @@ class Hotel extends Model
 
     public function rooms()
     {
-        return $this->hasMany(Room::class, 'id', 'room_id');
+        return $this->hasMany(Room::class);
     }
 
     public function categories()
@@ -65,5 +65,21 @@ class Hotel extends Model
     {
         return $query->where('code', $code);
     }
+
+    public function food()
+    {
+        return $this->hasMany(Food::class);
+    }
+
+    public function rule()
+    {
+        return $this->hasMany(Rule::class);
+    }
+
+    public function child()
+    {
+        return $this->hasMany(Child::class);
+    }
+
 
 }

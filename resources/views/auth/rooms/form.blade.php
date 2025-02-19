@@ -83,7 +83,7 @@
                             <div class="col-md-6">
                                 @include('auth.layouts.error', ['fieldname' => 'price'])
                                 <div class="form-group">
-                                    <label for="">Стоимость($) за 1</label>
+                                    <label for="">Стоимость ($) за одного</label>
                                     <input type="number" name="price" value="{{ old('price', isset($room) ?
                                 $room->price : null) }}">
                                 </div>
@@ -91,13 +91,24 @@
                             <div class="col-md-6">
                                 @include('auth.layouts.error', ['fieldname' => 'price2'])
                                 <div class="form-group">
-                                    <label for="">Стоимость($) за 2</label>
+                                    <label for="">Стоимость ($) за двоих</label>
                                     <input type="number" name="price2" value="{{ old('price2', isset($room) ?
                                 $room->price : null) }}">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-6">
+                                @include('auth.layouts.error', ['fieldname' => 'area'])
+                                <div class="form-group">
+                                    <label for="">@lang('admin.cats')</label>
+                                    <select name="cat_id" id="">
+                                        @foreach($cats as $cat)
+                                            <option value="{{ $cat->id }}">{{ $cat->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 @include('auth.layouts.error', ['fieldname' => 'area'])
                                 <div class="form-group">
@@ -119,7 +130,7 @@
                                 <div class="form-group">
                                     @include('auth.layouts.error', ['fieldname' => 'bed'])
                                     <label for="bed">@lang('admin.bed')</label>
-                                    <select name="bed[]" id="bed" multiple style="height: auto">
+                                    <select name="bed" id="bed" style="height: auto">
                                         @isset($room)
                                             <option @if($room->bed)
                                                         selected>

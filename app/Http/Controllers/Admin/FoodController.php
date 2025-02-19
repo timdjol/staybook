@@ -22,9 +22,10 @@ class FoodController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $foods = Food::paginate(10);
+        $hotel = $request->session()->get('hotel_id');
+        $foods = Food::where('hotel_id', $hotel)->paginate(20);
         return view('auth.foods.index', compact('foods'));
     }
 
@@ -33,7 +34,8 @@ class FoodController extends Controller
      */
     public function create(Request $request)
     {
-        return view('auth.foods.form');
+        $hotel = $request->session()->get('hotel_id');
+        return view('auth.foods.form', compact('hotel'));
     }
 
     /**
@@ -53,7 +55,8 @@ class FoodController extends Controller
      */
     public function edit(Request $request, Food $food)
     {
-        return view('auth.foods.form', compact('food'));
+        $hotel = $request->session()->get('hotel_id');
+        return view('auth.foods.form', compact('food', 'hotel'));
     }
 
     /**

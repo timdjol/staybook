@@ -77,6 +77,7 @@ return [
     'search-extra' => 'Extra place',
     'all-rooms' => 'Show all rooms',
     'services' => 'Filters',
+    'amenities' => 'Удобства',
     'payments' => 'Payments',
     'list' => 'List',
     'on_map' => 'On the map',

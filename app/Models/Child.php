@@ -40,4 +40,9 @@ class Child extends Model
         return $this->belongsTo(Room::class);
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
 }

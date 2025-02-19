@@ -81,14 +81,15 @@
                                         @isset($category)
                                             <option value="{{ $category->food_id }}" @if($category->food_id)
                                                         selected>
-                                                {{ $category->food->__('title') }}</option>
+                                            {{ $category->food_id }}</option>
                                         @else
                                             <option>@lang('admin.choose')</option>
                                         @endif
                                         @endisset
-                                        @foreach($foods as $food)
-                                            <option value="{{ $food->id }}">{{ $food->__('title') }}</option>
-                                        @endforeach
+                                            <option value="RO">RO</option>
+                                            <option value="BF">BF</option>
+                                            <option value="HF">HF</option>
+                                            <option value="AI">AI</option>
                                     </select>
                                 </div>
                             </div>

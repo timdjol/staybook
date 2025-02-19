@@ -1,7 +1,7 @@
 @extends('auth.layouts.master')
 
-@isset($food)
-    @section('title', __('admin.edit') . ' ' . $food->title)
+@isset($cat)
+    @section('title', __('admin.edit') . ' ' . $cat->title)
 @else
     @section('title', __('admin.add'))
 @endisset
@@ -11,31 +11,34 @@
     <div class="page admin">
         <div class="container">
             <div class="row">
+                <div class="col-md-3">
+                    @include('auth.layouts.sidebar')
+                </div>
                 <div class="col-md-9">
                     @include('auth.layouts.subroom')
-                    @isset($food)
-                        <h1>@lang('admin.edit') {{ $food->title }}</h1>
+                    @isset($cat)
+                        <h1>@lang('admin.edit') {{ $cat->title }}</h1>
                     @else
                         <h1>@lang('admin.add')</h1>
                     @endisset
                     <form method="post"
-                          @isset($food)
-                              action="{{ route('foods.update', $food) }}"
+                          @isset($cat)
+                              action="{{ route('cats.update', $cat) }}"
                           @else
-                              action="{{ route('foods.store') }}"
-                        @endisset
+                              action="{{ route('cats.store') }}"
+                            @endisset
                     >
-                        @isset($food)
+                        @isset($cat)
                             @method('PUT')
                         @endisset
-                        <input type="hidden" value="{{ $hotel }}" name="hotel_id">
+{{--                        <input type="hidden" value="{{ $hotel }}" name="hotel_id">--}}
                         <div class="row">
                             <div class="col-md-6">
                                 @include('auth.layouts.error', ['fieldname' => 'title'])
                                 <div class="form-group">
                                     <label for="">@lang('admin.title')</label>
-                                    <input type="text" name="title" value="{{ old('title', isset($food) ?
-                                    $food->title :
+                                    <input type="text" name="title" value="{{ old('title', isset($cat) ?
+                                    $cat->title :
                              null) }}">
                                 </div>
                             </div>
@@ -43,16 +46,9 @@
                                 @include('auth.layouts.error', ['fieldname' => 'title_en'])
                                 <div class="form-group">
                                     <label for="">@lang('admin.title') EN</label>
-                                    <input type="text" name="title_en" value="{{ old('title_en', isset($food) ?
-                                $food->title_en : null) }}">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                @include('auth.layouts.error', ['fieldname' => 'price'])
-                                <div class="form-group">
-                                    <label for="">@lang('admin.price') $</label>
-                                    <input type="number" name="price" value="{{ old('price', isset($food) ?
-                                $food->price : null) }}">
+                                    <input type="text" name="title_en" value="{{ old('title_en', isset($cat) ?
+                                $cat->title_en :
+                             null) }}">
                                 </div>
                             </div>
                         </div>

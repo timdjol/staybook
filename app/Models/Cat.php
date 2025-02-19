@@ -3,24 +3,22 @@
 namespace App\Models;
 
 use App\Models\Traits\Translatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Food extends Model
+class Cat extends Model
 {
-    protected $table = 'foods';
-
+    use HasFactory;
     use Translatable;
 
     protected $fillable = [
         'title',
         'title_en',
-        'price',
-        'hotel_id',
+        'code'
     ];
 
-    public function category()
+    public function room()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Room::class);
     }
-
 }

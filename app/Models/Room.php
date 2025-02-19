@@ -26,7 +26,8 @@ class Room extends Model
         'services',
         'price',
         'price2',
-        'user_id'
+        'user_id',
+        'cat_id'
     ];
 
     public function hotel()
@@ -44,10 +45,10 @@ class Room extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function rooms()
-    {
-        return $this->hasMany(Room::class);
-    }
+//    public function rooms()
+//    {
+//        return $this->hasMany(Room::class);
+//    }
 
     public function images()
     {
@@ -57,6 +58,21 @@ class Room extends Model
     public function scopeByCode($query, $code)
     {
         return $query->where('code', $code);
+    }
+
+    public function food()
+    {
+        return $this->belongsTo(Food::class);
+    }
+
+    public function rule()
+    {
+        return $this->belongsTo(Rule::class);
+    }
+
+    public function cat()
+    {
+        return $this->belongsTo(Cat::class);
     }
 
 }
