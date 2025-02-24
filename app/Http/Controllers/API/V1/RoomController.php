@@ -30,9 +30,10 @@ class RoomController extends Controller
         return $room;
     }
 
-    public function store()
+    public function store(Request $request)
     {
-
+        Room::create($request->all());
+        return response('Room created successfully.', 201);
     }
 
     public function update(Request $request, Room $room)

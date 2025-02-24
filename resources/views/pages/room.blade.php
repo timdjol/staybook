@@ -34,7 +34,7 @@
                                 });
                             </script>
                             <div class="phone"><span>@lang('main.hphone')</span> <a
-                                        href="tel:{{ $room->hotel->phone }}">{{
+                                    href="tel:{{ $room->hotel->phone }}">{{
                 $room->hotel->phone
                 }}</a></div>
                             <div class="address"><span>@lang('main.address')</span> {{ $room->hotel->__('address') }}
@@ -72,7 +72,6 @@
                                         <input type="hidden" id="start_d" name="start_d"
                                                value="{{ date('Y-m-d H:s:i') }}">
                                         <input type="hidden" id="end_d" name="end_d" value="{{ $date->addDays(1) }}">
-
                                     </div>
                                     <div class="form-group">
                                         @include('auth.layouts.error', ['fieldname' => 'count'])
@@ -443,11 +442,11 @@
                             @if($room->bed != '')
                                 <p><i class="fa-light fa-bed"></i> @lang('main.bed'): {{$room->bed}}</p>
                             @endif
-                                @empty($plan->food->title)
+                            @empty($plan->food->title)
 
-                                @else
-                                    <p><i class="fa-light fa-mug-saucer"></i> {{$plan->food->title}}</p>
-                                @endempty
+                            @else
+                                <p><i class="fa-light fa-mug-saucer"></i> {{$plan->food->title}}</p>
+                            @endempty
 
                             @if($room->hotel->early_in != '')
                                 <p><i class="fa-light fa-calendar-days"></i> @lang('main.early')

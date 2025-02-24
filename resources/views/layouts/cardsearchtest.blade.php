@@ -26,10 +26,10 @@
 //            });
 //        }
 
-     $cats = $query->where('hotel_id', $hotel->id)->take(1)->get();
+     $rooms = \App\Models\Room::where('hotel_id', $hotel->id)->orderBy('price', 'asc')->take(1)->get();
 @endphp
 
-<div class="row rooms-item @if($cats->isEmpty()) hidden @endif">
+<div class="row rooms-item">
     <div class="col-lg-4 col-md-6" data-aos="fade-right" data-aos-duration="2000">
         <a href="{{ route('hotel', $hotel->code ?? '') }}" target="_blank">
             <div class="img" style="background-image: url({{ Storage::url($hotel->image) }})"></div>
@@ -41,50 +41,66 @@
         <div class="title">{{ $hotel->__('title') ?? '' }}</div>
         <div class="address">{{ $hotel->__('address') ?? '' }}</div>
         {{--        <div class="services">{{ $hotel->service->services }}</div>--}}
-        <div class="room" style="margin-top: 20px">
-            @foreach($cats as $cat)
-                <div class="room-item">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h5>{{ $cat->room->__('title') ?? '' }}</h5>
-                            <div class="plan">Тариф: {{ $cat->__('title') }}</div>
-                            <div class="bed"><i class="fa-light fa-bed"></i> {{ $cat->room->bed }}</div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="listings">
-                                <ul>
-                                    <li><i class="fa-solid fa-utensils"></i> {{ $cat->food_id }}</li>
-                                    <li><i class="fa-solid fa-rotate-left"></i> {{ $cat->rule->__('title') }}</li>
-                                    @php
-                                        $ch = \App\Models\Child::where('room_id', $cat->room->id)->first();
-                                    @endphp
-                                    @if($ch->price_extra != 0)
-                                        <li>Есть дополнительное место</li>
-                                    @endif
-                                </ul>
+        @isset($rooms)
+            <div class="room" style="margin-top: 20px">
+
+                @foreach($rooms as $room)
+                    <div class="room-item">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5>{{ $room->__('title') ?? '' }}</h5>
+                                {{--                            <div class="plan">Тариф: {{ $cat->__('title') }}</div>--}}
+                                @isset($room->bed)
+                                    <div class="bed"><i class="fa-light fa-bed"></i> {{ $room->bed }}</div>
+                                @endisset
+                            </div>
+                            <div class="col-md-4">
+                                <div class="listings">
+                                    <ul>
+                                        @isset($room->category->food)
+                                            <li><i class="fa-solid fa-utensils"></i> {{ $room->category->food_id }}</li>
+                                        @endisset
+                                        @isset($room->rule)
+                                            <li><i class="fa-solid fa-rotate-left"></i> {{ $room->rule->__('title') }}
+                                            </li>
+                                        @endisset
+                                        {{--                                    @php--}}
+                                        {{--                                        $ch = \App\Models\Child::where('room_id', $room->id)->first();--}}
+                                        {{--                                    @endphp--}}
+                                        {{--                                    @isset($ch)--}}
+                                        {{--                                        @if($ch->price_extra != 0)--}}
+                                        {{--                                            <li>Есть дополнительное место</li>--}}
+                                        {{--                                        @endif--}}
+                                        {{--                                    @endisset--}}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                @php
+                                    if($count_day != null){
+                                        $price = $room->price * $count * $count_day ?? 80;
+                                    } else {
+                                        //$fprice = \App\Models\Food::where('title_en', $cat->food_id)->first();
+                                        //$fprice = $fprice->price;
+                                        $price = $room->price * $count ?? 80;
+                                    }
+                                @endphp
+                                <div class="price">{{ $price ?? 80 }} $</div>
+                                @if($room->hotel->early_in ?? '')
+                                    <div class="early">@lang('main.early')</div>
+                                @endif
+                                @if($room->hotel->early_out ?? '')
+                                    <div class="early">@lang('main.late')</div>
+                                @endif
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            @php
-                                if($count_day != null){
-                                    $price = ($cat->room->price + $cat->food->price) * $count * $count_day;
-                                } else {
-                                    $fprice = \App\Models\Food::where('title_en', $cat->food_id)->first();
-                                    $fprice = $fprice->price;
-                                    $price = ($cat->room->price + $fprice) * $count;
-                                }
-                            @endphp
-                            <div class="price">{{ $price }} $</div>
-                        </div>
                     </div>
-                </div>
-            @endforeach
-
-
-        </div>
+                @endforeach
+            </div>
+        @endisset
         <div class="btn-wrap">
             <a href="{{ route('hotel', $hotel->code) }}?title={{ $request->title }}&start_d={{ date_format($start, 'Y-m-d') }}&end_d={{ date_format($end, 'Y-m-d') }}&count={{ $request->count }}&countc={{ $request->countc }}&age1={{ $request->age1 }}&age2={{ $request->age2 }}&age3={{ $request->age3 }}&citizenship={{ $request->citizenship }}&rating={{ $request->rating }}&food_id={{ $request->food_id }}&early_in={{ $request->early_in }}&early_out={{ $request->early_out }}"
-               target="_blank" class="more">Показать все номера</a>
+               target="_blank" class="more">@lang('main.all-rooms')</a>
         </div>
     </div>
 </div>

@@ -66,7 +66,7 @@
                         <div class="col-md-4">
                             <div class="dashboard-item">
                                 @php
-                                    $category = \App\Models\Category::where('room_id', $book->room_id)->firstOrFail();
+                                    //$category = \App\Models\Category::where('room_id', $book->room_id)->firstOrFail();
                                     $room = \App\Models\Room::where('id', $book->room_id)->first();
                                 @endphp
                                 <div class="img"><img src="{{ Storage::url($room->image) }}"></div>
@@ -79,7 +79,7 @@
                                     {{ $room->hotel->title }}
                                     <div class="name" style="margin-top: 20px">@lang('admin.room')</div>
                                     {{ $room->title }} <br>
-                                    <div class="name">Тариф:</div> {{ $category->title }}
+{{--                                    <div class="name">Тариф:</div> {{ $category->title }}--}}
                                 </div>
                             </div>
                         </div>

@@ -22,12 +22,11 @@
     <div class="page about">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 offset-lg-2 col-md-12">
+                <div class="col-lg-12 col-md-12">
                     {!! $page->__('description') !!}
                 </div>
             </div>
         </div>
     </div>
-
 
 @endsection

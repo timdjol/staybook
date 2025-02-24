@@ -92,37 +92,38 @@
                                 <li>ChildWithoutBed: {{ $room->occupancy->childWithoutBed }}</li>
                             </ul>
 
-                                <h6 style="margin-top: 30px">Placements:</h6>
-                                <div class="row">
-                                    @foreach($room->placements as $place)
-                                        <div class="col-md-4">
-                                            <ul>
-                                                <li>Kind: {{ $place->count }}</li>
-                                                <li>Count: {{ $place->count }}</li>
-                                                @isset($place->minAge)
-                                                    <li>MinAge: {{ $place->minAge }}</li>
-                                                @endisset
-                                                @isset($place->maxAge)
-                                                    <li>MaxAge: {{ $place->maxAge }}</li>
-                                                @endisset
-                                            </ul>
-                                        </div>
-                                    @endforeach
-                                </div>
+                            <h6 style="margin-top: 30px">Placements:</h6>
+                            <div class="row">
+                                @foreach($room->placements as $place)
+                                    <div class="col-md-4">
+                                        <ul>
+                                            <li>Kind: {{ $place->count }}</li>
+                                            <li>Count: {{ $place->count }}</li>
+                                            @isset($place->minAge)
+                                                <li>MinAge: {{ $place->minAge }}</li>
+                                            @endisset
+                                            @isset($place->maxAge)
+                                                <li>MaxAge: {{ $place->maxAge }}</li>
+                                            @endisset
+                                        </ul>
+                                    </div>
+                                @endforeach
+                            </div>
                             <div class="btn-wrap">
                                 <form action="{{ route('orderexely', $room->id) }}">
                                     <input type="hidden" name="hotel" value="{{ $property->name }}">
                                     <input type="hidden" name="hotel_id" value="{{ $property->id }}">
                                     <input type="hidden" name="room_id" value="{{ $room->id }}">
                                     <input type="hidden" name="title" value="{{ $room->name}}">
-                                    <input type="hidden" name="lng" value="{{ $property->contactInfo->address->longitude }}">
-                                    <input type="hidden" name="lat" value="{{ $property->contactInfo->address->latitude }}">
+                                    <input type="hidden" name="lng"
+                                           value="{{ $property->contactInfo->address->longitude }}">
+                                    <input type="hidden" name="lat"
+                                           value="{{ $property->contactInfo->address->latitude }}">
                                     <input type="hidden" name="food" value="not_found">
                                     <input type="hidden" name="cancel" value="not_found">
                                     <input type="hidden" name="price" value="1">
                                     <input type="hidden" name="image" value="{{ $property->images[0]->url }}">
                                     <input type="hidden" name="bed" value="{{ $room->occupancy->adultBed }}">
-
                                     <button class="more">Забронировать</button>
                                 </form>
                             </div>
@@ -135,10 +136,11 @@
     </div>
 
     <style>
-        .single .main img{
+        .single .main img {
             height: auto;
         }
-        .single .summary img{
+
+        .single .summary img {
             height: 110px;
             object-fit: cover;
         }

@@ -13,9 +13,17 @@
                         <div class="address">{{ $hotel->__('address') }}</div>
                     </div>
                     <div class="col-md-4">
-                        <div class="min_price">от {{ $min }} $</div>
+                        @php
+                            if($count_day == 0){
+                                $count_day = 1;
+                            }
+                            if($count == null){
+                                $count = 1;
+                            }
+                        @endphp
+                        <div class="min_price">@lang('main.from') {{ $min * $count_day * $count }} $</div>
                         <div class="btn-wrap">
-                            <a href="#price" class="more">Посмотреть цены</a>
+                            <a href="#price" class="more">@lang('main.view_price')</a>
                         </div>
                     </div>
                 </div>
@@ -63,7 +71,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <h2>Расположение</h2>
+                    <h2>@lang('main.location')</h2>
                     <script src="https://maps.api.2gis.ru/2.0/loader.js"></script>
                     <div id="map" style="width: 100%; height: 400px;"></div>
                     <script>
@@ -88,74 +96,46 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h2>Доступные варианты
+                        <h2>@lang('main.available_types')
                         </h2>
                     </div>
                 </div>
                 @if($rooms->isNotEmpty())
-                    @foreach($rooms as $room)
-                        <div class="row rooms-item">
+                    <div class="row rooms-item">
+                        @foreach($rooms as $room)
                             <div class="col-lg-4">
-                                <a href="">
-                                    <img src="{{ Storage::url($room->image) }}" alt="">
-                                </a>
+                                <a href="{{ route('room', [isset($hotel) ? $hotel->code : $room->hotel->code, $room->code])
+                }}"><img src="{{ Storage::url($room->image) }}" alt=""></a>
+                                <h5>{{ $room->__('title') }}</h5>
                                 <div class="bed"><i class="fa-light fa-bed"></i> {{ $room->bed }}</div>
-                                <div class="amenities">
-                                    {{ $room->services }}
+{{--                                <div class="amenities">--}}
+{{--                                    {{ $room->services }}--}}
+{{--                                </div>--}}
+                                <div class="price">$ {{ $room->price * $count * $count_day }}</div>
+                                <div class="nds">@lang('main.tax_included')</div>
+                                <div class="btn-wrap">
+                                    <form action="{{ route('order', $room->id) }}">
+                                        @csrf
+                                        <input type="hidden" name="hotel" value="{{ $room->hotel->__('title') }}">
+                                        <input type="hidden" name="hotel_id" value="{{ $room->hotel->id }}">
+                                        <input type="hidden" name="lng" value="{{ $room->hotel->lng }}">
+                                        <input type="hidden" name="lat" value="{{ $room->hotel->lat }}">
+                                        <input type="hidden" name="room_id" value="{{ $room->id }}">
+                                        <input type="hidden" name="title" value="{{ $room->__('title') }}">
+                                        {{--                                        <input type="hidden" name="food" value="{{ $room->food_id }}">--}}
+                                        {{--                                        <input type="hidden" name="cancel" value="{{ $room->rule->__('title') }}">--}}
+                                        <input type="hidden" name="price" value="{{ $room->price * $count * $count_day }}">
+                                        <input type="hidden" name="image" value="{{ Storage::url($room->image) }}">
+                                        <input type="hidden" name="bed" value="{{ $room->bed }}">
+                                        <input type="hidden" name="start_d" value="{{ $request->start_d }}">
+                                        <input type="hidden" name="end_d" value="{{ $request->end_d }}">
+                                        <button class="more">@lang('main.book')</button>
+                                    </form>
                                 </div>
                             </div>
-                            @php
-                                $cats = \App\Models\Category::where('room_id', $room->id)->get();
-                            @endphp
-                            @foreach($cats as $cat)
-                                <div class="col-lg-4">
-                                    <h5>{{ $cat->__('title') }}</h5>
-                                    <div class="food"><i class="fa-solid fa-utensils"></i> {{ $cat->food_id }}</div>
-                                    <div class="cancel"><i class="fa-solid fa-rotate-left"></i> {{ $cat->rule->__('title') }}</div>
-                                    <div class="price">
-                                        @php
-                                            if($count_day != null){
-                                                $price = ($cat->room->price + $cat->food->price) * $count * $count_day;
-                                            }
-                                            else {
-                                                $fprice = \App\Models\Food::where('title_en', $cat->food_id)->first();
-                                                $fprice = $fprice->price;
-                                                $price = ($cat->room->price + $fprice) * $count;
-                                            }
-                                            if($count != null){
-                                                $fprice = \App\Models\Food::where('title_en', $cat->food_id)->first();
-                                                $fprice = $fprice->price;
-                                                $price = ($cat->room->price + $fprice) * $count;
-                                            } else {
-                                                $fprice = \App\Models\Food::where('title_en', $cat->food_id)->first();
-                                                $fprice = $fprice->price;
-                                                $price = $cat->room->price + $fprice;
-                                            }
-                                        @endphp
-                                        {{ $price }} $
-                                    </div>
-                                    <div class="nds">Все налоги включены</div>
-                                    <div class="btn-wrap">
-                                        <form action="{{ route('order', $cat->id) }}">
-                                            @csrf
-                                            <input type="hidden" name="hotel" value="{{ $room->hotel->title }}">
-                                            <input type="hidden" name="hotel_id" value="{{ $room->hotel->id }}">
-                                            <input type="hidden" name="lng" value="{{ $room->hotel->lng }}">
-                                            <input type="hidden" name="lat" value="{{ $room->hotel->lat }}">
-                                            <input type="hidden" name="room_id" value="{{ $room->id }}">
-                                            <input type="hidden" name="title" value="{{ $cat->__('title') }}">
-                                            <input type="hidden" name="food" value="{{ $cat->food_id }}">
-                                            <input type="hidden" name="cancel" value="{{ $cat->rule->__('title') }}">
-                                            <input type="hidden" name="price" value="{{ $price }}">
-                                            <input type="hidden" name="image" value="{{ Storage::url($room->image) }}">
-                                            <input type="hidden" name="bed" value="{{ $room->bed }}">
-                                            <button class="more">Забронировать</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endforeach
+
+                        @endforeach
+                    </div>
                 @else
                     <div class="alert alert-danger">@lang('main.not_found')</div>
                 @endif
@@ -169,12 +149,16 @@
             </div>
         </div>
     @else
-        <div class="page">
+        <div class="page auth">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-lg-8 offset-lg-2 col-md-12">
+                        <div class="img-wrap">
+                            <img src="{{ route('index') }}/img/b2b.jpg" alt="">
+                            <h4>@lang('main.b2b')</h4>
+                        </div>
                         <div class="alert alert-danger">
-                            <div class="descr">Необходимо пройти <a href="{{ route('login') }}">авторизацию</a></div>
+                            <div class="descr">@lang('main.need_auth') <a href="{{ route('login') }}">@lang('main.auth')</a></div>
                         </div>
                     </div>
                 </div>
@@ -183,34 +167,54 @@
     @endauth
 
     <style>
-        .hotel .min_price{
+        .hotel .min_price {
             font-size: 24px;
         }
-        .hotel .btn-wrap{
+
+        .hotel .btn-wrap {
             margin-top: 20px;
         }
-        .hotel .btn-wrap .more{
+
+        .hotel .btn-wrap .more {
             color: #fff;
         }
-        .hotel .gallery{
+
+        .hotel .gallery {
             margin-top: 20px;
         }
-        .hotel .gallery img{
+
+        .hotel .gallery img {
             height: 20vh;
             object-fit: cover;
+            margin-bottom: 20px;
         }
-        .servlisting{
+
+        .servlisting {
             margin: 20px 0;
         }
-        .hotel #map{
+
+        .hotel #map {
             margin-top: 0px;
         }
-        .hotel i{
+
+        .hotel i {
             color: #0163b4;
         }
-        .nds{
+
+        .nds {
             font-size: 14px;
             color: #0163b4;
+        }
+
+        .rooms-item .col-lg-4 {
+            margin-bottom: 40px;
+        }
+
+        .rooms-item img {
+            height: 30vh;
+            width: 100%;
+            object-fit: cover;
+            margin-bottom: 10px;
         }
     </style>
 

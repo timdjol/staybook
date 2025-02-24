@@ -158,8 +158,7 @@ Route::middleware('set_locale')->group(function ()
     Route::get('/search', [PageController::class, 'search'])->name('search');
     Route::get('/{hotel}', [PageController::class, 'hotel'])->name('hotel');
     Route::get('/{hotel}/{rooms}', [PageController::class, 'room'])->name('room');
-
-
+    
     //email
     Route::post('contact_mail', [MainController::class, 'contact_mail'])->name('contact_mail');
     Route::post('book_mail', [MainController::class, 'book_mail'])->name('book_mail');

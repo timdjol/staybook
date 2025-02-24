@@ -30,7 +30,7 @@ class MainController extends Controller
 
     public function contact_mail(Request $request)
     {
-        Mail::to('info@timmedia.store')->send(new ContactMail($request));
+        Mail::to('info@timdjol.com')->send(new ContactMail($request));
         session()->flash('success', 'Заявка ' . $request->name . ' отправлена');
         return redirect()->route('contactspage');
     }
@@ -41,6 +41,7 @@ class MainController extends Controller
         $params = $request->all();
         Book::create($params);
         //Mail::to('info@silkwaytravel.kg')->cc($request->email)->bcc($hotel->email)->send(new BookMail($request));
+        Mail::to('info@timdjol.com')->cc($request->email)->send(new BookMail($request));
         session()->flash('success', 'Booking ' . $request->title . ' is created');
         return redirect()->route('index');
     }

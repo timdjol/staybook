@@ -11,7 +11,7 @@
         </tr>
         <tr>
             <td>ID</td>
-            <td>{{ $book->book_id }}</td>
+            <td>{{ $book->id }}</td>
         </tr>
         <tr>
             <td>
@@ -58,6 +58,9 @@
             <td>{{ $book->end_d }} until {{ $hotel->checkout }}</td>
         </tr>
         <tr>
+            @php
+                $room = \App\Models\Room::where('id', $book->room_id)->first();
+             @endphp
             <td>
                 <img src="{{ Storage::url($room->image) }}"
                      alt="Logo" style="width: 200px;">

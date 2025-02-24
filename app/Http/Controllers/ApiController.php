@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -13,18 +12,15 @@ class ApiController extends Controller
     {
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties?count=20&include=All');
         $properties = $response->object()->properties;
-        dd($properties);
-
+        //dd($properties);
         return view('pages.exely.properties', compact('properties'));
     }
 
     public function property($property)
     {
-
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties/' . $property);
         $property = $response->object();
-
-        dd($property);
+        //dd($property);
 
         return view('pages.exely.property', compact('property'));
     }
@@ -90,11 +86,14 @@ class ApiController extends Controller
         return view('pages.exely.search', compact('errors'));
     }
 
-    public function search_roomstays()
+    public function search_roomstays(Request $request)
     {
-        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/search/v1/properties/500803/room-stays?arrivalDate=2025-03-10&departureDate=2025-03-11&adults=1&includeExtraStays=false&includeExtraServices=false
+        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])
+            ->get('https://connect.test.hopenapi.com/api/search/v1/properties/'.$request->title.'/room-stays?arrivalDate='.$request->arrivalDate.'&departureDate='.$request->departureDate.'&adults='.$request->adults.'&includeExtraStays=false&includeExtraServices=false
 ');
         $rooms = $response->object()->roomStays;
+        $rooms = collect($rooms)->sortBy('total')->values()->all();
+
 
         return view('pages.exely.search-roomstays', compact('rooms'));
     }
@@ -110,7 +109,6 @@ class ApiController extends Controller
             "roomType" => ["id" => "82751", "placements" => [["code" => "AdultBed-2"]]],
             "ratePlan" => ["id" => "987657", "corporateCodes" => ["string"]],
             "guestCount" => ["adultCount" => 1, "childAges" => [2]],
-
         ]);
         $services = $response->object();
         //dd($services);
@@ -138,6 +136,88 @@ class ApiController extends Controller
     }
 
     //Reservation API
+
+    public function res_verify_bookings(Request $request)
+    {
+        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->post('https://connect.test.hopenapi.com/api/reservation/v1/bookings/verify', [
+            "booking" => [
+                "propertyId" => $request->get("propertyId"),
+                "roomStays" => [
+                    [
+                        "stayDates" => [
+                            "arrivalDateTime" => $request->get("arrivalDate"),
+                            "departureDateTime" => $request->get("departureDate"),
+                        ],
+                        "ratePlan" => [
+                            "id" => $request->get("ratePlanId"),
+                        ],
+                        "roomType" => [
+                            "placements" => [
+                                [
+                                    "code" => $request->get("placementCode"),
+                                    "count" => $request->get("roomCount"),
+                                    "kind" => $request->get("roomType"),
+                                    "minAge" => null,
+                                    "maxAge" => null
+                                ]
+                            ],
+                            "id" => $request->get("roomTypeId"),
+                        ],
+                        "guests" => [
+                            [
+                                "firstName" => $request->get("name"),
+                                "lastName" => $request->get("name"),
+                                "middleName" => $request->get("name"),
+                                "citizenship" => "KGS",
+                                "sex" => "Male"
+                            ]
+                        ],
+                        "guestCount" => [
+                            "adultCount" => $request->get("guestCount"),
+                            "childAges" => [
+                            ]
+                        ],
+                        "services" => [
+                        ],
+                        "checksum" => $request->get("checkSum"),
+                    ]
+                ],
+                "services" => [
+                ],
+                "customer" => [
+                    "firstName" => $request->get("name"),
+                    "lastName" => $request->get("name"),
+                    "middleName" => "",
+                    "citizenship" => "",
+                    "contacts" => [
+                        "phones" => [
+                            [
+                                "phoneNumber" => $request->get("phone"),
+                            ]
+                        ],
+                        "emails" => [
+                            [
+                                "emailAddress" => $request->get("email"),
+                            ]
+                        ]
+                    ],
+                    "comment" => $request->get("comment"),
+                ],
+                "prepayment" => [
+                    "remark" => null,
+                    "paymentType" => null,
+                    "prepaidSum" => 0
+                ],
+                "bookingComments" => [
+                    $request->get("comment"),
+                ]
+            ]
+        ]);
+        $calc = $response->object();
+        dd($calc);
+    }
+
+
     public function res_bookings()
     {
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->post('https://connect.test.hopenapi.com/api/reservation/v1/bookings', [
@@ -379,73 +459,6 @@ class ApiController extends Controller
         dd($calc);
     }
 
-    public function res_verify_bookings(Request $request)
-    {
-        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->post('https://connect.test.hopenapi.com/api/reservation/v1/bookings/verify', [
-            "booking" => [
-                "propertyId" => "500803",
-                "roomStays" => [
-                    [
-                        "stayDates" => [
-                            "arrivalDateTime" => $request->get("arrivalDate"),
-                            "departureDateTime" => $request->get("departureDate"),
-                        ],
-                        "ratePlan" => ["id" => "133528"],
-                        "roomType" => [
-                            "id" => "82751",
-                            "placements" => [["code" => "AdultBed-2"]],
-                        ],
-                        "guests" => [
-                            [
-                                "firstName" => $request->get("title"),
-                                "lastName" => $request->get("title"),
-                                "middleName" => $request->get("title"),
-                                "citizenship" => "GBR",
-                                "sex" => "Male",
-                            ],
-                        ],
-                        "guestCount" => ["adultCount" => $request->get("count"), "childAges" => [5]],
-                        "checksum" =>
-                            "eyJDaGVja3N1bVdpdGhPdXRFeHRyYXMiOnsiVG90YWxBbW91bnRBZnRlclRheCI6IjU1LjUwIiwiQ3VycmVuY3lDb2RlIjoiR0JQIiwiU3RhcnRQZW5hbHR5QW1vdW50IjoiOS43MiJ9LCJDaGVja3N1bVdpdGhFeHRyYXMiOnsiVG90YWxBbW91bnRBZnRlclRheCI6IjU1LjUwIiwiQ3VycmVuY3lDb2RlIjoiR0JQIiwiU3RhcnRQZW5hbHR5QW1vdW50IjoiOS43MiJ9fQ==",
-                        "services" => [
-                            [
-                                "id" => "5001625",
-                                "quantity" => 2,
-                                "quantityByGuests" => null,
-                            ],
-                        ],
-                        "extraStay" => [
-                            "earlyArrival" => [
-                                "overriddenDateTime" => "2025-03-20T14:00",
-                            ],
-                            "lateDeparture" => [
-                                "overriddenDateTime" => "2025-03-20T14:00",
-                            ],
-                        ],
-                    ],
-                ],
-                "services" => [["id" => "7898"]],
-                "customer" => [
-                    "firstName" => $request->get("title"),
-                    "lastName" => $request->get("title"),
-                    //"middleName" => $request->get("title"),
-                    //"citizenship" => "GBR",
-                    "contacts" => [
-                        "phones" => [["phoneNumber" => $request->get("phone"),]],
-                        "emails" => [["emailAddress" => $request->get("email"),]],
-                    ],
-                    "comment" => "Preferably a room with a sea view",
-                ],
-                "prepayment" => [
-                    "remark" => "Payment in channel",
-                    "paymentType" => "Cash",
-                    "prepaidSum" => 0,
-                ],
-                "bookingComments" => ["Preferably a room with a sea view"],
-            ]]);
-        $calc = $response->object();
-        dd($calc);
-    }
 
     public function orderexely(Request $request)
     {

@@ -164,6 +164,17 @@ body{
 .hotels .pagination a{
     color: #000;
 }
+.auth .img-wrap img{
+    display: block;
+    margin: 20px auto;
+    max-width: 600px;
+}
+.auth h4{
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
 @media (max-width: 991px) {
     nav .toggle-mnu {
         top: 5px;

@@ -58,289 +58,51 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-8 offset-lg-2">
+                            <ul>
+                                <li>propertyId: {{ $request->propertyId }}</li>
+                                <li>arrivalDateTime: {{ $request->arrivalDate }}</li>
+                                <li>departureDateTime: {{ $request->departureDate }}</li>
+                                <li>ratePlan ID: {{ $request->ratePlanId }}</li>
+                                <li>roomType ID: {{ $request->roomTypeId }}</li>
+                                <li>placements Code: {{ $request->placementCode }}</li>
+{{--                                <li>firstName: {{ $request-> }}</li>--}}
+{{--                                <li>lastName: {{ $request-> }}</li>--}}
+                                <li>guestCount: {{ $request->guestCount }}</li>
+{{--                                <li>childAges: {{ $request->childAges }}</li>--}}
+                                <li>checkSum: {{ $request->checkSum }}</li>
+                                <li>services ID: {{ $request->servicesId }}</li>
+{{--                                <li>services quantity: {{ $request-> }}</li>--}}
+                            </ul>
                             <form action="{{ route('res_bookings_verify') }}">
-                                <input type="hidden" name="room_id" value="{{ $request->room_id}}">
-                                <input type="hidden" name="hotel_id" value="{{$request->hotel_id}}">
-                                <input type="hidden" name="count" value="1">
-                                <input type="hidden" name="tag" value="exely">
+                                <input type="hidden" name="propertyId" value="{{ $request->propertyId }}">
+                                <input type="hidden" name="arrivalDate" value="{{ $request->arrivalDate }}">
+                                <input type="hidden" name="departureDate" value="{{ $request->departureDate }}">
+                                <input type="hidden" name="ratePlanId" value="{{ $request->ratePlanId }}">
+                                <input type="hidden" name="roomTypeId" value="{{ $request->roomTypeId }}">
+                                <input type="hidden" name="roomType" value="{{ $request->roomType }}">
+                                <input type="hidden" name="roomCount" value="{{ $request->roomCount }}">
+                                <input type="hidden" name="roomCode" value="{{ $request->roomCode }}">
+                                <input type="hidden" name="placementCode" value="{{ $request->placementCode }}">
+                                <input type="hidden" name="guestCount" value="{{ $request->guestCount }}">
+                                <input type="hidden" name="checkSum" value="{{ $request->checkSum }}">
+                                <input type="hidden" name="servicesId" value="{{ $request->servicesId }}">
+{{--                                <input type="hidden" name="room_id" value="{{ $request->room_id}}">--}}
+{{--                                <input type="hidden" name="hotel_id" value="{{$request->hotel_id}}">--}}
+{{--                                <input type="hidden" name="count" value="1">--}}
+{{--                                <input type="hidden" name="tag" value="exely">--}}
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-xs-4" for="end_d">@lang('main.date')</label>
-                                            <input type="text" id="date" class="date">
-                                            <input type="hidden" id="start_d" name="start_d"
-                                                   value="{{ date('Y-m-d H:s:i') }}">
-                                            <input type="hidden" id="end_d" name="end_d"
-                                                   value="{{ $date->addDays(1) }}">
 
-                                        </div>
-                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="col-xs-4" for="title">ФИО</label>
-                                            <input type="text" class="form-control" name="title" required/>
+                                            <input type="text" class="form-control" name="name" value="test"/>
                                         </div>
                                     </div>
 
-                                    {{--                                    <div class="col-md-6">--}}
-                                    {{--                                        <div class="form-group">--}}
-                                    {{--                                            @include('auth.layouts.error', ['fieldname' => 'count'])--}}
-                                    {{--                                            <label class="col-xs-4" for="count">@lang('main.search-count')</label>--}}
-                                    {{--                                            <select name="count" id="count" onchange="countCheck(this);" required>--}}
-                                    {{--                                                <option value="">@lang('main.choose')</option>--}}
-                                    {{--                                                <option value="1">1</option>--}}
-                                    {{--                                                <option value="2">2</option>--}}
-                                    {{--                                            </select>--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                    </div>--}}
-
-                                    {{--                                    <div class="form-group" id="title">--}}
-                                    {{--                                        <label class="col-xs-4" for="title">@lang('main.adult_name1')</label>--}}
-                                    {{--                                        <input type="text" class="form-control" name="title" required/>--}}
-                                    {{--                                    </div>--}}
-                                    {{--                                    <div class="form-group" id="title2">--}}
-                                    {{--                                        <label class="col-xs-4" for="title2">@lang('main.adult_name2')</label>--}}
-                                    {{--                                        <input type="text" class="form-control" name="title2"/>--}}
-                                    {{--                                    </div>--}}
-
-                                    @isset($child)
-                                        <div class="form-group">
-                                            <label for="">@lang('main.count_child')</label>
-                                            <select name="countc" id="countc" onchange="ageCheck(this);">
-                                                <option value="">@lang('main.choose')</option>
-                                                @if($child->extra_place == 1)
-                                                    <option value="1">1</option>
-                                                @elseif($child->extra_place == 2)
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                @elseif($child->extra_place == 3)
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                @endif
-                                            </select>
-                                        </div>
-                                        @if($child->extra_place == 1)
-                                            <div class="row" id="child1">
-                                                <div class="col-md-4">
-                                                    <select name="age1" id="age1">
-                                                        <option value="1">@lang('main.1_year')</option>
-                                                        <option value="2">@lang('main.2_year')</option>
-                                                        <option value="3">@lang('main.3_year')</option>
-                                                        <option value="4">@lang('main.4_year')</option>
-                                                        <option value="5">@lang('main.5_year')</option>
-                                                        <option value="6">@lang('main.6_year')</option>
-                                                        <option value="7">@lang('main.7_year')</option>
-                                                        <option value="8">@lang('main.8_year')</option>
-                                                        <option value="9">@lang('main.9_year')</option>
-                                                        <option value="10">@lang('main.10_year')</option>
-                                                        <option value="11">@lang('main.11_year')</option>
-                                                        <option value="12">@lang('main.12_year')</option>
-                                                        <option value="13">@lang('main.13_year')</option>
-                                                        <option value="14">@lang('main.14_year')</option>
-                                                        <option value="16">@lang('main.15_year')</option>
-                                                        <option value="16">@lang('main.16_year')</option>
-                                                        <option value="17">@lang('main.17_year')</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" name="titlec1"
-                                                               id="titlec1" placeholder="@lang('main.child_name1')"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @elseif($child->extra_place == 2)
-                                            <div class="row" id="child1">
-                                                <div class="col-md-4">
-                                                    <select name="age1" id="age1">
-                                                        <option value="1">@lang('main.1_year')</option>
-                                                        <option value="2">@lang('main.2_year')</option>
-                                                        <option value="3">@lang('main.3_year')</option>
-                                                        <option value="4">@lang('main.4_year')</option>
-                                                        <option value="5">@lang('main.5_year')</option>
-                                                        <option value="6">@lang('main.6_year')</option>
-                                                        <option value="7">@lang('main.7_year')</option>
-                                                        <option value="8">@lang('main.8_year')</option>
-                                                        <option value="9">@lang('main.9_year')</option>
-                                                        <option value="10">@lang('main.10_year')</option>
-                                                        <option value="11">@lang('main.11_year')</option>
-                                                        <option value="12">@lang('main.12_year')</option>
-                                                        <option value="13">@lang('main.13_year')</option>
-                                                        <option value="14">@lang('main.14_year')</option>
-                                                        <option value="16">@lang('main.15_year')</option>
-                                                        <option value="16">@lang('main.16_year')</option>
-                                                        <option value="17">@lang('main.17_year')</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" name="titlec1"
-                                                               id="titlec1" placeholder="@lang('main.child_name1')"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row" id="child2">
-                                                <div class="col-md-4">
-                                                    <select name="age2" id="age2">
-                                                        <option value="1">@lang('main.1_year')</option>
-                                                        <option value="2">@lang('main.2_year')</option>
-                                                        <option value="3">@lang('main.3_year')</option>
-                                                        <option value="4">@lang('main.4_year')</option>
-                                                        <option value="5">@lang('main.5_year')</option>
-                                                        <option value="6">@lang('main.6_year')</option>
-                                                        <option value="7">@lang('main.7_year')</option>
-                                                        <option value="8">@lang('main.8_year')</option>
-                                                        <option value="9">@lang('main.9_year')</option>
-                                                        <option value="10">@lang('main.10_year')</option>
-                                                        <option value="11">@lang('main.11_year')</option>
-                                                        <option value="12">@lang('main.12_year')</option>
-                                                        <option value="13">@lang('main.13_year')</option>
-                                                        <option value="14">@lang('main.14_year')</option>
-                                                        <option value="16">@lang('main.15_year')</option>
-                                                        <option value="16">@lang('main.16_year')</option>
-                                                        <option value="17">@lang('main.17_year')</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" name="titlec2"
-                                                               id="titlec2" placeholder="@lang('main.child_name2')"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @elseif($child->extra_place == 3)
-                                            <div class="row" id="child1">
-                                                <div class="col-md-4">
-                                                    <select name="age1" id="age1">
-                                                        <option value="1">@lang('main.1_year')</option>
-                                                        <option value="2">@lang('main.2_year')</option>
-                                                        <option value="3">@lang('main.3_year')</option>
-                                                        <option value="4">@lang('main.4_year')</option>
-                                                        <option value="5">@lang('main.5_year')</option>
-                                                        <option value="6">@lang('main.6_year')</option>
-                                                        <option value="7">@lang('main.7_year')</option>
-                                                        <option value="8">@lang('main.8_year')</option>
-                                                        <option value="9">@lang('main.9_year')</option>
-                                                        <option value="10">@lang('main.10_year')</option>
-                                                        <option value="11">@lang('main.11_year')</option>
-                                                        <option value="12">@lang('main.12_year')</option>
-                                                        <option value="13">@lang('main.13_year')</option>
-                                                        <option value="14">@lang('main.14_year')</option>
-                                                        <option value="16">@lang('main.15_year')</option>
-                                                        <option value="16">@lang('main.16_year')</option>
-                                                        <option value="17">@lang('main.17_year')</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" name="titlec1"
-                                                               id="titlec1" placeholder="@lang('main.child_name1')"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row" id="child2">
-                                                <div class="col-md-4">
-                                                    <select name="age2" id="age2">
-                                                        <option value="1">@lang('main.1_year')</option>
-                                                        <option value="2">@lang('main.2_year')</option>
-                                                        <option value="3">@lang('main.3_year')</option>
-                                                        <option value="4">@lang('main.4_year')</option>
-                                                        <option value="5">@lang('main.5_year')</option>
-                                                        <option value="6">@lang('main.6_year')</option>
-                                                        <option value="7">@lang('main.7_year')</option>
-                                                        <option value="8">@lang('main.8_year')</option>
-                                                        <option value="9">@lang('main.9_year')</option>
-                                                        <option value="10">@lang('main.10_year')</option>
-                                                        <option value="11">@lang('main.11_year')</option>
-                                                        <option value="12">@lang('main.12_year')</option>
-                                                        <option value="13">@lang('main.13_year')</option>
-                                                        <option value="14">@lang('main.14_year')</option>
-                                                        <option value="16">@lang('main.15_year')</option>
-                                                        <option value="16">@lang('main.16_year')</option>
-                                                        <option value="17">@lang('main.17_year')</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" name="titlec2"
-                                                               id="titlec2" placeholder="@lang('main.child_name2')"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row" id="child3">
-                                                <div class="col-md-4">
-                                                    <select name="age3" id="age3">
-                                                        <option value="1">@lang('main.1_year')</option>
-                                                        <option value="2">@lang('main.2_year')</option>
-                                                        <option value="3">@lang('main.3_year')</option>
-                                                        <option value="4">@lang('main.4_year')</option>
-                                                        <option value="5">@lang('main.5_year')</option>
-                                                        <option value="6">@lang('main.6_year')</option>
-                                                        <option value="7">@lang('main.7_year')</option>
-                                                        <option value="8">@lang('main.8_year')</option>
-                                                        <option value="9">@lang('main.9_year')</option>
-                                                        <option value="10">@lang('main.10_year')</option>
-                                                        <option value="11">@lang('main.11_year')</option>
-                                                        <option value="12">@lang('main.12_year')</option>
-                                                        <option value="13">@lang('main.13_year')</option>
-                                                        <option value="14">@lang('main.14_year')</option>
-                                                        <option value="16">@lang('main.15_year')</option>
-                                                        <option value="16">@lang('main.16_year')</option>
-                                                        <option value="17">@lang('main.17_year')</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" name="titlec3"
-                                                               id="titlec3" placeholder="@lang('main.child_name3')"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endisset
-
-                                    <style>
-                                        #title, #title2, #child1, #child2, #child3 {
-                                            display: none;
-                                        }
-                                    </style>
-
-                                    <script>
-                                        function countCheck(that) {
-                                            if (that.value == 2) {
-                                                document.getElementById("title").style.display = "block";
-                                                document.getElementById("title2").style.display = "block";
-                                            } else {
-                                                document.getElementById("title").style.display = "block";
-                                                document.getElementById("title2").style.display = "none";
-                                            }
-                                        }
-
-                                        function ageCheck(that) {
-                                            if (that.value == 1) {
-                                                document.getElementById("child1").style.display = "flex";
-                                                document.getElementById("child2").style.display = "none";
-                                                document.getElementById("child3").style.display = "none";
-                                            } else if (that.value == 2) {
-                                                document.getElementById("child1").style.display = "flex";
-                                                document.getElementById("child2").style.display = "flex";
-                                                document.getElementById("child3").style.display = "none";
-                                            } else if (that.value == 3) {
-                                                document.getElementById("child1").style.display = "flex";
-                                                document.getElementById("child2").style.display = "flex";
-                                                document.getElementById("child3").style.display = "flex";
-                                            } else {
-                                                document.getElementById("child1").style.display = "none";
-                                                document.getElementById("child2").style.display = "none";
-                                                document.getElementById("child3").style.display = "none";
-                                            }
-                                        }
-                                    </script>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="">Номер телефона</label>
-                                            <input type="text" name="phone" id="phone">
+                                            <input type="text" name="phone" value="+996500500500">
                                             <div id="output"></div>
                                         </div>
                                     </div>
@@ -348,104 +110,23 @@
                                         <div class="form-group">
                                             @include('auth.layouts.error', ['fieldname' => 'email'])
                                             <label class="col-xs-4" for="email">Email</label>
-                                            <input type="email" class="form-control" name="email" id="email"/>
+                                            <input type="email" class="form-control" name="email" id="email" value="test@mail.com"/>
                                         </div>
                                     </div>
-                                    {{--                            <input type="hidden" id="price" value="{{ $room->price }}">--}}
-                                    {{--                            <input type="hidden" id="price2" value="{{ $room->price2 }}">--}}
-                                    @isset($child)
-                                        <input type="hidden" id="pricec" class="pricec"
-                                               value="{{$child->price_extra }}">
-                                        <input type="hidden" id="pricec2" class="pricec"
-                                               value="{{$child->price_extra2 }}">
-                                        <input type="hidden" id="pricec3" class="pricec"
-                                               value="{{$child->price_extra3 }}">
-                                    @endisset
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="">@lang('main.sum') $</label>
-                                            <input type="text" id="sum" name="sum" value="{{ $request->price }}"
+                                            <input type="text" id="sum" name="price" value="{{ $request->price }}"
                                                    readonly>
                                         </div>
 
                                     </div>
-                                    {{--                            <input type="hidden" name="book_id" value="{{ $random }}">--}}
-                                    <input type="hidden" name="status" value="@lang('main.paid')">
-
-                                    {{--                                    <script>--}}
-                                    {{--                                        $("#count, #countc, #date, #age1, #age2, #age3").change(function () {--}}
-                                    {{--                                            let price = $('#price').val();--}}
-                                    {{--                                            let price2 = $('#price2').val();--}}
-                                    {{--                                            let pricec = $('#pricec').val();--}}
-                                    {{--                                            let pricec2 = $('#pricec2').val();--}}
-                                    {{--                                            let pricec3 = $('#pricec3').val();--}}
-
-                                    {{--                                            let age1 = $('#age1').val();--}}
-                                    {{--                                            let age2 = $('#age2').val();--}}
-                                    {{--                                            let age3 = $('#age3').val();--}}
-
-
-                                    {{--                                            @isset($child)--}}
-                                    {{--                                            //age1--}}
-                                    {{--                                            if (age1 >= {{ $child->age_from }} && age1 <= {{ $child->age_to }}) {--}}
-                                    {{--                                                pricec = pricec;--}}
-                                    {{--                                            }--}}
-                                    {{--                                            if (age1 >= {{ $child->age_from2 }} && age1 <= {{ $child->age_to2 }}) {--}}
-                                    {{--                                                pricec = pricec2;--}}
-                                    {{--                                            }--}}
-                                    {{--                                            if (age1 >= {{ $child->age_from3 }} && age1 <= {{ $child->age_to3 }}) {--}}
-                                    {{--                                                pricec = pricec3;--}}
-                                    {{--                                            }--}}
-
-                                    {{--                                            //age2--}}
-                                    {{--                                            if (age2 >= {{ $child->age_from }} && age3 <= {{ $child->age_to }}) {--}}
-                                    {{--                                                pricec = pricec;--}}
-                                    {{--                                            }--}}
-                                    {{--                                            if (age2 >= {{ $child->age_from2 }} && age3 <= {{ $child->age_to2 }}) {--}}
-                                    {{--                                                pricec = pricec2;--}}
-                                    {{--                                            }--}}
-                                    {{--                                            if (age2 >= {{ $child->age_from3 }} && age3 <= {{ $child->age_to3 }}) {--}}
-                                    {{--                                                pricec = pricec3;--}}
-                                    {{--                                            }--}}
-
-                                    {{--                                            //age3--}}
-                                    {{--                                            if (age3 >= {{ $child->age_from }} && age3 <= {{ $child->age_to }}) {--}}
-                                    {{--                                                pricec = pricec;--}}
-                                    {{--                                            }--}}
-                                    {{--                                            if (age3 >= {{ $child->age_from2 }} && age3 <= {{ $child->age_to2 }}) {--}}
-                                    {{--                                                pricec = pricec2;--}}
-                                    {{--                                            }--}}
-                                    {{--                                            if (age3 >= {{ $child->age_from3 }} && age3 <= {{ $child->age_to3 }}) {--}}
-                                    {{--                                                pricec = pricec3;--}}
-                                    {{--                                            }--}}
-                                    {{--                                            var countc = $('#countc').val();--}}
-                                    {{--                                            @else--}}
-                                    {{--                                            var countc = 1;--}}
-                                    {{--                                            pricec = 0;--}}
-                                    {{--                                            @endisset--}}
-
-                                    {{--                                            let count = $('#count').val();--}}
-                                    {{--                                            let start_d = $('#start_d').val();--}}
-                                    {{--                                            let end_d = $('#end_d').val();--}}
-                                    {{--                                            let date1 = new Date(start_d);--}}
-                                    {{--                                            let date2 = new Date(end_d);--}}
-                                    {{--                                            let days = (date2 - date1) / (1000 * 60 * 60 * 24);--}}
-                                    {{--                                            let sum = (price * days) + (pricec * countc * days);--}}
-                                    {{--                                            let sum2 = (price2 * days) + (pricec * countc * days);--}}
-                                    {{--                                            if (count == 2) {--}}
-                                    {{--                                                $('#sum').val('$ ' + sum2);--}}
-                                    {{--                                            } else {--}}
-                                    {{--                                                $('#sum').val('$ ' + sum);--}}
-                                    {{--                                            }--}}
-                                    {{--                                        });--}}
-
-                                    {{--                                    </script>--}}
 
                                     <div class="form-group">
                                         @include('auth.layouts.error', ['fieldname' => 'comment'])
                                         <label for="">Комментарий</label>
-                                        <textarea name="comment" rows="3"></textarea>
+                                        <textarea name="comment" rows="3">Test message</textarea>
                                     </div>
                                     @csrf
                                     <button class="more" id="saveBtn">@lang('main.book')</button>

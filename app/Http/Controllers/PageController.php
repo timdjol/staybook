@@ -22,7 +22,7 @@ class PageController extends Controller
     public function index()
     {
         $hotels = Hotel::all();
-        $rooms = Room::where('status', 1)->orderBy('created_at', 'DESC')->paginate(40);
+        $rooms = Room::where('status', 1)->inRandomOrder()->paginate(40);
         $foods = Food::all();
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties?count=20&include=All');
         $properties = $response->object()->properties;
@@ -41,7 +41,7 @@ class PageController extends Controller
     {
         $hotel = Hotel::where('code', $code)->first();
         $min = Room::where('hotel_id', $hotel->id)->where('status', 1)->min('price');
-        $rooms = Room::where('hotel_id', $hotel->id)->where('status', 1)->paginate(10);
+        $rooms = Room::where('hotel_id', $hotel->id)->where('status', 1)->orderBy('price', 'asc')->paginate(10);
         $start = Carbon::createFromDate($request->start_d);
         $end = Carbon::createFromDate($request->end_d);
         $count_day = $start->diffInDays($end);
@@ -49,10 +49,9 @@ class PageController extends Controller
         return view('pages.hotel', compact('hotel', 'rooms', 'min', 'start', 'end', 'count', 'count_day', 'request'));
     }
 
-
     public function allrooms()
     {
-        $rooms = Room::where('status', 1)->orderbyDesc('created_at')->paginate(30);
+        $rooms = Room::where('status', 1)->orderBy('price', 'asc')->paginate(30);
         return view('pages.rooms', compact('rooms'));
     }
 
@@ -263,7 +262,7 @@ class PageController extends Controller
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties?count=20&include=All');
         $properties = $response->object()->properties;
 
-        $query = Hotel::with('categories', 'food');
+        $query = Hotel::with('categories', 'food', 'rooms');
         $start = Carbon::createFromDate($request->start_d);
         $end = Carbon::createFromDate($request->end_d);
         $count_day = $start->diffInDays($end);
@@ -273,7 +272,7 @@ class PageController extends Controller
         if ($request->filled('title')) {
             $title = $request->input('title');
             $query->where('id', $title);
-            $query->orWhere('address', '%like%', $title);
+            //$query->orWhere('address', '%like%', $title);
             $properties =  collect($properties)->where('id', $title)->all();
         }
 
@@ -291,12 +290,12 @@ class PageController extends Controller
         }
 
         //food
-        if ($request->filled('food_id')) {
-            $food = $request->input('food_id');
-            $query->whereHas('food', function ($quer) use ($food) {
-                $quer->where('title_en', $food);
-            });
-        }
+//        if ($request->filled('food_id')) {
+//            $food = $request->input('food_id');
+//            $query->whereHas('food', function ($quer) use ($food) {
+//                $quer->where('title_en', $food);
+//            });
+//        }
 
         //early
         if ($request->filled('early_in')) {
@@ -311,12 +310,12 @@ class PageController extends Controller
         }
 
         //cancellation
-        if ($request->filled('cancelled')) {
-            $cancel = $request->input('cancelled');
-            $query->whereHas('rule', function ($quer) use ($cancel) {
-                $quer->where('size', 0);
-            });
-        }
+//        if ($request->filled('cancelled')) {
+//            $cancel = $request->input('cancelled');
+//            $query->whereHas('rule', function ($quer) use ($cancel) {
+//                $quer->where('size', 0);
+//            });
+//        }
 
         //extra
 //        if ($request->filled('extra_place')) {
@@ -327,23 +326,26 @@ class PageController extends Controller
 //            });
 //        }
 
-        $hotels = $query->get();
+        $hotels = $query->orderBy('top', 'desc')->get();
         $contacts = Contact::get();
 
 //        if ($request->filled('daterange')) {
 //            $query->whereBetween('price',[$request->left_value, $request->right_value]);
 //        }
 
-        $relrooms = Hotel::where('status', 1)->get();
+        $relhotels = Hotel::where('status', 1)->inRandomOrder()->get();
         $relprops = $response->object()->properties;
 
-        return view('pages.searchtest', compact('hotels', 'contacts', 'relrooms', 'count', 'count_day', 'start', 'end', 'query', 'request', 'properties', 'relprops'));
+        return view('pages.searchtest', compact('hotels', 'contacts', 'relhotels', 'count', 'count_day', 'start', 'end', 'query', 'request', 'properties', 'relprops'));
     }
 
     public function order(Request $request)
     {
-        $random = random_int(100000, 999999);
-        return view('pages.order', compact('random', 'request'));
+        $start = $request->start_d;
+        $end = $request->end_d;
+        $price = $request->price;
+
+        return view('pages.order', compact('request', 'start', 'end', 'price'));
     }
 
 

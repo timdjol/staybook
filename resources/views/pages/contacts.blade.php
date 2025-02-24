@@ -60,7 +60,13 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <textarea name="message" rows="4" placeholder="@lang('main.message')"></textarea>
+                                <div class="form-group">
+                                    <textarea name="message" rows="4" placeholder="@lang('main.message')"></textarea>
+                                </div>
+                                <div class="form-group check">
+                                    <input type="checkbox" id="agree" required>
+                                    <label for="agree">@lang('main.form_agree')</label>
+                                </div>
                                 @csrf
                                 <button class="more" id="send">@lang('main.send')</button>
                             </div>
@@ -70,5 +76,13 @@
             </div>
         </div>
     </div>
+
+    <style>
+        .check input {
+            width: auto;
+            height: auto;
+            display: inline-block;
+        }
+    </style>
 
 @endsection
