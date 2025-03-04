@@ -13,7 +13,10 @@ class ApiController extends Controller
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties?count=20&include=All');
         $properties = $response->object()->properties;
         //dd($properties);
-        return view('pages.exely.properties', compact('properties'));
+        $res = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties?count=20&include=All');
+        $hotels = $res->object()->properties;
+        //dd($hotels);
+        return view('pages.exely.properties', compact('properties', 'hotels'));
     }
 
     public function property($property)
@@ -61,29 +64,28 @@ class ApiController extends Controller
     //Search API
     public function search_property(Request $request)
     {
+        //dd($request->all());
         $response = Http::accept('application/json')->withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4'])->post('https://connect.test.hopenapi.com/api/search/v1/properties/room-stays/search', [
-            "propertyIds" => ["1024"],
-            "adults" => $request->adults,
-            "childAges" => [$request->childAges],
+            "propertyIds" => [$request->title],
+            "adults" => $request->adult,
+            "childAges" => [$request->age1, $request->age2, $request->age3],
             "include" => "",
             "arrivalDate" => $request->arrivalDate,
             "departureDate" => $request->departureDate,
-            "mealPreference" => [
-                "mealType" => "MealOnly",
-                "mealsIncluded" => ["mealPlanCodes" => ["BreakFast"]],
-            ],
-            "pricePreference" => [
-                "currencyCode" => "USD",
-                "minPrice" => 0,
-                "maxPrice" => 10000,
-            ],
+//            "mealPreference" => [
+//                "mealType" => "MealOnly",
+//                "mealsIncluded" => ["mealPlanCodes" => ["BreakFast"]],
+//            ],
+//            "pricePreference" => [
+//                "currencyCode" => "USD",
+//                "minPrice" => 0,
+//                "maxPrice" => 10000,
+//            ],
             //"corporateCodes" => ["string"],
         ]);
-        $errors = $response->object();
-        dd($errors);
-        //dd($response);
-        $errors = $response->object()->errors[0];
-        return view('pages.exely.search', compact('errors'));
+        $results = $response->object();
+
+        return view('pages.exely.search', compact('results'));
     }
 
     public function search_roomstays(Request $request)
@@ -213,80 +215,213 @@ class ApiController extends Controller
                 ]
             ]
         ]);
-        $calc = $response->object();
-        dd($calc);
+        $order = $response->object();
+
+        return view('pages.exely.order-verify', compact('order'));
     }
 
 
-    public function res_bookings()
+    public function res_bookings(Request $request)
     {
+        //dd($request->all());
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->post('https://connect.test.hopenapi.com/api/reservation/v1/bookings', [
             "booking" => [
-                "propertyId" => "500803",
+                "propertyId" => $request->get("propertyId"),
                 "roomStays" => [
                     [
                         "stayDates" => [
-                            "arrivalDateTime" => "2025-03-18T14:00",
-                            "departureDateTime" => "2025-03-19T12:00",
+                            "arrivalDateTime" => $request->get("arrivalDate"),
+                            "departureDateTime" => $request->get("departureDate"),
                         ],
-                        "ratePlan" => ["id" => "133528"],
+                        "ratePlan" => [
+                            "id" => $request->get("ratePlanId"),
+                            "name" => "Online booking",
+                            "description" => "",
+//                            "vat" => [
+//                                "applicable" => true,
+//                                "included" => true,
+//                                "percent" => 20
+//                            ]
+                        ],
                         "roomType" => [
-                            "id" => "82751",
-                            "placements" => [["code" => "AdultBed-2"]],
+                            "id" => $request->get("roomTypeId"),
+                            "placements" => [
+                                [
+                                    "code" => $request->get("roomCode"),
+                                    //"count" => 2,
+//                                    "kind" => "Adult",
+//                                    "minAge" => null,
+//                                    "maxAge" => null
+                                ]
+                            ],
+                            //"name" => "Standard"
                         ],
                         "guests" => [
                             [
-                                "firstName" => "John",
-                                "lastName" => "Doe",
-                                "middleName" => "Smith",
-                                "citizenship" => "GBR",
-                                "sex" => "Male",
-                            ],
+                                "firstName" => $request->get("firstName"),
+                                "lastName" => $request->get("lastName"),
+                                "middleName" => "",
+                                "citizenship" => "",
+                                "sex" => $request->get("sex"),
+                            ]
                         ],
-                        "guestCount" => ["adultCount" => 1, "childAges" => [5]],
-                        "checksum" =>
-                            "eyJDaGVja3N1bVdpdGhPdXRFeHRyYXMiOnsiVG90YWxBbW91bnRBZnRlclRheCI6IjU1LjUwIiwiQ3VycmVuY3lDb2RlIjoiR0JQIiwiU3RhcnRQZW5hbHR5QW1vdW50IjoiOS43MiJ9LCJDaGVja3N1bVdpdGhFeHRyYXMiOnsiVG90YWxBbW91bnRBZnRlclRheCI6IjU1LjUwIiwiQ3VycmVuY3lDb2RlIjoiR0JQIiwiU3RhcnRQZW5hbHR5QW1vdW50IjoiOS43MiJ9fQ==",
+                        "guestCount" => [
+                            "adultCount" => $request->get("guestCount"),
+                            "childAges" => [
+
+                            ]
+                        ],
+                        "checksum" => $request->get("checkSum"),
+//                        "dailyRates" => [
+//                            [
+//                                "priceBeforeTax" => 76.47,
+//                                "date" => "2025-03-25"
+//                            ]
+//                        ],
+                        "total" => [
+                            "priceBeforeTax" => $request->get("priceBeforeTax"),
+                            "taxAmount" => 0,
+                            "taxes" => [
+//                                [
+//                                    "amount" => 0.81,
+//                                    "index" => 1
+//                                ]
+                            ]
+                        ],
                         "services" => [
-                            [
-                                "id" => "42965",
-                                "quantity" => 3,
-                                "quantityByGuests" => null,
-                            ],
+//                            [
+//                                "id" => "42965",
+//                                "quantity" => 3,
+//                                "name" => "Breakfast",
+//                                "description" => "Breakfast at a restaurant at a special price",
+//                                "totalPrice" => 9.66,
+//                                "serviceTotal" => [
+//                                    "priceBeforeTax" => 76.47,
+//                                    "taxAmount" => 0.81,
+//                                    "taxes" => [
+//                                        [
+//                                            "amount" => 0.81,
+//                                            "index" => 1
+//                                        ]
+//                                    ]
+//                                ],
+//                                "inclusive" => false,
+//                                "kind" => "Meal",
+//                                "mealPlanCode" => "AllInclusive",
+//                                "mealPlanName" => "All inclusive",
+//                                "vat" => [
+//                                    "applicable" => true,
+//                                    "included" => true,
+//                                    "percent" => 20
+//                                ]
+//                            ]
                         ],
-                        "extraStay" => [
-                            "earlyArrival" => [
-                                "overriddenDateTime" => "2025-03-11T14:00",
-                            ],
-                            "lateDeparture" => [
-                                "overriddenDateTime" => "2025-03-11T14:00",
-                            ],
-                        ],
-                    ],
+                        "extraStayCharge" => [
+//                            "earlyArrival" => [
+//                                "overriddenDateTime" => "2025-03-25T14:00",
+//                                "total" => [
+//                                    "priceBeforeTax" => 76.47,
+//                                    "taxAmount" => 0.81,
+//                                    "taxes" => [
+//                                        [
+//                                            "amount" => 0.81,
+//                                            "index" => 1
+//                                        ]
+//                                    ]
+//                                ]
+//                            ],
+//                            "lateDeparture" => [
+//                                "overriddenDateTime" => "2025-03-25T14:00",
+//                                "total" => [
+//                                    "priceBeforeTax" => 76.47,
+//                                    "taxAmount" => 0.81,
+//                                    "taxes" => [
+//                                        [
+//                                            "amount" => 0.81,
+//                                            "index" => 1
+//                                        ]
+//                                    ]
+//                                ]
+//                            ]
+                        ]
+                    ]
                 ],
-                "services" => [["id" => "7898"]],
+                "services" => [
+//                    [
+//                        "id" => "7898",
+//                        "name" => "Fruit platter",
+//                        "description" => "Fruit platter at check-in",
+//                        "price" => 200
+//                    ]
+                ],
                 "customer" => [
-                    "firstName" => "John",
-                    "lastName" => "Doe",
-                    "middleName" => "Smith",
-                    "citizenship" => "GBR",
+                    "firstName" => $request->get("firstName"),
+                    "lastName" => $request->get("lastName"),
+                    "middleName" => "",
+                    "citizenship" => "",
                     "contacts" => [
-                        "phones" => [["phoneNumber" => "+442012345678"]],
-                        "emails" => [["emailAddress" => "email@example.com"]],
+                        "phones" => [
+                            [
+                                "phoneNumber" => $request->get("phone"),
+                            ]
+                        ],
+                        "emails" => [
+                            [
+                                "emailAddress" => $request->get("email"),
+                            ]
+                        ]
                     ],
-                    "comment" => "Preferably a room with a sea view",
+                    "comment" => $request->get("comment"),
                 ],
                 "prepayment" => [
                     "remark" => "Payment in channel",
                     "paymentType" => "Cash",
-                    "prepaidSum" => 0,
+                    "prepaidSum" => 0
                 ],
-                "bookingComments" => ["Preferably a room with a sea view"],
-                "createBookingToken" => "QUNERjMyQjctNTQyNi00NTdELTk0QzItQTU0Mjc0QTY0RThD",
-            ],
+                "bookingComments" => [
+                    $request->get("comment"),
+                ],
+                "total" => [
+                    "priceBeforeTax" => $request->get("priceBeforeTax"),
+                    "taxAmount" => 0,
+                    "taxes" => [
+//                        [
+//                            "amount" => 0.81,
+//                            "index" => 1
+//                        ]
+                    ]
+                ],
+                "taxes" => [
+//                    [
+//                        "index" => 1,
+//                        "name" => "Lodging fee",
+//                        "description" => "Fee per guest, payable at check-in"
+//                    ]
+                ],
+                "currencyCode" => "EUR",
+                "cancellation" => [
+                    "penaltyAmount" => $request->get("cancellation"),
+                    "reason" => "Booking cancellation",
+                    //"cancelledUtc" => "2025-03-25T12:00:00Z"
+                ],
+                "cancellationPolicy" => [
+                    "freeCancellationPossible" => false,
+                    "freeCancellationDeadlineLocal" => null,
+                    "freeCancellationDeadlineUtc" => null,
+                    "penaltyAmount" => $request->get("cancellation"),
+                ],
+                "createBookingToken" => $request->get("createBookingToken"),
+//                "number" => "20191001-1024-45675262",
+//                "status" => "Confirmed",
+//                "createdDateTime" => "2025-03-25T12:00:00Z",
+//                "modifiedDateTime" => "2025-03-25T12:00:00Z",
+//                "version" => "MjAyMzA1MTktNzI5Mi0xMTc1MzI1Mi0y"
+            ]
         ]);
 
-        $bookings = $response->object();
-        dd($bookings);
+        $res = $response->object();
+
+        return view('pages.exely.order-booking', compact('res'));
     }
 
     public function res_booking()
@@ -451,10 +586,10 @@ class ApiController extends Controller
         return view('pages.exely.extrarules', compact('rules'));
     }
 
-    public function res_calculate()
+    public function res_calculate(Request $request)
     {
-        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/reservation/v1/bookings/20191001-1024-45675262/calculate-cancellation-penalty?cancellationDateTimeUtc=2025-02-11T14%3A00%3A00Z');
-        $calc = $response->object()->errors[0];
+        $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/reservation/v1/bookings/'.$request->nummber.'/calculate-cancellation-penalty?cancellationDateTimeUtc='.$request->cancelTime);
+        $calc = $response->object();
 
         dd($calc);
     }
@@ -464,4 +599,5 @@ class ApiController extends Controller
     {
         return view('pages.exely.orderexely', compact('request'));
     }
+
 }

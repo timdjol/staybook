@@ -40,13 +40,18 @@ class PageController extends Controller
     public function hotel($code, Request $request)
     {
         $hotel = Hotel::where('code', $code)->first();
-        $min = Room::where('hotel_id', $hotel->id)->where('status', 1)->min('price');
-        $rooms = Room::where('hotel_id', $hotel->id)->where('status', 1)->orderBy('price', 'asc')->paginate(10);
         $start = Carbon::createFromDate($request->start_d);
         $end = Carbon::createFromDate($request->end_d);
         $count_day = $start->diffInDays($end);
         $count = $request->count;
-        return view('pages.hotel', compact('hotel', 'rooms', 'min', 'start', 'end', 'count', 'count_day', 'request'));
+        if($hotel != null){
+            $min = Room::where('hotel_id', $hotel->id)->where('status', 1)->min('price');
+            $rooms = Room::where('hotel_id', $hotel->id)->where('status', 1)->orderBy('price', 'asc')->paginate(10);
+            return view('pages.hotel', compact('hotel', 'rooms', 'min', 'start', 'end', 'count', 'count_day', 'request'));
+        } else {
+            return view('pages.hotel', compact('hotel', 'start', 'end', 'count', 'count_day', 'request'));
+        }
+
     }
 
     public function allrooms()

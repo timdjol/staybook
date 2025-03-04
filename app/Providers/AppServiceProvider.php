@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -14,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+
     }
 
     /**
@@ -37,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('buh', function(){
             return Auth::user()->hasRole('Accoundate');
         });
+
 
     }
 }

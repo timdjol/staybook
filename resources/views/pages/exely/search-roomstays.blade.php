@@ -19,6 +19,7 @@
         </div>
     </div>
 
+
     <div class="page property">
         <div class="container">
             <div class="row">
