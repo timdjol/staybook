@@ -6,10 +6,12 @@ use App\Models\Traits\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cat extends Model
+class CategoryRoom extends Model
 {
     use HasFactory;
     use Translatable;
+
+    protected $table = 'categoryRooms';
 
     protected $fillable = [
         'title',
@@ -17,8 +19,13 @@ class Cat extends Model
         'code'
     ];
 
-    public function room()
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+    public function rooms()
     {
-        return $this->belongsTo(Room::class);
+        return $this->hasMany(Room::class);
     }
 }

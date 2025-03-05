@@ -113,9 +113,9 @@ class ApiController extends Controller
             "guestCount" => ["adultCount" => 1, "childAges" => [2]],
         ]);
         $services = $response->object();
-        //dd($services);
+        //dd($amenities);
 
-        return view('pages.exely.search-services', compact('services'));
+        return view('pages.exely.search-amenities', compact('services'));
     }
 
 
@@ -179,12 +179,12 @@ class ApiController extends Controller
                             "childAges" => [
                             ]
                         ],
-                        "services" => [
+                        "amenities" => [
                         ],
                         "checksum" => $request->get("checkSum"),
                     ]
                 ],
-                "services" => [
+                "amenities" => [
                 ],
                 "customer" => [
                     "firstName" => $request->get("name"),
@@ -288,7 +288,7 @@ class ApiController extends Controller
 //                                ]
                             ]
                         ],
-                        "services" => [
+                        "amenities" => [
 //                            [
 //                                "id" => "42965",
 //                                "quantity" => 3,
@@ -346,7 +346,7 @@ class ApiController extends Controller
                         ]
                     ]
                 ],
-                "services" => [
+                "amenities" => [
 //                    [
 //                        "id" => "7898",
 //                        "name" => "Fruit platter",
@@ -459,7 +459,7 @@ class ApiController extends Controller
                         "guestCount" => ["adultCount" => 1, "childAges" => [5]],
                         "checksum" =>
                             "eyJDaGVja3N1bVdpdGhPdXRFeHRyYXMiOnsiVG90YWxBbW91bnRBZnRlclRheCI6IjU1LjUwIiwiQ3VycmVuY3lDb2RlIjoiR0JQIiwiU3RhcnRQZW5hbHR5QW1vdW50IjoiOS43MiJ9LCJDaGVja3N1bVdpdGhFeHRyYXMiOnsiVG90YWxBbW91bnRBZnRlclRheCI6IjU1LjUwIiwiQ3VycmVuY3lDb2RlIjoiR0JQIiwiU3RhcnRQZW5hbHR5QW1vdW50IjoiOS43MiJ9fQ==",
-                        "services" => [
+                        "amenities" => [
                             [
                                 "id" => "42965",
                                 "quantity" => 3,
@@ -476,7 +476,7 @@ class ApiController extends Controller
                         ],
                     ],
                 ],
-                "services" => [["id" => "7898"]],
+                "amenities" => [["id" => "7898"]],
                 "customer" => [
                     "firstName" => "John",
                     "lastName" => "Doe",
@@ -530,7 +530,7 @@ class ApiController extends Controller
                         "guestCount" => ["adultCount" => 1, "childAges" => [5]],
                         "checksum" =>
                             "eyJDaGVja3N1bVdpdGhPdXRFeHRyYXMiOnsiVG90YWxBbW91bnRBZnRlclRheCI6IjU1LjUwIiwiQ3VycmVuY3lDb2RlIjoiR0JQIiwiU3RhcnRQZW5hbHR5QW1vdW50IjoiOS43MiJ9LCJDaGVja3N1bVdpdGhFeHRyYXMiOnsiVG90YWxBbW91bnRBZnRlclRheCI6IjU1LjUwIiwiQ3VycmVuY3lDb2RlIjoiR0JQIiwiU3RhcnRQZW5hbHR5QW1vdW50IjoiOS43MiJ9fQ==",
-                        "services" => [
+                        "amenities" => [
                             [
                                 "id" => "42965",
                                 "quantity" => 3,
@@ -547,7 +547,7 @@ class ApiController extends Controller
                         ],
                     ],
                 ],
-                "services" => [["id" => "7898"]],
+                "amenities" => [["id" => "7898"]],
                 "customer" => [
                     "firstName" => "John",
                     "lastName" => "Doe",

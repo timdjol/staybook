@@ -19,14 +19,17 @@
         padding: 10px;
         border-bottom: 1px solid #ddd;
     }
-    table a{
+
+    table a {
         text-decoration: none;
         color: #000;
     }
-    .address{
+
+    .address {
         font-size: 14px;
     }
-    .stick{
+
+    .stick {
         background-color: orange;
         color: #333;
         display: inline-block;
@@ -34,11 +37,13 @@
         font-size: 12px;
         border-radius: 5px;
     }
-    .pay{
+
+    .pay {
         color: green;
         opacity: .8;
     }
-    .descr{
+
+    .descr {
         font-size: 12px;
     }
 </style>
@@ -47,7 +52,7 @@
     $hotel = \App\Models\Hotel::where('id', $book->hotel_id)->firstOrFail();
     $contacts = \App\Models\Contact::first();
     $room = \App\Models\Room::where('id', $book->room_id)->firstOrFail();
-    $category = \App\Models\Category::where('room_id', $book->room_id)->firstOrFail();
+    $category = \App\Models\Rate::where('room_id', $book->room_id)->firstOrFail();
 @endphp
 
 <div class="page admin">
@@ -78,7 +83,9 @@
                     </tr>
                     <tr>
                         <td>Rate</td>
-                        <td><div class="stick">B2B</div></td>
+                        <td>
+                            <div class="stick">B2B</div>
+                        </td>
                     </tr>
                     <tr>
                         <td>Guest</td>
@@ -123,7 +130,8 @@
                             {{ $hotel->title }}<br>
                             {{ $hotel->address }}
                             <div class="descr">{!! $hotel->description !!}</div>
-                            <img src="https://maps.googleapis.com/maps/api/staticmap?center=Berkeley,CA&amp;zoom=13&amp;size=400x400&amp;key=AIzaSyA3kg7YWugGl1lTXmAmaBGPNhDW9pEh5bo&amp;signature=45D4gqkHrzXqD1o0ucV_geljI6A=" alt="">
+                            <img src="https://maps.googleapis.com/maps/api/staticmap?center=Berkeley,CA&amp;zoom=13&amp;size=400x400&amp;key=AIzaSyA3kg7YWugGl1lTXmAmaBGPNhDW9pEh5bo&amp;signature=45D4gqkHrzXqD1o0ucV_geljI6A="
+                                 alt="">
                         </td>
 
                     </tr>
@@ -133,7 +141,9 @@
                     </tr>
                     <tr>
                         <td>Payment type</td>
-                        <td><div class="pay">{{ $book->status }}</div></td>
+                        <td>
+                            <div class="pay">{{ $book->status }}</div>
+                        </td>
                     </tr>
                 </table>
             </div>

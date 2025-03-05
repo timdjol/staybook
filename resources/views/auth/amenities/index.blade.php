@@ -1,6 +1,6 @@
 @extends('auth.layouts.master', compact('hotel'))
 
-@section('title', __('admin.services'))
+@section('title', __('admin.amenities'))
 
 @section('content')
 
@@ -11,24 +11,24 @@
                     @include('auth.layouts.sidebar')
                 </div>
                 <div class="col-md-9">
-                    <h1>@lang('admin.services')</h1>
-                    @if(!$services->isEmpty())
+                    <h1>@lang('admin.amenities')</h1>
+                    @if(!$amenities->isEmpty())
                     <table>
                         <tr>
-                            <th>@lang('admin.services')</th>
+                            <th>@lang('admin.amenities')</th>
                             <th>@lang('admin.action')</th>
                         </tr>
-                        @foreach($services as $service)
+                        @foreach($amenities as $amenity)
                             <tr>
-                                <td>{{ $service->services }}</td>
-                                <td><a href="{{ route('services.edit', $service) }}" class="more"><i class="fa-regular fa-pen-to-square"></i></a></td>
+                                <td>{{ $amenity->services }}</td>
+                                <td><a href="{{ route('amenities.edit', $amenity) }}" class="more"><i class="fa-regular fa-pen-to-square"></i></a></td>
                             </tr>
                         @endforeach
 
                     </table>
                     @else
                         <div class="btn-wrap" style="margin-top: 20px">
-                            <a href="{{ route('services.create') }}" class="more">@lang('admin.add')</a>
+                            <a href="{{ route('amenities.create') }}" class="more">@lang('admin.add')</a>
                         </div>
                     @endif
                 </div>

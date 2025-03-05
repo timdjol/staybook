@@ -23,9 +23,9 @@
                     @endisset
                     <form method="post"
                           @isset($cat)
-                              action="{{ route('cats.update', $cat) }}"
+                              action="{{ route('categoryRooms.update', $cat) }}"
                           @else
-                              action="{{ route('cats.store') }}"
+                              action="{{ route('categoryRooms.store') }}"
                             @endisset
                     >
                         @isset($cat)

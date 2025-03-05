@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Models\Traits\Translatable;
 use Illuminate\Database\Eloquent\Model;
 
-class Child extends Model
+class Accommodation extends Model
 {
-    protected $table = 'childs';
+    protected $table = 'accommodations';
 
     use Translatable;
 
@@ -35,6 +35,11 @@ class Child extends Model
         'status'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function room()
     {
         return $this->belongsTo(Room::class);
@@ -42,7 +47,7 @@ class Child extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Rate::class);
     }
 
 }

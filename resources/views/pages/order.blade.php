@@ -72,14 +72,14 @@
                                         <div class="form-group">
                                             @if($request->start_d)
                                                 <div class="date">
-                                                    <label for="">@lang('main.search-title')</label>
-                                                    <input type="date" id="start_d" name="start_d"
+                                                    <label for="">Дата заезда</label>
+                                                    <input type="date" id="start_d" name="arrivalDate"
                                                            value="{{ $start }}" readonly>
                                                 </div>
                                             @else
                                                 <label class="col-xs-4" for="end_d">@lang('main.date')</label>
                                                 <input type="text" id="date" class="date">
-                                                <input type="hidden" id="start_d" name="start_d"
+                                                <input type="hidden" id="start_d" name="arrivalDate"
                                                        value="{{ date('Y-m-d H:s:i') }}">
                                             @endif
                                         </div>
@@ -87,42 +87,42 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             @if($end)
-                                                <label for="">@lang('main.search-title')</label>
-                                                <input type="date" id="end_d" name="end_d"
+                                                <label for="">Дата выезда</label>
+                                                <input type="date" id="end_d" name="departureDate"
                                                        value="{{ $end }}" readonly>
                                             @else
-                                                <input type="hidden" id="end_d" name="end_d"
+                                                <input type="hidden" id="end_d" name="departureDate"
                                                        value="{{ $date->addDays(1) }}">
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="col-xs-4" for="title">@lang('main.name')</label>
-                                            <input type="text" class="form-control" name="title" required/>
-                                        </div>
-                                    </div>
-
                                     {{--                                    <div class="col-md-6">--}}
                                     {{--                                        <div class="form-group">--}}
-                                    {{--                                            @include('auth.layouts.error', ['fieldname' => 'count'])--}}
-                                    {{--                                            <label class="col-xs-4" for="count">@lang('main.search-count')</label>--}}
-                                    {{--                                            <select name="count" id="count" onchange="countCheck(this);" required>--}}
-                                    {{--                                                <option value="">@lang('main.choose')</option>--}}
-                                    {{--                                                <option value="1">1</option>--}}
-                                    {{--                                                <option value="2">2</option>--}}
-                                    {{--                                            </select>--}}
+                                    {{--                                            <label class="col-xs-4" for="title">@lang('main.name')</label>--}}
+                                    {{--                                            <input type="text" class="form-control" name="title" required/>--}}
                                     {{--                                        </div>--}}
                                     {{--                                    </div>--}}
 
-                                    {{--                                    <div class="form-group" id="title">--}}
-                                    {{--                                        <label class="col-xs-4" for="title">@lang('main.adult_name1')</label>--}}
-                                    {{--                                        <input type="text" class="form-control" name="title" required/>--}}
-                                    {{--                                    </div>--}}
-                                    {{--                                    <div class="form-group" id="title2">--}}
-                                    {{--                                        <label class="col-xs-4" for="title2">@lang('main.adult_name2')</label>--}}
-                                    {{--                                        <input type="text" class="form-control" name="title2"/>--}}
-                                    {{--                                    </div>--}}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @include('auth.layouts.error', ['fieldname' => 'count'])
+                                            <label class="col-xs-4" for="adult">@lang('main.search-count')</label>
+                                            <select name="adult" id="adult" onchange="countCheck(this);" required>
+                                                <option value="">@lang('main.choose')</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" id="title">
+                                        <label class="col-xs-4" for="title">@lang('main.adult_name1')</label>
+                                        <input type="text" class="form-control" name="title" required/>
+                                    </div>
+                                    <div class="form-group" id="title2">
+                                        <label class="col-xs-4" for="title2">@lang('main.adult_name2')</label>
+                                        <input type="text" class="form-control" name="title2"/>
+                                    </div>
 
                                     @isset($child)
                                         <div class="form-group">
@@ -497,7 +497,8 @@
             padding: 10px 30px;
             margin-left: 10px;
         }
-        .main img{
+
+        .main img {
             width: 100%;
         }
     </style>

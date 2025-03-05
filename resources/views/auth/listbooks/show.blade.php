@@ -47,9 +47,9 @@
                         <div class="col-md-4">
                             <div class="dashboard-item">
                                 <div class="name">@lang('admin.count')</div>
-                                <div>{{ $book->count }} @lang('admin.adult')</div>
-                                @if($book->countc > 0)
-                                    <div>{{ $book->countc }} @lang('admin.child')</div>
+                                <div>{{ $book->adult }} @lang('admin.adult')</div>
+                                @if($book->child > 0)
+                                    <div>{{ $book->child }} @lang('admin.child')</div>
                                 @endif
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                         <div class="col-md-4">
                             <div class="dashboard-item">
                                 @php
-                                    //$category = \App\Models\Category::where('room_id', $book->room_id)->firstOrFail();
+                                    //$category = \App\Models\Rate::where('room_id', $book->room_id)->firstOrFail();
                                     $room = \App\Models\Room::where('id', $book->room_id)->first();
                                 @endphp
                                 <div class="img"><img src="{{ Storage::url($room->image) }}"></div>

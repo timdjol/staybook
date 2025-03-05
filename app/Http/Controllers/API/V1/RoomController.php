@@ -33,34 +33,34 @@ class RoomController extends Controller
         return $room;
     }
 
-    /**
-     * @param Request $request
-     * @return Application|ResponseFactory|\Illuminate\Foundation\Application|Response
-     */
-    public function store(Request $request)
-    {
-        Room::create($request->all());
-        return response('Room created successfully.', 201);
-    }
-
-    /**
-     * @param Request $request
-     * @param Room $room
-     * @return Room
-     */
-    public function update(Request $request, Room $room)
-    {
-        $room->update($request->all());
-        return $room;
-    }
-
-    /**
-     * @param Room $room
-     * @return Application|ResponseFactory|\Illuminate\Foundation\Application|Response
-     */
-    public function destroy(Room $room)
-    {
-        $room->delete();
-        return response(null, 204);
-    }
+//    /**
+//     * @param Request $request
+//     * @return Application|ResponseFactory|\Illuminate\Foundation\Application|Response
+//     */
+//    public function store(Request $request)
+//    {
+//        Room::create($request->all());
+//        return response('Room created successfully.', 201);
+//    }
+//
+//    /**
+//     * @param Request $request
+//     * @param Room $room
+//     * @return Room
+//     */
+//    public function update(Request $request, Room $room)
+//    {
+//        $room->update($request->all());
+//        return $room;
+//    }
+//
+//    /**
+//     * @param Room $room
+//     * @return Application|ResponseFactory|\Illuminate\Foundation\Application|Response
+//     */
+//    public function destroy(Room $room)
+//    {
+//        $room->delete();
+//        return response(null, 204);
+//    }
 }

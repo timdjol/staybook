@@ -102,7 +102,7 @@
 {{--                                                            if($count_day != null){--}}
 {{--                                                                $price = ($cat->room->price + $cat->food->price) * $count * $count_day;--}}
 {{--                                                            } else {--}}
-{{--                                                                $fprice = \App\Models\Food::where('title_en', $cat->food_id)->first();--}}
+{{--                                                                $fprice = \App\Models\Meal::where('title_en', $cat->food_id)->first();--}}
 {{--                                                                $fprice = $fprice->price;--}}
 {{--                                                                $price = ($cat->room->price + $fprice) * $count;--}}
 {{--                                                            }--}}
@@ -225,7 +225,7 @@
                                                         {{--                                                            if($count_day != null){--}}
                                                         {{--                                                                $price = ($cat->room->price + $cat->food->price) * $count * $count_day;--}}
                                                         {{--                                                            } else {--}}
-                                                        {{--                                                                $fprice = \App\Models\Food::where('title_en', $cat->food_id)->first();--}}
+                                                        {{--                                                                $fprice = \App\Models\Meal::where('title_en', $cat->food_id)->first();--}}
                                                         {{--                                                                $fprice = $fprice->price;--}}
                                                         {{--                                                                $price = ($cat->room->price + $fprice) * $count;--}}
                                                         {{--                                                            }--}}

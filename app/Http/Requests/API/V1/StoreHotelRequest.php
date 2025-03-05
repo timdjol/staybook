@@ -48,6 +48,9 @@ class StoreHotelRequest extends FormRequest
         return $rules;
     }
 
+    /**
+     * @return string[]
+     */
     public function messages()
     {
         return[

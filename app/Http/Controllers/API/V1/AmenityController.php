@@ -3,28 +3,29 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Meal;
+use App\Models\Amenity;
 use Illuminate\Database\Eloquent\Collection;
 
 
-class MealController extends Controller
+class AmenityController extends Controller
 {
+
     /**
      * @return Collection
      */
     public function index()
     {
-        return Meal::all();
+        return Amenity::all();
     }
 
     /**
-     * @param Meal $meal
-     * @return Meal
+     * @param Amenity $amenity
+     * @return Amenity
      */
-    public function show(Meal $meal){
-        if($meal == null){
+    public function show(Amenity $amenity){
+        if($amenity == null){
             abort(404);
         }
-        return $meal;
+        return $amenity;
     }
 }

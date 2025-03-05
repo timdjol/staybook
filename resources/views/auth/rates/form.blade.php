@@ -1,7 +1,7 @@
 @extends('auth.layouts.master')
 
-@isset($category)
-    @section('title', __('admin.edit') . ' ' . $category->title)
+@isset($rate)
+    @section('title', __('admin.edit') . ' ' . $rate->title)
 @else
     @section('title', __('admin.add'))
 @endisset
@@ -16,19 +16,19 @@
                 </div>
                 <div class="col-md-9">
                     @include('auth.layouts.subroom')
-                    @isset($category)
-                        <h1>@lang('admin.edit') {{ $category->title }}</h1>
+                    @isset($rate)
+                        <h1>@lang('admin.edit') {{ $rate->title }}</h1>
                     @else
                         <h1>@lang('admin.add')</h1>
                     @endisset
                     <form method="post"
-                          @isset($category)
-                              action="{{ route('categories.update', $category) }}"
+                          @isset($rate)
+                              action="{{ route('rates.update', $rate) }}"
                           @else
-                              action="{{ route('categories.store') }}"
+                              action="{{ route('rates.store') }}"
                             @endisset
                     >
-                        @isset($category)
+                        @isset($rate)
                             @method('PUT')
                         @endisset
                         <input type="hidden" value="{{ $hotel }}" name="hotel_id">
@@ -37,8 +37,8 @@
                                 @include('auth.layouts.error', ['fieldname' => 'title'])
                                 <div class="form-group">
                                     <label for="">@lang('admin.title')</label>
-                                    <input type="text" name="title" value="{{ old('title', isset($category) ?
-                                    $category->title :
+                                    <input type="text" name="title" value="{{ old('title', isset($rate) ?
+                                    $rate->title :
                              null) }}">
                                 </div>
                             </div>
@@ -46,8 +46,8 @@
                                 @include('auth.layouts.error', ['fieldname' => 'title_en'])
                                 <div class="form-group">
                                     <label for="">@lang('admin.title') EN</label>
-                                    <input type="text" name="title_en" value="{{ old('title_en', isset($category) ?
-                                $category->title_en :
+                                    <input type="text" name="title_en" value="{{ old('title_en', isset($rate) ?
+                                $rate->title_en :
                              null) }}">
                                 </div>
                             </div>
@@ -58,10 +58,10 @@
                                     <label for="">Какие номера можно забронировать по этому тарифу?
                                     </label>
                                     <select name="room_id[]" multiple style="height: auto">
-                                        @isset($categories)
-                                            @foreach($categories as $cat)
+                                        @isset($rates)
+                                            @foreach($rates as $elem)
                                                 @php
-                                                    $room = \App\Models\Room::where('id', $cat)->first();
+                                                    $room = \App\Models\Room::where('id', $elem)->first();
                                                 @endphp
                                                     <option value="{{ $room->id }}" selected>{{ $room->__('title') }}</option>
                                             @endforeach
@@ -74,14 +74,14 @@
                             </div>
 
                             <div class="col-md-6">
-                                @include('auth.layouts.error', ['fieldname' => 'food_id'])
+                                @include('auth.layouts.error', ['fieldname' => 'meal_id'])
                                 <div class="form-group">
                                     <label for="">@lang('admin.food')</label>
-                                    <select name="food_id" id="">
-                                        @isset($category)
-                                            <option value="{{ $category->food_id }}" @if($category->food_id)
+                                    <select name="meal_id" id="">
+                                        @isset($rate)
+                                            <option value="{{ $rate->meal_id }}" @if($rate->meal_id)
                                                         selected>
-                                            {{ $category->food_id }}</option>
+                                            {{ $rate->meal_id }}</option>
                                         @else
                                             <option>@lang('admin.choose')</option>
                                         @endif
@@ -98,7 +98,7 @@
                                 <div class="form-group">
                                     <label for="">@lang('admin.rule')</label>
                                     <select name="rule_id" id="">
-                                        @isset($category->rule_id)
+                                        @isset($rate->rule_id)
                                             <option value="{{ $select_rule->id }}">{{ $select_rule->__('title')
                                             }}</option>
                                         @endisset

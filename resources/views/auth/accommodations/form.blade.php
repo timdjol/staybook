@@ -22,9 +22,9 @@
 
                     <form method="post"
                           @isset($child)
-                              action="{{ route('childs.update', $child) }}"
+                              action="{{ route('accommodations.update', $child) }}"
                           @else
-                              action="{{ route('childs.store') }}"
+                              action="{{ route('accommodations.store') }}"
                             @endisset
                     >
                         @isset($child)

@@ -50,7 +50,7 @@
                                 fa-plus"></i> @lang('admin.add')</a>
                     </div>
 
-                    @if($categories->isNotEmpty())
+                    @if($rates->isNotEmpty())
                         <h3>@lang('admin.plans')</h3>
                         <table class="table">
                             <thead>
@@ -64,13 +64,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($categories as $category)
+                            @foreach($rates as $rate)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $category->__('title') }}</td>
+                                    <td>{{ $rate->__('title') }}</td>
                                     <td>
                                         @php
-                                            $cats = explode(', ', $category->room_id);
+                                            $cats = explode(', ', $rate->room_id);
                                             $rooms = \App\Models\Room::where('hotel_id', $hotel)->wherein('id', $cats)->get();
                                         @endphp
                                         @foreach($rooms as $room)
@@ -78,19 +78,19 @@
                                         @endforeach
                                     </td>
                                     <td>
-                                        @isset($category->food_id)
-                                            {{ $category->food_id }}
+                                        @isset($rate->food_id)
+                                            {{ $rate->food_id }}
                                         @endisset
                                     </td>
                                     <td>
-                                        @isset($category->rule)
-                                            {{ $category->rule->__('title') }}
+                                        @isset($rate->rule)
+                                            {{ $rate->rule->__('title') }}
                                         @endisset
                                     </td>
                                     <td>
-                                        <form action="{{ route('categories.destroy', $category) }}" method="post">
+                                        <form action="{{ route('rates.destroy', $rate) }}" method="post">
                                             <ul>
-                                                <li><a class="btn edit" href="{{ route('categories.edit', $category)
+                                                <li><a class="btn edit" href="{{ route('rates.edit', $rate)
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                                 @csrf
                                                 @method('DELETE')
@@ -103,12 +103,12 @@
                             @endforeach
                             </tbody>
                         </table>
-                        {{ $categories->links('pagination::bootstrap-4') }}
+                        {{ $rates->links('pagination::bootstrap-4') }}
                     @else
-                        <h2 style="text-align: center">@lang('admin.categories_not_found')</h2>
+                        <h2 style="text-align: center">@lang('admin.rates_not_found')</h2>
                     @endif
                     <div class="btn-wrap" style="margin-top: 20px">
-                        <a class="btn add" href="{{ route('categories.create') }}"><i class="fa-solid
+                        <a class="btn add" href="{{ route('rates.create') }}"><i class="fa-solid
                                 fa-plus"></i> @lang('admin.add')</a>
                     </div>
                 </div>

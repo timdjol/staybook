@@ -47,11 +47,11 @@
                         <div class="price">@lang('main.price')
                             @php
                                 //$comission = \Illuminate\Support\Facades\Auth::user()->comission;
-                                $plan = \App\Models\Category::where('room_id', $room->id)->first();
+                                $plan = \App\Models\Rate::where('room_id', $room->id)->first();
                                 $now = \Carbon\Carbon::now();
                                 $date = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $now);
-                                $child = \App\Models\Child::where('room_id', $room->id)->first();
-                                $cat = \App\Models\Category::where('room_id', $room->id)->first();
+                                $child = \App\Models\Accommodation::where('room_id', $room->id)->first();
+                                $cat = \App\Models\Rate::where('room_id', $room->id)->first();
                                 $rule = \App\Models\Rule::where('id', $cat->rule_id ?? '')->first();
                             @endphp
                             $ {{ $room->price }}
@@ -463,7 +463,7 @@
 
                         </div>
                         <div class="servlisting">
-                            <h5>@lang('main.services'):</h5>
+                            <h5>@lang('main.amenities'):</h5>
                             <div class="row">
                                 @php
                                     $services = explode(', ', $room->hotel->service->services);

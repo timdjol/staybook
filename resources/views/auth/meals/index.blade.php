@@ -1,6 +1,6 @@
 @extends('auth.layouts.master')
 
-@section('title', __('admin.foods'))
+@section('title', __('admin.meals'))
 
 @section('content')
 
@@ -11,17 +11,17 @@
                     @include('auth.layouts.subroom')
                     <div class="row align-items-center aic">
                         <div class="col-md-7">
-                            <h1>@lang('admin.foods')</h1>
+                            <h1>@lang('admin.meals')</h1>
                         </div>
                         <div class="col-md-5">
                             <div class="btn-wrap">
-                                <a class="btn add" href="{{ route('foods.create') }}"><i class="fa-solid
+                                <a class="btn add" href="{{ route('meals.create') }}"><i class="fa-solid
                                 fa-plus"></i> @lang('admin.add')</a>
                             </div>
                         </div>
                     </div>
 
-                    @if($foods->isNotEmpty())
+                    @if($meals->isNotEmpty())
                         <table class="table">
                             <thead>
                             <tr>
@@ -33,16 +33,16 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($foods as $food)
+                            @foreach($meals as $meal)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $food->title }}</td>
-                                    <td>{{ $food->title_en }}</td>
-                                    <td>{{ $food->price }} $</td>
+                                    <td>{{ $meal->title }}</td>
+                                    <td>{{ $meal->title_en }}</td>
+                                    <td>{{ $meal->price }} $</td>
                                     <td>
-                                        <form action="{{ route('foods.destroy', $food) }}" method="post">
+                                        <form action="{{ route('meals.destroy', $meal) }}" method="post">
                                             <ul>
-                                                <li><a class="btn edit" href="{{ route('foods.edit', $food)
+                                                <li><a class="btn edit" href="{{ route('meals.edit', $meal)
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                                 @csrf
                                                 @method('DELETE')
@@ -55,7 +55,7 @@
                             @endforeach
                             </tbody>
                         </table>
-                        {{ $foods->links('pagination::bootstrap-4') }}
+                        {{ $meals->links('pagination::bootstrap-4') }}
                     @else
                         <h2 style="text-align: center">@lang('admin.foods_not_found')</h2>
                     @endif

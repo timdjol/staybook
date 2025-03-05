@@ -1,6 +1,6 @@
 @extends('auth.layouts.master')
 
-@section('title', __('admin.childs'))
+@section('title', __('admin.accommodations'))
 
 @section('content')
 
@@ -11,11 +11,11 @@
                     @include('auth.layouts.subroom')
                     <div class="row align-items-center aic">
                         <div class="col-md-7">
-                            <h1>@lang('admin.childs')</h1>
+                            <h1>@lang('admin.accommodations')</h1>
                         </div>
                         <div class="col-md-5">
                             <div class="btn-wrap">
-                                <a class="btn add" href="{{ route('childs.create') }}"><i class="fa-solid
+                                <a class="btn add" href="{{ route('accommodations.create') }}"><i class="fa-solid
                                 fa-plus"></i> @lang('admin.add')</a>
                             </div>
                         </div>
@@ -69,9 +69,9 @@
                                         </ul>
                                     </td>
                                     <td>
-                                        <form action="{{ route('childs.destroy', $child) }}" method="post">
+                                        <form action="{{ route('accommodations.destroy', $child) }}" method="post">
                                             <ul>
-                                                <li><a class="btn edit" href="{{ route('childs.edit', $child)
+                                                <li><a class="btn edit" href="{{ route('accommodations.edit', $child)
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                                 @csrf
                                                 @method('DELETE')

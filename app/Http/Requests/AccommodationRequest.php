@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FoodRequest extends FormRequest
+class AccommodationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class FoodRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'title' => 'required|min:1|max:255',
-            'title_en' => 'required|min:1|max:255',
+            'without_place' => 'required|min:1|max:255',
+            'extra_place' => 'required|min:1|max:255',
         ];
         return $rules;
     }

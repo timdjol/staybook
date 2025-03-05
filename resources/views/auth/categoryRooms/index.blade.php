@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-md-12">
                     @include('auth.layouts.subroom')
-                    <h1>@lang('admin.cats')</h1>
+                    <h1>@lang('admin.categoryRooms')</h1>
                     @if($cats->isNotEmpty())
                         <table class="table">
                             <thead>
@@ -25,9 +25,9 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $cat->__('title') }}</td>
                                     <td>
-                                        <form action="{{ route('cats.destroy', $cat) }}" method="post">
+                                        <form action="{{ route('categoryRooms.destroy', $cat) }}" method="post">
                                             <ul>
-                                                <li><a class="btn edit" href="{{ route('cats.edit', $cat)
+                                                <li><a class="btn edit" href="{{ route('categoryRooms.edit', $cat)
                                             }}"><i class="fa-regular fa-pen-to-square"></i></a></li>
                                                 @csrf
                                                 @method('DELETE')
@@ -47,7 +47,7 @@
                         </div>
                     @endif
                     <div class="btn-wrap" style="margin-top: 20px">
-                        <a class="btn add" href="{{ route('cats.create') }}"><i class="fa-solid
+                        <a class="btn add" href="{{ route('categoryRooms.create') }}"><i class="fa-solid
                                 fa-plus"></i> @lang('admin.add')</a>
                     </div>
                 </div>

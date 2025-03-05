@@ -111,7 +111,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="dashboard-item">
-                                        <div class="name">@lang('admin.services')</div>
+                                        <div class="name">@lang('admin.amenities')</div>
                                         <h6>{{ $hotel->service->services }}</h6>
                                     </div>
                                 </div>
@@ -316,7 +316,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="dashboard-item">
-                                    <div class="name">@lang('admin.services')</div>
+                                    <div class="name">@lang('admin.amenities')</div>
                                     <h6>{{ $hotel->service->services }}</h6>
                                 </div>
                             </div>

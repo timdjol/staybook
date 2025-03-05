@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MultiForm\HotelOneRequest;
 use App\Http\Requests\MultiForm\HotelTwoRequest;
-use App\Models\Category;
+use App\Models\Rate;
 use App\Models\Contact;
-use App\Models\Food;
+use App\Models\Meal;
 use App\Models\Image;
 use App\Models\Page;
 use App\Models\Room;
@@ -23,7 +23,7 @@ class PageController extends Controller
     {
         $hotels = Hotel::all();
         $rooms = Room::where('status', 1)->inRandomOrder()->paginate(40);
-        $foods = Food::all();
+        $foods = Meal::all();
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties?count=20&include=All');
         $properties = $response->object()->properties;
         return view('index', compact('hotels', 'rooms', 'foods', 'properties'));
@@ -72,7 +72,7 @@ class PageController extends Controller
 
     public function search(Request $request)
     {
-        $query = Category::with('hotel', 'room', 'food', 'rule');
+        $query = Rate::with('hotel', 'room', 'food', 'rule');
 
         //hotel
         if ($request->filled('title')) {
@@ -249,25 +249,12 @@ class PageController extends Controller
         return redirect()->route('index');
     }
 
-
-
-    public function testpage()
-    {
-        $hotels = Hotel::all();
-        //$rooms = Room::where('status', 1)->orderBy('created_at', 'DESC')->paginate(40);
-        $hotels = Hotel::where('status', 1)->orderBy('created_at', 'DESC')->paginate(40);
-        $foods = Food::all();
-        return view('pages.testpage', compact('hotels', 'hotels', 'foods'));
-    }
-
-
-
     public function searchtest(Request $request)
     {
         $response = Http::withHeaders(['x-api-key' => 'fd54fc5c-2927-4998-8132-fb1107fc81c4', 'accept' => 'application/json'])->get('https://connect.test.hopenapi.com/api/content/v1/properties?count=20&include=All');
         $properties = $response->object()->properties;
 
-        $query = Hotel::with('categories', 'food', 'rooms');
+        $query = Hotel::with('rates', 'meals', 'rooms');
         $start = Carbon::createFromDate($request->start_d);
         $end = Carbon::createFromDate($request->end_d);
         $count_day = $start->diffInDays($end);
