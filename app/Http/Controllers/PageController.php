@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MultiForm\HotelOneRequest;
 use App\Http\Requests\MultiForm\HotelTwoRequest;
+use App\Models\Book;
 use App\Models\Rate;
 use App\Models\Contact;
 use App\Models\Meal;
@@ -13,6 +14,7 @@ use App\Models\Room;
 use App\Models\Hotel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
@@ -336,8 +338,41 @@ class PageController extends Controller
         $start = $request->start_d;
         $end = $request->end_d;
         $price = $request->price;
+        $book_token = str()->random(15);
 
-        return view('pages.order', compact('request', 'start', 'end', 'price'));
+        return view('pages.order', compact('request', 'start', 'end', 'price', 'book_token'));
+    }
+
+    public function book_mail(Request $request)
+    {
+        $params = $request->all();
+        Book::create($params);
+        //Mail::to('info@silkwaytravel.kg')->cc($request->email)->bcc($hotel->email)->send(new BookMail($request));
+        //Mail::to('info@timdjol.com')->cc($request->email)->send(new BookMail($request));
+        session()->flash('success', 'Booking ' . $request->title . ' is created');
+        return redirect()->route('index');
+    }
+
+    public function getBooks()
+    {
+        $user_id = Auth::id();
+        $books = Book::where('user_id', $user_id)->where('book_token', '!=', '')->where('status', 'Оплачено')->get();
+        return view('pages.cancel-order', compact('books'));
+    }
+
+    public function cancelBook(Request $request)
+    {
+        $id = $request->book_id;
+        $token_book = $request->book_token;
+        if($token_book != null){
+            Book::where('id', $id)->update(['status' => 'Отменен пользователем']);
+            session()->flash('success', 'Booking ' . $request->title . ' is cancelled');
+            return redirect()->route('index');
+        }
+        else {
+            session()->flash('danger', 'Error');
+            return redirect()->back();
+        }
     }
 
 

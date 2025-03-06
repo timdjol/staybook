@@ -52,8 +52,8 @@
                                         <h5>@lang('main.amenities'):</h5>
                                         <div class="row">
                                             @php
-                                                $services = \App\Models\Amenity::where('hotel_id', $hotel->id)->firstOrFail();
-                                                $servs = explode(', ', $services->services);
+                                                $amenities = \App\Models\Amenity::where('hotel_id', $hotel->id)->firstOrFail();
+                                                $servs = explode(', ', $amenities->services);
                                             @endphp
                                             @foreach($servs as $service)
                                                 <div class="col-md-4">

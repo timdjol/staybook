@@ -29,11 +29,13 @@ class Book extends Model
         'sum',
         'arrivalDate',
         'departureDate',
+        'book_token',
 //        'age1',
 //        'age2',
 //        'age3',
         'tag',
         'status',
+        'user_id',
     ];
 
     protected $hidden = [

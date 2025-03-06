@@ -67,6 +67,7 @@
                             <form action="{{ route('book_mail') }}" method="post" id="callback">
                                 <input type="hidden" name="room_id" value="{{ $request->room_id}}">
                                 <input type="hidden" name="hotel_id" value="{{$request->hotel_id}}">
+                                <input type="hidden" name="book_token" value="{{$book_token}}">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">

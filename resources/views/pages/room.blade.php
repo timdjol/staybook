@@ -466,7 +466,7 @@
                             <h5>@lang('main.amenities'):</h5>
                             <div class="row">
                                 @php
-                                    $services = explode(', ', $room->hotel->service->services);
+                                    $services = explode(', ', $room->hotel->amenity->services);
                                 @endphp
                                 @foreach($services as $service)
                                     <div class="col-md-4">
