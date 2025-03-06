@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API\V1;
 use App\Filters\V1\HotelFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\HotelCollection;
-use App\Http\Resources\V1\HotelResource;
 use App\Models\Hotel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class HotelController extends Controller
@@ -26,16 +26,13 @@ class HotelController extends Controller
         }
     }
 
-    /**
-     * @param Hotel $hotel
-     * @return HotelResource
-     */
-    public function show(Hotel $hotel)
-    {
-        if($hotel == null) {
-            abort(404);
+    public function show($id){
+        try {
+            $hotel = Hotel::findOrFail($id);
+            return response()->json($hotel);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Hotel not found'], 404);
         }
-        return new HotelResource($hotel);
     }
 
 //    /**

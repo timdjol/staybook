@@ -3,29 +3,34 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\AmenityResource;
 use App\Models\Amenity;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 
 class AmenityController extends Controller
 {
 
     /**
-     * @return Collection
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
-        return Amenity::all();
+        return AmenityResource::collection(Amenity::all());
     }
 
     /**
-     * @param Amenity $amenity
-     * @return Amenity
+     * @param $id
+     * @return JsonResponse
      */
-    public function show(Amenity $amenity){
-        if($amenity == null){
-            abort(404);
+    public function show($id){
+        try {
+            $amenity = Amenity::findOrFail($id);
+            return response()->json($amenity, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Amenity not found'], 404);
         }
-        return $amenity;
     }
 }

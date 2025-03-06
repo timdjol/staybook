@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\RateResource;
 use App\Models\Rate;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+
 class RateController extends Controller
 {
     /**
@@ -12,18 +16,21 @@ class RateController extends Controller
      */
     public function index()
     {
-        return Rate::all();
+        return RateResource::collection(Rate::all());
     }
 
+
     /**
-     * @param Rate $rate
-     * @return Rate
+     * @param $id
+     * @return JsonResponse
      */
-    public function show(Rate $rate){
-        if($rate == null){
-            abort(404);
+    public function show($id){
+        try {
+            $rate = Rate::findOrFail($id);
+            return response()->json($rate, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Rate not found'], 404);
         }
-        return $rate;
     }
 
 //    public function store()

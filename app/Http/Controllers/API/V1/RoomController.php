@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\RoomResource;
 use App\Models\Room;
+use App\Models\Rule;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -18,19 +21,16 @@ class RoomController extends Controller
      */
     public function index()
     {
-        return Room::all();
+        return RoomResource::collection(Room::all());
     }
 
-    /**
-     * @param Room $room
-     * @return Room
-     */
-    public function show(Room $room)
-    {
-        if($room == null){
-            abort(404);
+    public function show($id){
+        try {
+            $room = Room::findOrFail($id);
+            return response()->json($room);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Room not found'], 404);
         }
-        return $room;
     }
 
 //    /**

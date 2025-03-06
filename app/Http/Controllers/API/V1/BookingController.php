@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\V1\StoreBookRequest;
+use App\Http\Resources\V1\BookingResource;
 use App\Models\Book;
 use App\Models\Room;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -17,31 +20,29 @@ class BookingController extends Controller
      */
     public function index()
     {
-        return Book::all();
+        return BookingResource::collection(Book::all());
     }
 
     /**
-     * @param Book $book
-     * @return Book
+     * @param $id
+     * @return JsonResponse
      */
-    public function show(Book $book)
-    {
-        if($book == null){
-            abort(404);
+    public function show($id){
+        try {
+            $book = Book::findOrFail($id);
+            return response()->json($book);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Book not found'], 404);
         }
-        return $book;
     }
 
     /**
      * @param Request $request
      * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreBookRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string'
-        ]);
-        $params = $request->all();
+        $params = $request->validated();
         $booking = Book::create($params);
         $room = Room::where('id', $request->room_id)->firstOrFail();
         $room->decrement('count', $request->count);
@@ -55,18 +56,15 @@ class BookingController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(StoreBookRequest $request, $id)
     {
-        $booking = Book::find($id);
+        $booking = Book::findOrFail($id);
         if(!$booking){
             return response()->json([
-                'error' => 'Unable to locate the event'
+                'error' => 'Unable to booking'
             ], 404);
         }
-        $booking->update([
-            'start_d' => $request->start_d,
-            'end_d' => $request->end_d
-        ]);
-        return response()->json('Event updated');
+        $booking->update($request->validated());
+        return response()->json('Book updated');
     }
 }

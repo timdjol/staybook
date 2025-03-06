@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\MealResource;
 use App\Models\Meal;
+use App\Models\Rule;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 
 
 class MealController extends Controller
@@ -14,17 +18,19 @@ class MealController extends Controller
      */
     public function index()
     {
-        return Meal::all();
+        return MealResource::collection(Meal::all());
     }
 
     /**
-     * @param Meal $meal
-     * @return Meal
+     * @param $id
+     * @return JsonResponse
      */
-    public function show(Meal $meal){
-        if($meal == null){
-            abort(404);
+    public function show($id){
+        try {
+            $meal = Meal::findOrFail($id);
+            return response()->json($meal, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Meal not found'], 404);
         }
-        return $meal;
     }
 }

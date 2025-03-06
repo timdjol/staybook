@@ -3,29 +3,35 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\AccommodationResource;
 use App\Models\Accommodation;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 
 class AccommodationController extends Controller
 {
+
     /**
-     * @return Collection
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
-        return Accommodation::all();
+        return AccommodationResource::collection(Accommodation::all());
     }
 
+
     /**
-     * @param Accommodation $accommodation
-     * @return Accommodation
+     * @param $id
+     * @return JsonResponse
      */
-    public function show(Accommodation $accommodation)
-    {
-        if($accommodation == null){
-            abort(404);
+    public function show($id){
+        try {
+            $accom = Accommodation::findOrFail($id);
+            return response()->json($accom, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Accommodation not found'], 404);
         }
-        return $accommodation;
     }
 }

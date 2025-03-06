@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +19,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\API\V1'], function () {
+Route::prefix('v1')->group(function(){
+    //Route::post('/register', [\App\Http\Controllers\API\V1\AuthController::class, 'register'])->name('register');
+    Route::post('/login', [\App\Http\Controllers\API\V1\AuthController::class, 'login'])->name('login');
+});
+
+Route::prefix('v1')->middleware(['throttle:api', 'auth:sanctum'])->group(function () {
     Route::get('/getHotels', [\App\Http\Controllers\API\V1\HotelController::class, 'index'])->name('getHotelList');
     Route::get('/getHotels/{hotel}', [\App\Http\Controllers\API\V1\HotelController::class, 'show'])->name('showHotel');
     Route::get('/getRooms', [\App\Http\Controllers\API\V1\RoomController::class, 'index'])->name('getRoomList');
@@ -34,8 +40,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\API\V1'], f
     //Route::apiResource('books', BookingController::class);
     Route::get('/getBooks', [\App\Http\Controllers\API\V1\BookingController::class, 'index'])->name('getBookList');
     Route::get('/getBooks/{book}', [\App\Http\Controllers\API\V1\BookingController::class, 'show'])->name('showBook');
-    Route::get('/storeBook', [\App\Http\Controllers\API\V1\BookingController::class, 'store'])->name('storeBook');
-    Route::get('/updateBook', [\App\Http\Controllers\API\V1\BookingController::class, 'update'])->name('updateBook');
+    Route::post('/storeBook', [\App\Http\Controllers\API\V1\BookingController::class, 'store'])->name('storeBook');
+    Route::post('/updateBook', [\App\Http\Controllers\API\V1\BookingController::class, 'update'])->name('updateBook');
     Route::get('/amenities', [\App\Http\Controllers\API\V1\AmenityController::class, 'index'])->name('getAmenityList');
     Route::get('/amenities/{amenity}', [\App\Http\Controllers\API\V1\AmenityController::class, 'show'])->name('showAmenity');
     Route::get('/getCategoryRooms', [\App\Http\Controllers\API\V1\CategoryRoomController::class, 'index'])->name('getCategoryRoomList');

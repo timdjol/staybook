@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\RuleResource;
 use App\Models\Rule;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -17,18 +19,20 @@ class RuleController extends Controller
      */
     public function index()
     {
-        return Rule::all();
+        return RuleResource::collection(Rule::all());
     }
 
     /**
      * @param Rule $rule
-     * @return Rule
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Rule $rule){
-        if($rule == null){
-            abort(404);
+    public function show($id){
+        try {
+            $rule = Rule::findOrFail($id);
+            return response()->json($rule);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Rule not found'], 404);
         }
-        return $rule;
     }
 
 //    /**
